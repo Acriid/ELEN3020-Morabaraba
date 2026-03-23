@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: G1
   m_EditorClassIdentifier: Assembly-CSharp::BoardSO
   BoardID: G1
-  _adjacentBoardSpaces: []
+  _adjacentBoardSpaces:
+  - {fileID: 11400000, guid: 6854b8be84e9a5f4ab97374dfcb36a70, type: 2}
+  - {fileID: 11400000, guid: 5aae32fd923217d4caa6090c7c92d7ef, type: 2}
+  - {fileID: 11400000, guid: e399d0d09daa28445a0edc44e7098e1b, type: 2}
+  _currentHeldPiece: {fileID: 0}

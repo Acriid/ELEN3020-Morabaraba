@@ -6,24 +6,24 @@ public class BoardSO : ScriptableObject
 {
     public string BoardID;
     [SerializeField] private List<BoardSO> _adjacentBoardSpaces;
-    //[SerializeField] private PieceSO _currentHeldPiece;
+    [SerializeField] private PieceSO _currentHeldPiece;
 
-    /*public PieceSO GetCurrentPiece()
+    public PieceSO GetCurrentPiece()
     {
         return _currentHeldPiece;
-    }*/
+    }
 
-    /*public PieceSO ChangeCurrentPiece(PieceSO newPiece)
+    public void ChangeCurrentPiece(PieceSO newPiece)
     {
         _currentHeldPiece = newPiece;
-    }*/
+    }
 
     public List<BoardSO> GetAdjacentBoardSpaces()
     {
         return _adjacentBoardSpaces;
     }
 
-    /*public Dictionary<BoardSO, PieceSO> GetAdjacentPieces()
+    public Dictionary<BoardSO, PieceSO> GetAdjacentPieces()
     {
         Dictionary<BoardSO, PieceSO> returnDictionary = new();
         foreach(BoardSO boardSpace in _adjacentBoardSpaces)
@@ -31,5 +31,5 @@ public class BoardSO : ScriptableObject
             returnDictionary[boardSpace] = boardSpace.GetCurrentPiece();
         }
         return returnDictionary;
-    }*/
+    }
 }
