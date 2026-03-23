@@ -13,5 +13,4 @@ public class PieceSO : ScriptableObject
     public Sprite pieceSprite;
     public Team team;
     private BoardSO _currentBoardSpace;
-
 }
