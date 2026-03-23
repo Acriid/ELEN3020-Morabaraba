@@ -4,9 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Space", menuName = "Board/BoardSpace")]
 public class BoardSO : ScriptableObject
 {
-    public int BoardID;
-    private List<BoardSO> _adjacentBoardSpaces;
-    //private PieceSO _currentHeldPiece;
+    public string BoardID;
+    [SerializeField] private List<BoardSO> _adjacentBoardSpaces;
+    //[SerializeField] private PieceSO _currentHeldPiece;
 
     /*public PieceSO GetCurrentPiece()
     {
