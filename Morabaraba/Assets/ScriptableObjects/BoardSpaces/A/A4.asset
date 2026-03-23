@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bca1ef3225268041bec5ef148ecf616, type: 3}
+  m_Name: A4
+  m_EditorClassIdentifier: Assembly-CSharp::BoardSO
+  BoardID: A4
+  _adjacentBoardSpaces:
+  - {fileID: 11400000, guid: e03d9b95d43373145bef4b4573498428, type: 2}
+  - {fileID: 11400000, guid: 5ece96a06ba3a024895e592bf5f2fba3, type: 2}
+  - {fileID: 11400000, guid: 71406fa259be3a54b8189a449ade55d7, type: 2}
