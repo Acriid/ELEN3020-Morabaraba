@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: F2
   m_EditorClassIdentifier: Assembly-CSharp::BoardSO
   BoardID: F2
-  _adjacentBoardSpaces: []
+  _adjacentBoardSpaces:
+  - {fileID: 11400000, guid: 89b0b8c94188e4a41847eeaba12b1636, type: 2}
+  - {fileID: 11400000, guid: e6451761470b6fc4ebf7b9371af48850, type: 2}
+  - {fileID: 11400000, guid: d4efed96c140b904f9abd8ee08bee8ea, type: 2}
+  - {fileID: 11400000, guid: b125e3af5bc30e841b11729224f27cf3, type: 2}
+  _currentHeldPiece: {fileID: 0}
