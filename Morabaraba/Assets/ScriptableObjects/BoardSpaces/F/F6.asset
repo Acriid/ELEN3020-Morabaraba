@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: F6
   m_EditorClassIdentifier: Assembly-CSharp::BoardSO
   BoardID: F6
-  GridSpace: {x: 0, y: 0}
+  GridSpace: {x: 5, y: 1}
   _adjacentBoardSpaces: []
   _currentHeldPiece: {fileID: 0}
