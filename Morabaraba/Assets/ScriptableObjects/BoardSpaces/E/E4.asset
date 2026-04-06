@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: E4
   m_EditorClassIdentifier: Assembly-CSharp::BoardSO
   BoardID: E4
+  GridSpace: {x: 4, y: 3}
   _adjacentBoardSpaces: []
+  _currentHeldPiece: {fileID: 0}
