@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BoardSpaceManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class BoardSpaceManager : MonoBehaviour
     
     [SerializeField] private BoardType _boardType;
     [SerializeField] private int _gridSize;
+
+    private int _currentIndex;
     //Manages board size 
     void Awake()
     {
@@ -22,15 +25,12 @@ public class BoardSpaceManager : MonoBehaviour
         GameObject boardObject = null;
         if(boardType == BoardType.Morabaraba)
         {
-            for(int i = 0; i < 7 ; i++)
+            for(int i = 0; i < 24 ; i++)
             {
-                for(int j = 0; j < 7 ; j++)
-                {
-                    boardObject = Instantiate(_boardPrefab,transform);
 
-                    InitializeBoardSpace(boardObject,_boardScriptableObjects[i]);
-                }
+                boardObject = Instantiate(_boardPrefab,transform);
 
+                InitializeBoardSpace(boardObject,_boardScriptableObjects[i]);
             }
         }
     }
@@ -41,6 +41,7 @@ public class BoardSpaceManager : MonoBehaviour
         BoardObject boardComponent = boardSpace.GetComponent<BoardObject>();
 
         boardComponent.BoardSO = boardSO;
+        boardSpace.transform.localPosition = boardSO.GridSpace;
     }
 }
 
