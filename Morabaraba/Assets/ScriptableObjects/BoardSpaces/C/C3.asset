@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: C3
   m_EditorClassIdentifier: Assembly-CSharp::BoardSO
   BoardID: C3
+  GridSpace: {x: 2, y: 4}
   _adjacentBoardSpaces:
   - {fileID: 11400000, guid: 1c79e50a692f43847a85f55cbd3bdc5c, type: 2}
   - {fileID: 11400000, guid: b00d0cb578e04aa48bee95910873b024, type: 2}
   - {fileID: 11400000, guid: 6e6210580aca11d41877492ead00b828, type: 2}
+  _currentHeldPiece: {fileID: 0}
