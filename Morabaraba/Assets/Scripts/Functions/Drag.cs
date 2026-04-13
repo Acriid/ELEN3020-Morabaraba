@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Drag : MonoBehaviour
 {
     private Camera cam;
-    private bool isDragging = false;
     private Vector3 offset;
     private float zDepth;
 
@@ -14,45 +12,24 @@ public class Drag : MonoBehaviour
         zDepth = cam.WorldToScreenPoint(transform.position).z;
     }
 
-    void Update()
+    public void BeginDrag(Vector2 mousePos)
     {
-        if (isDragging)
-        {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector3 screenPos = new Vector3(mousePos.x, mousePos.y, zDepth);
+        Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
 
-            Vector3 screenPos = new Vector3(mousePos.x, mousePos.y, zDepth);
-            Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
-
-            transform.position = worldPos + offset;
-        }
+        offset = transform.position - worldPos;
     }
 
-    public void OnClick(InputAction.CallbackContext context)
+    public void DragUpdate(Vector2 mousePos)
     {
-        if (context.started)
-        {
-            TryStartDrag();
-        }
-        else if (context.canceled)
-        {
-            isDragging = false;
-        }
+        Vector3 screenPos = new Vector3(mousePos.x, mousePos.y, zDepth);
+        Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
+
+        transform.position = worldPos + offset;
     }
 
-    private void TryStartDrag()
+    public void EndDrag()
     {
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Ray ray = cam.ScreenPointToRay(mousePos);
-
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-
-        if (hit.collider != null && hit.collider.gameObject == gameObject)
-        {
-            Vector3 screenPos = new Vector3(mousePos.x, mousePos.y, zDepth);
-            Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
-
-            offset = transform.position - worldPos;
-            isDragging = true;
-        }
+        
     }
 }
