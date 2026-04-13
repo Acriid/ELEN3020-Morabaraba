@@ -27,7 +27,6 @@ public class BoardSpaceManager : MonoBehaviour
         {
             for(int i = 0; i < 24 ; i++)
             {
-
                 boardObject = Instantiate(_boardPrefab,transform);
 
                 InitializeBoardSpace(boardObject,_boardScriptableObjects[i]);
@@ -41,7 +40,7 @@ public class BoardSpaceManager : MonoBehaviour
         BoardObject boardComponent = boardSpace.GetComponent<BoardObject>();
 
         boardComponent.BoardSO = boardSO;
-        boardSpace.transform.localPosition = boardSO.GridSpace;
+
     }
 }
 
