@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/LobbyStyle.uss?fileID=7433441132597879392&amp;guid=d67a3b92e7655384c9e34ef9d2a7eeb5&amp;type=3#LobbyStyle"/>
+    <ui:VisualElement class="container">
+        <ui:VisualElement class="lobby-panel">
+            <ui:Label text="Lobby" class="title" style="font-size: 36px;"/>
+            <ui:Label name="playerList" text="Players:" class="player-list" style="font-size: 20px;"/>
+            <ui:Button name="readyButton" text="Ready" class="ready-button" style="font-size: 20px;"/>
+            <ui:Button name="startButton" text="Start Game" class="start-button" style="font-size: 20px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
