@@ -1,0 +1,63 @@
+
+.container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #1e1e2f;
+}
+
+.menu-panel {
+    width: 380px;
+    padding: 25px;
+    background-color: #2a2a40;
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: #3a3a55;
+
+    align-items: center;
+    gap: 15px;
+}
+
+.title {
+    font-size: 30px;
+    -unity-font-style: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+TextField {
+    width: 100%;
+}
+
+Button {
+    width: 200px;         
+    height: 40px;
+    border-radius: 8px;
+    color: white;
+    -unity-font-style: bold;
+}
+
+Button {
+    background-color: #4a6cff;
+}
+
+Button:hover {
+    background-color: #6a8cff;
+}
+
+.host-button {
+    background-color: #3cb371;
+}
+
+.host-button:hover {
+    background-color: #4fd18a;
+}
+
+.join-button {
+    background-color: #ff8c42;
+}
+
+.join-button:hover {
+    background-color: #ffa65e;
+}

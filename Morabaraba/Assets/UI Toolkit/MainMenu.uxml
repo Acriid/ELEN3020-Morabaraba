@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=6698bb73e43d7de439d2393b2090d26b&amp;type=3#MainMenuStyle"/>
+    <ui:VisualElement class="container">
+        <ui:VisualElement class="menu-panel" style="background-color: rgb(65, 65, 109);">
+            <ui:Label text="Morabaraba" class="title" style="font-size: 42px;"/>
+            <ui:TextField name="ipField" label="Server IP" value="127.0.0.1" style="font-size: 20px;"/>
+            <ui:Button name="hostButton" text="Host Game" class="host-button" style="font-size: 20px;"/>
+            <ui:Button name="joinButton" text="Join Game" class="join-button" style="font-size: 20px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
