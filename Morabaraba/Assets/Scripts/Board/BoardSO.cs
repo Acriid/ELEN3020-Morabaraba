@@ -8,6 +8,10 @@ public class BoardSO : ScriptableObject
     [SerializeField] private List<BoardSO> _adjacentBoardSpaces;
     [SerializeField] private PieceSO _currentHeldPiece;
 
+    public void Initialize()
+    {
+        _currentHeldPiece = null;
+    }
     public PieceSO GetCurrentPiece()
     {
         return _currentHeldPiece;
