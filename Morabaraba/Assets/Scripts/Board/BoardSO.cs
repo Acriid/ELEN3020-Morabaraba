@@ -5,7 +5,6 @@ using UnityEngine;
 public class BoardSO : ScriptableObject
 {
     public string BoardID;
-    public Vector2 GridSpace;
     [SerializeField] private List<BoardSO> _adjacentBoardSpaces;
     [SerializeField] private PieceSO _currentHeldPiece;
 
