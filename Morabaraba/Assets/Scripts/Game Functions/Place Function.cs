@@ -13,18 +13,20 @@ public class PlaceFunction : MonoBehaviour
     //We need something to differentiate the players for their teams
     private int _currentIndex1 = 0;
     private int _currentIndex2 = 0;
+    private Team _currentTeam;
     void Awake()
     {
+
+        //Initialize indexes
         _currentIndex1 = 0;
         _currentIndex2 = 0;
+
+        _currentTeam = Team.Player1;
+
+        //Initialize inputs
         _inputActions = new();
-
-        
-
         _mouseAction = _inputActions.Player.Click;
-
         _mouseAction.performed += OnClick;
-
         _mouseAction.Enable();
     }
 
@@ -44,7 +46,7 @@ public class PlaceFunction : MonoBehaviour
         {
             if(component.BoardSO.GetCurrentPiece() == null)
             {
-                Piece currentPiece = GetPieceForTeam(Team.Player1);
+                Piece currentPiece = GetPieceForTeam(_currentTeam);
                 //Place piece on board
                 component.BoardSO.ChangeCurrentPiece(currentPiece.data);
                 currentPiece.gameObject.transform.SetParent(hit.collider.transform);
@@ -63,11 +65,13 @@ public class PlaceFunction : MonoBehaviour
         {
             currentPiece =  _piecesTeam1[_currentIndex1++];
             currentPiece.data.Team = Team.Player1;
+            _currentTeam = Team.Player2;
         }
         else if(team == Team.Player2)
         {
             currentPiece = _piecesTeam2[_currentIndex2++];
             currentPiece.data.Team = Team.Player2;
+            _currentTeam = Team.Player1;
         }
         
         return currentPiece;

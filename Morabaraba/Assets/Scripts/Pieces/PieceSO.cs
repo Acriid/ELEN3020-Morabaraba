@@ -13,8 +13,12 @@ public class PieceSO : ScriptableObject
     public string PieceID;
     public Sprite PieceSprite;
     public Team Team;
-    [SerializeField] public BoardSO _currentBoardSpace;
+    [SerializeField] private BoardSO _currentBoardSpace;
 
+    public void Initialize()
+    {
+        _currentBoardSpace = null;
+    }
     //Added by James to get piece location 
     public BoardSO GetCurrentBoardSpace()
     {
