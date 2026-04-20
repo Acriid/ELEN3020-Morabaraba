@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class MainMenuUI : MonoBehaviour
     {
         Debug.Log("Hosting game...");
         // NetworkManager.StartHost();
+        SceneManager.LoadScene("Lobby");
     }
 
     private void OnJoinClicked()
@@ -30,5 +32,6 @@ public class MainMenuUI : MonoBehaviour
         string ip = ipField.value;
         Debug.Log("Joining: " + ip);
         // NetworkManager.Connect(ip);
+        SceneManager.LoadScene("Lobby");
     }
 }

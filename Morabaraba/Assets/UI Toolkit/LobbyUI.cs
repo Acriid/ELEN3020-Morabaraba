@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class LobbyUI : MonoBehaviour
@@ -34,5 +35,6 @@ public class LobbyUI : MonoBehaviour
     {
         Debug.Log("Start game");
         // Host triggers game start
+        SceneManager.LoadScene("SampleScene");
     }
 }
