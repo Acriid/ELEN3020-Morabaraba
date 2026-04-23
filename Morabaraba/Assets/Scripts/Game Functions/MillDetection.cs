@@ -33,15 +33,78 @@ public class MillDetection : MonoBehaviour
         new HashSet<string>{ "G1","F2","E3" },
     };
 
-    public bool DetectMill(string boardToCheck)
+    public bool DetectMill(BoardObject boardToCheck)
     {
+        List<BoardSO> adjacentBoardSpaces = boardToCheck.BoardSO.GetAdjacentBoardSpaces();
+
+
+        string boardID = boardToCheck.BoardSO.BoardID;
+        PieceSO pieceToCheck = boardToCheck.BoardSO.GetCurrentPiece();
+        Team pieceTeam = pieceToCheck.Team;
+
+        List<BoardSO> nextBoards = new();
+        HashSet<string> boardIDs = new()
+        {
+            boardID
+        };
+
+        List<HashSet<string>> checkMills = new();
         foreach(HashSet<string> strings in _mills)
         {
-            if(strings.Contains(boardToCheck))
+            if(strings.Contains(boardID))
             {
-                
+                checkMills.Add(strings);
             }
         }
+
+        foreach(BoardSO board in adjacentBoardSpaces)
+        {
+            if(board.CheckIfSameTeam(pieceTeam))
+            {
+                nextBoards.Add(board);
+            }
+        }
+
+        if(nextBoards.Count == 2)
+        {
+            foreach(BoardSO board in nextBoards)
+            {
+                boardIDs.Add(board.BoardID);
+            }
+
+            foreach(HashSet<string> strings in checkMills)
+            {
+                if(boardIDs.IsSubsetOf(strings))
+                {
+                    return true;
+                }
+            }
+        }
+        else if(nextBoards.Count == 1)
+        {
+            BoardSO nextBoard = nextBoards[0];
+            PieceSO checkPiece = nextBoard.GetCurrentPiece();
+            Team checkTeam = checkPiece.Team;
+            List<BoardSO> checkBoards = nextBoard.GetAdjacentBoardSpaces();
+
+            boardIDs.Add(nextBoard.BoardID);
+
+            foreach(BoardSO board in checkBoards)
+            {
+                if(board.CheckIfSameTeam(checkTeam))
+                {
+                    
+                }
+            }
+        }
+
+
+
+
+        
+        //12:39
+        //13:45
+
 
         return false;
     }
