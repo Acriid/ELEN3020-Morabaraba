@@ -19,7 +19,7 @@ public class SetStatus : NetworkBehaviour
         networkManager.StartHost();
         this.enabled = false;
         hostButton.interactable = false;
-        lobbyCode.text = "127.0.0.1";
+
     }
     public void setAsClient()
     {
