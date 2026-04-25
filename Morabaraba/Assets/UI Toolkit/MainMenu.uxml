@@ -6,6 +6,7 @@
             <ui:TextField name="ipField" label="Server IP" value="127.0.0.1" style="font-size: 20px;"/>
             <ui:Button name="hostButton" text="Host Game" class="host-button" style="font-size: 20px;"/>
             <ui:Button name="joinButton" text="Join Game" class="join-button" style="font-size: 20px;"/>
+            <ui:Label text="JoinCode" name="JoinCode" style="font-size: 42px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

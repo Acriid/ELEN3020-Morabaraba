@@ -9,8 +9,9 @@ using UnityEngine;
 
 public class RelayManager : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField joinCodeInput;
-    [SerializeField] private TextMeshProUGUI statusText; 
+    [SerializeField] private string joinCodeInput;
+
+    public MainMenuUI mainMenuUI;
 
     async void Start()
     {
@@ -28,8 +29,9 @@ public class RelayManager : MonoBehaviour
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
             // Display the code so you can give it to friends
-            joinCodeInput.text = joinCode;
-            if (statusText != null) statusText.text = "Code: " + joinCode;
+            joinCodeInput = joinCode;
+
+            mainMenuUI.ipField.value = joinCodeInput;
 
             // Set up Transport
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
@@ -52,7 +54,7 @@ public class RelayManager : MonoBehaviour
     {
         try
         {
-            string code = joinCodeInput.text;
+            string code = mainMenuUI.ipField.value;
             if (string.IsNullOrEmpty(code)) return;
 
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(code);
