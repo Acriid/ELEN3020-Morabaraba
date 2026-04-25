@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -10,12 +11,15 @@ public class PlaceFunction : MonoBehaviour
     private InputAction _mouseAction;
     [SerializeField] private List<Piece> _piecesTeam1;
     [SerializeField] private List<Piece> _piecesTeam2;
+    [SerializeField] private List<BoardSO> _boardSOs;
     //We need something to differentiate the players for their teams
     private int _currentIndex1 = 0;
     private int _currentIndex2 = 0;
     private Team _currentTeam;
     void Awake()
     {
+
+
 
         //Initialize indexes
         _currentIndex1 = 0;
@@ -54,10 +58,12 @@ public class PlaceFunction : MonoBehaviour
 
                 //Set pieces BoardSpace
                 currentPiece.data.SetCurrentBoardSpace(component.BoardSO);
+
             }
         }
-    }
 
+        
+    }
     private Piece GetPieceForTeam(Team team)
     {
         Piece currentPiece = null; 

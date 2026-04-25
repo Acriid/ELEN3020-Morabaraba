@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MillDetection : MonoBehaviour
+public  class MillDetection : MonoBehaviour
 {
-    public List<HashSet<string>> _mills = new()
+    public  List<HashSet<string>> _mills = new()
     {
         // Vertical
         new HashSet<string>{ "A7","A4","A1" },
@@ -28,84 +28,58 @@ public class MillDetection : MonoBehaviour
         // Diagonals
         new HashSet<string>{ "A7","B6","C5" },
         new HashSet<string>{ "G7","F6","E5" },
-
         new HashSet<string>{ "A1","B2","C3" },
         new HashSet<string>{ "G1","F2","E3" },
     };
 
-    public bool DetectMill(BoardObject boardToCheck)
+
+    private  Dictionary<string, BoardSO> _boardLookup = new();
+
+
+    public  void InitializeBoard(IEnumerable<BoardSO> allBoardSpaces)
     {
-        List<BoardSO> adjacentBoardSpaces = boardToCheck.BoardSO.GetAdjacentBoardSpaces();
+        _boardLookup.Clear();
+        foreach (BoardSO board in allBoardSpaces)
+        {
+            _boardLookup[board.BoardID] = board;
+        }
+    }
 
 
+    public  bool DetectMill(BoardObject boardToCheck)
+    {
         string boardID = boardToCheck.BoardSO.BoardID;
-        PieceSO pieceToCheck = boardToCheck.BoardSO.GetCurrentPiece();
-        Team pieceTeam = pieceToCheck.Team;
 
-        List<BoardSO> nextBoards = new();
-        HashSet<string> boardIDs = new()
-        {
-            boardID
-        };
+        PieceSO piece = boardToCheck.BoardSO.GetCurrentPiece();
+        if (piece == null) return false;          
 
-        List<HashSet<string>> checkMills = new();
-        foreach(HashSet<string> strings in _mills)
+        Team team = piece.Team;
+
+        foreach (HashSet<string> mill in _mills)
         {
-            if(strings.Contains(boardID))
-            {
-                checkMills.Add(strings);
-            }
+            if (!mill.Contains(boardID)) continue;
+
+            if (IsMillComplete(mill, team))
+                return true;
         }
-
-        foreach(BoardSO board in adjacentBoardSpaces)
-        {
-            if(board.CheckIfSameTeam(pieceTeam))
-            {
-                nextBoards.Add(board);
-            }
-        }
-
-        if(nextBoards.Count == 2)
-        {
-            foreach(BoardSO board in nextBoards)
-            {
-                boardIDs.Add(board.BoardID);
-            }
-
-            foreach(HashSet<string> strings in checkMills)
-            {
-                if(boardIDs.IsSubsetOf(strings))
-                {
-                    return true;
-                }
-            }
-        }
-        else if(nextBoards.Count == 1)
-        {
-            BoardSO nextBoard = nextBoards[0];
-            PieceSO checkPiece = nextBoard.GetCurrentPiece();
-            Team checkTeam = checkPiece.Team;
-            List<BoardSO> checkBoards = nextBoard.GetAdjacentBoardSpaces();
-
-            boardIDs.Add(nextBoard.BoardID);
-
-            foreach(BoardSO board in checkBoards)
-            {
-                if(board.CheckIfSameTeam(checkTeam))
-                {
-                    
-                }
-            }
-        }
-
-
-
-
-        
-        //12:39
-        //13:45
-
 
         return false;
+    }
+
+
+    private  bool IsMillComplete(HashSet<string> mill, Team team)
+    {
+        foreach (string id in mill)
+        {
+
+            if (!_boardLookup.TryGetValue(id, out BoardSO board))
+                return false;
+
+
+            if (!board.CheckIfSameTeam(team))
+                return false;
+        }
+
+        return true;
     }
 }

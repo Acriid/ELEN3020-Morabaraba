@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: F6
   m_EditorClassIdentifier: Assembly-CSharp::BoardSO
   BoardID: F6
-  GridSpace: {x: 5, y: 1}
-  _adjacentBoardSpaces: []
-  _currentHeldPiece: {fileID: 0}
+  _adjacentBoardSpaces:
+  - {fileID: 11400000, guid: fd6e5fc5931483a419cb383e485f0e99, type: 2}
+  - {fileID: 11400000, guid: ecf1f4c4b23cb424498ad097006019c0, type: 2}
+  - {fileID: 11400000, guid: d4efed96c140b904f9abd8ee08bee8ea, type: 2}
+  - {fileID: 11400000, guid: ebdb7a3bd894b4c4e8c5ead69a39f0c9, type: 2}
+  _currentHeldPiece: {fileID: 11400000, guid: 651c08f46d02b2d4fb65723ceba311ed, type: 2}
