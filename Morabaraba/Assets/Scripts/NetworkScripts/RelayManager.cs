@@ -4,12 +4,14 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class RelayManager : MonoBehaviour
 {
     [SerializeField] private string joinCodeInput;
+    public Scene nextScene;
 
     public MainMenuUI mainMenuUI;
 
@@ -43,6 +45,7 @@ public class RelayManager : MonoBehaviour
             );
 
             NetworkManager.Singleton.StartHost();
+            SceneManager.LoadScene(nextScene.name);
         }
         catch (RelayServiceException e)
         {
@@ -69,6 +72,7 @@ public class RelayManager : MonoBehaviour
             );
 
             NetworkManager.Singleton.StartClient();
+            SceneManager.LoadScene(nextScene.name);
         }
         catch (RelayServiceException e)
         {
