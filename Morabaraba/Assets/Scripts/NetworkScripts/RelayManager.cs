@@ -11,9 +11,18 @@ using UnityEngine.SceneManagement;
 public class RelayManager : MonoBehaviour
 {
     [SerializeField] private string joinCodeInput;
-    public Scene nextScene;
+
+    public string nextScene;
 
     public MainMenuUI mainMenuUI;
+
+    public string JoinCodeInput { get => joinCodeInput; set => joinCodeInput = value; }
+
+    // Make this not delete on load so it can persist across scenes
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     async void Start()
     {
@@ -45,7 +54,7 @@ public class RelayManager : MonoBehaviour
             );
 
             NetworkManager.Singleton.StartHost();
-            SceneManager.LoadScene(nextScene.name);
+            SceneManager.LoadScene(nextScene);
         }
         catch (RelayServiceException e)
         {
@@ -61,7 +70,6 @@ public class RelayManager : MonoBehaviour
             if (string.IsNullOrEmpty(code)) return;
 
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(code);
-
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
                 joinAllocation.RelayServer.IpV4,
                 (ushort)joinAllocation.RelayServer.Port,
@@ -71,12 +79,47 @@ public class RelayManager : MonoBehaviour
                 joinAllocation.HostConnectionData
             );
 
+            // Subscribe before starting so we catch host disconnects
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnected;
+
             NetworkManager.Singleton.StartClient();
-            SceneManager.LoadScene(nextScene.name);
+            SceneManager.LoadScene(nextScene);
         }
         catch (RelayServiceException e)
         {
             Debug.LogError($"Relay Join Error: {e}");
+        }
+    }
+
+    private void OnDisconnected(ulong clientId)
+    {
+        // If we are a client and the host dropped us
+        if (!NetworkManager.Singleton.IsHost && clientId == NetworkManager.ServerClientId)
+        {
+            LeaveRelay();
+        }
+    }
+
+    public void LeaveRelay()
+    {
+        try
+        {
+            // Unsubscribe to avoid calling this twice
+            if (NetworkManager.Singleton != null)
+            {
+                NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnected;
+            }
+
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+            {
+                NetworkManager.Singleton.Shutdown();
+            }
+
+            SceneManager.LoadScene("MainMenu");
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.LogError($"Relay Leave Error: {e}");
         }
     }
 }

@@ -3,10 +3,9 @@
     <ui:VisualElement class="container">
         <ui:VisualElement class="menu-panel" style="background-color: rgb(65, 65, 109);">
             <ui:Label text="Morabaraba" class="title" style="font-size: 42px;"/>
-            <ui:TextField name="ipField" label="Server IP" value="127.0.0.1" style="font-size: 20px;"/>
-            <ui:Button name="hostButton" text="Host Game" class="host-button" style="font-size: 20px;"/>
+            <ui:TextField name="ipField" label="Lobby Code" value="ABCDEF" style="font-size: 20px; height: 45px; width: 279px; flex-direction: row; align-items: center; justify-content: space-between; align-self: center;"/>
             <ui:Button name="joinButton" text="Join Game" class="join-button" style="font-size: 20px;"/>
-            <ui:Label text="JoinCode" name="JoinCode" style="font-size: 42px;"/>
+            <ui:Button name="hostButton" text="Host Game" class="host-button" style="font-size: 20px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

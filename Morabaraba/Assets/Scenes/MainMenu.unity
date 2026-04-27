@@ -294,12 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d62fecfff689774e8802308e87a9622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetStatus
-  ShowTopMostFoldoutHeaderGroup: 1
-  ipAddressField: {fileID: 0}
-  clientButton: {fileID: 0}
-  hostButton: {fileID: 0}
-  lobbyCode: {fileID: 0}
-  unityTransport: {fileID: 145843818}
 --- !u!1 &779734988
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,6 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   joinCodeInput: 
+  nextScene: SampleScene
   mainMenuUI: {fileID: 779734989}
 --- !u!4 &1736333566
 Transform:
