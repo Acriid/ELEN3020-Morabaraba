@@ -6,6 +6,7 @@
             <ui:TextField name="ipField" label="Lobby Code" value="ABCDEF" style="font-size: 20px; height: 45px; width: 279px; flex-direction: row; align-items: center; justify-content: space-between; align-self: center;"/>
             <ui:Button name="joinButton" text="Join Game" class="join-button" style="font-size: 20px;"/>
             <ui:Button name="hostButton" text="Host Game" class="host-button" style="font-size: 20px;"/>
+            <ui:Label text="" name="Feedback" double-click-selects-word="false" triple-click-selects-line="false" display-tooltip-when-elided="false" style="font-size: 20px; color: rgb(0, 255, 9); height: 20px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

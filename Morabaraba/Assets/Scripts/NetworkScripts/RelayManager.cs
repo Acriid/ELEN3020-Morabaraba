@@ -1,3 +1,4 @@
+using System;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.Relay;
@@ -7,26 +8,33 @@ using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class RelayManager : MonoBehaviour
 {
+    public static RelayManager Instance { get; private set; }
+
     [SerializeField] private string joinCodeInput;
-
     public string nextScene;
-
     public MainMenuUI mainMenuUI;
-
     public string JoinCodeInput { get => joinCodeInput; set => joinCodeInput = value; }
 
-    // Make this not delete on load so it can persist across scenes
     private void Awake()
     {
+        // If an instance already exists and it's not this one, destroy this duplicate
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     async void Start()
     {
-        // Must initialize Unity Services once at start
+        // Guard so this doesn't run again on a surviving instance
+        if (UnityServices.State == ServicesInitializationState.Initialized) return;
+
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
@@ -35,16 +43,11 @@ public class RelayManager : MonoBehaviour
     {
         try
         {
-            // Request allocation for up to 4 players
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-
-            // Display the code so you can give it to friends
             joinCodeInput = joinCode;
-
             mainMenuUI.ipField.value = joinCodeInput;
 
-            // Set up Transport
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
                 allocation.RelayServer.IpV4,
                 (ushort)allocation.RelayServer.Port,
@@ -52,7 +55,6 @@ public class RelayManager : MonoBehaviour
                 allocation.Key,
                 allocation.ConnectionData
             );
-
             NetworkManager.Singleton.StartHost();
             SceneManager.LoadScene(nextScene);
         }
@@ -79,9 +81,7 @@ public class RelayManager : MonoBehaviour
                 joinAllocation.HostConnectionData
             );
 
-            // Subscribe before starting so we catch host disconnects
             NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnected;
-
             NetworkManager.Singleton.StartClient();
             SceneManager.LoadScene(nextScene);
         }
@@ -93,7 +93,6 @@ public class RelayManager : MonoBehaviour
 
     private void OnDisconnected(ulong clientId)
     {
-        // If we are a client and the host dropped us
         if (!NetworkManager.Singleton.IsHost && clientId == NetworkManager.ServerClientId)
         {
             LeaveRelay();
@@ -104,7 +103,6 @@ public class RelayManager : MonoBehaviour
     {
         try
         {
-            // Unsubscribe to avoid calling this twice
             if (NetworkManager.Singleton != null)
             {
                 NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnected;

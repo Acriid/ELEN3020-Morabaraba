@@ -6,6 +6,7 @@ public class MainMenuUI : MonoBehaviour
 {
     private Button hostButton;
     private Button joinButton;
+    private Label feedback;
     [SerializeField] public TextField ipField;
     private Label joinCode;
     public RelayManager relayManager;
@@ -18,6 +19,7 @@ public class MainMenuUI : MonoBehaviour
         joinButton = root.Q<Button>("joinButton");
         ipField = root.Q<TextField>("ipField");
         joinCode = root.Q<Label>("joinCode");
+        feedback = root.Q<Label>("Feedback");
 
         hostButton.clicked += OnHostClicked;
         joinButton.clicked += OnJoinClicked;
@@ -25,7 +27,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OnHostClicked()
     {
-        Debug.Log("Hosting game...");
+        feedback.text = "Creating Lobby...";
         relayManager.CreateRelay();
         // NetworkManager.StartHost();
         // SceneManager.LoadScene("Lobby");
@@ -34,7 +36,7 @@ public class MainMenuUI : MonoBehaviour
     private void OnJoinClicked()
     {
         string ip = ipField.value;
-        Debug.Log("Joining: " + ip);
+        feedback.text = $"Joining Lobby : {ip}";
         relayManager.JoinRelay();
         // NetworkManager.Connect(ip);
         // SceneManager.LoadScene("Lobby");
