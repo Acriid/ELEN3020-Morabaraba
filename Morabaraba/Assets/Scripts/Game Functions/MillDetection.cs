@@ -82,4 +82,31 @@ public  class MillDetection : MonoBehaviour
 
         return true;
     }
+
+    public bool IsPieceInAMill(BoardSO space)
+    {
+        PieceSO piece = space.GetCurrentPiece();
+        if (piece == null) return false;
+
+        foreach (HashSet<string> mill in _mills)
+        {
+            if (!mill.Contains(space.BoardID)) continue;
+            if (IsMillComplete(mill, piece.Team)) return true;
+        }
+
+        return false;
+    }
+
+    public bool AllTeamPiecesInMills(Team team, IEnumerable<BoardSO> allSpaces)
+    {
+        foreach (BoardSO space in allSpaces)
+        {
+            PieceSO piece = space.GetCurrentPiece();
+            if (piece == null || piece.Team != team) continue;
+
+            if (!IsPieceInAMill(space)) return false;
+        }
+
+        return true;
+    }
 }
