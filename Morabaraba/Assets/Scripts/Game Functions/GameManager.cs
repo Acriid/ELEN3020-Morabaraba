@@ -282,11 +282,11 @@ public class GameManager : MonoBehaviour
 
         if(_team1Index == _piecesTeam1.Count && _team2Index == _piecesTeam2.Count)
         {
-            if(_piecesOnBoardTeam1 != 3)
+            if(GetPiecesOnBoardForTeam(_currentTeam) != 3)
             {
                 OnPhaseChange?.Invoke(GamePhase.Move);
             }
-            else
+            else if(GetPiecesOnBoardForTeam(_currentTeam) == 3)
             {
                 OnPhaseChange?.Invoke(GamePhase.Fly);
             }
@@ -294,6 +294,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int GetPiecesOnBoardForTeam(Team teamToGet)
+    {
+        int result = teamToGet == Team.Player1? _piecesOnBoardTeam1 : _piecesOnBoardTeam2;
+        return result;
+    }
     public void RemovePiece(Piece piece)
     {
         BoardSO currentSpace = piece.data.GetCurrentBoardSpace();
@@ -316,16 +321,26 @@ public class GameManager : MonoBehaviour
         piece.gameObject.SetActive(false);
         Debug.Log($"Removed piece {piece.data.PieceID}");
 
-        if(_piecesOnBoardTeam1 == 3 && _team1Index != _piecesTeam1.Count)
+        if(_piecesOnBoardTeam1 == 3 && _team1Index == _piecesTeam1.Count)
         {
             OnPhaseChange?.Invoke(GamePhase.Fly);
         }
-        else if (_piecesOnBoardTeam2 == 3 && _team2Index != _piecesTeam2.Count)
+        else if (_piecesOnBoardTeam2 == 3 && _team2Index == _piecesTeam2.Count)
         {
             OnPhaseChange?.Invoke(GamePhase.Fly);
+        }
+
+        if(DidTeamLose(piece.data.Team))
+        {
+            Debug.Log($"{piece.data.Team} lost");
         }
     }
-
+    public bool DidTeamLose(Team teamToCheck)
+    {
+        if(GetPiecesOnBoardForTeam(teamToCheck) < 3)
+            return true;
+        return false;
+    }
     public void WaitAndRemovePiece(Team team)
     {
         _waitingForRemoval = true;
