@@ -19,7 +19,6 @@ public class RelayManager : MonoBehaviour
 
     private void Awake()
     {
-        // If an instance already exists and it's not this one, destroy this duplicate
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -28,11 +27,13 @@ public class RelayManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // Subscribe once here so both host and client paths are covered
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnected;
     }
 
     async void Start()
     {
-        // Guard so this doesn't run again on a surviving instance
         if (UnityServices.State == ServicesInitializationState.Initialized) return;
 
         await UnityServices.InitializeAsync();
@@ -55,13 +56,21 @@ public class RelayManager : MonoBehaviour
                 allocation.Key,
                 allocation.ConnectionData
             );
+
+            // Wait for the server to be ready before loading the scene
+            NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.StartHost();
-            SceneManager.LoadScene(nextScene);
         }
         catch (RelayServiceException e)
         {
             Debug.LogError($"Relay Create Error: {e}");
         }
+    }
+
+    private void OnServerStarted()
+    {
+        NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
+        SceneManager.LoadScene(nextScene);
     }
 
     public async void JoinRelay()
@@ -81,7 +90,6 @@ public class RelayManager : MonoBehaviour
                 joinAllocation.HostConnectionData
             );
 
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnected;
             NetworkManager.Singleton.StartClient();
             SceneManager.LoadScene(nextScene);
         }
@@ -101,23 +109,17 @@ public class RelayManager : MonoBehaviour
 
     public void LeaveRelay()
     {
-        try
+        if (NetworkManager.Singleton != null)
         {
-            if (NetworkManager.Singleton != null)
-            {
-                NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnected;
-            }
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnected;
 
-            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+            if (NetworkManager.Singleton.IsListening)
             {
                 NetworkManager.Singleton.Shutdown();
             }
+            Destroy(NetworkManager.Singleton.gameObject);
+        }
 
-            SceneManager.LoadScene("MainMenu");
-        }
-        catch (RelayServiceException e)
-        {
-            Debug.LogError($"Relay Leave Error: {e}");
-        }
+        SceneManager.LoadScene("MainMenu");
     }
 }
