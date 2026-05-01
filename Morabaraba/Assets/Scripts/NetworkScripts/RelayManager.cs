@@ -65,6 +65,8 @@ public class RelayManager : MonoBehaviour
         {
             Debug.LogError($"Relay Create Error: {e}");
         }
+
+        FindAnyObjectByType<HudUI>().SetJoinCode(joinCodeInput);
     }
 
     private void OnServerStarted()
