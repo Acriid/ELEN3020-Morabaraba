@@ -82,8 +82,9 @@
   <Project Path="Unity.2D.Sprite.Editor.csproj" />
   <Project Path="Unity.Services.Deployment.Editor.Shared.csproj" />
   <Project Path="Unity.Multiplayer.Center.NetcodeForGameObjectsExample.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="GameFunctions.csproj" />
   <Project Path="Unity.Netcode.Editor.CodeGen.csproj" />
+  <Project Path="PlayerInputs.csproj" />
   <Project Path="Unity.Services.Multiplayer.Editor.Matchmaker.Authoring.Core.csproj" />
   <Project Path="Unity.Services.Core.Configuration.Editor.csproj" />
   <Project Path="Unity.Services.Core.Configuration.csproj" />
@@ -104,6 +105,7 @@
   <Project Path="Unity.2D.Common.Runtime.csproj" />
   <Project Path="Unity.Services.Core.Threading.csproj" />
   <Project Path="Tests.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Settings.Editor.csproj" />
   <Project Path="Unity.InputSystem.TestFramework.csproj" />
   <Project Path="Unity.Services.Multiplayer.Editor.csproj" />
