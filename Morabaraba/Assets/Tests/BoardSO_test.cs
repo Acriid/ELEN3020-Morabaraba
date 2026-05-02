@@ -22,14 +22,7 @@ public class BoardSO_test
     [SetUp]
     public void SetUp()
     {
-        List<BoardSO> adjacentList = new()
-        {
-            adjacentSpace1,
-            adjacentSpace2,
-            adjacentSpace3
-        };
-        boardSpace1.SetAdjacentBoardSpaces(adjacentList);
-
+        
         boardSpace1.ChangeCurrentPiece(piece1);
         piece1.Team = Team.Player1;
 
@@ -39,7 +32,7 @@ public class BoardSO_test
     }
 
     [Test]
-    public void BoardSO_test_AdjacencyList()
+    public void BoardSO_test_AdjacencyListSetAndGet()
     {
 
         List<BoardSO> expectedList = new()
@@ -48,6 +41,8 @@ public class BoardSO_test
             adjacentSpace2,
             adjacentSpace3          
         };
+
+        boardSpace1.SetAdjacentBoardSpaces(expectedList);
 
         List<BoardSO> resultList = boardSpace1.GetAdjacentBoardSpaces();
 

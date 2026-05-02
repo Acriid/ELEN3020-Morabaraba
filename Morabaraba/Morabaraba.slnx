@@ -103,6 +103,7 @@
   <Project Path="BoardsAndPieces.csproj" />
   <Project Path="Unity.2D.Common.Runtime.csproj" />
   <Project Path="Unity.Services.Core.Threading.csproj" />
+  <Project Path="Tests.csproj" />
   <Project Path="Unity.Settings.Editor.csproj" />
   <Project Path="Unity.InputSystem.TestFramework.csproj" />
   <Project Path="Unity.Services.Multiplayer.Editor.csproj" />
@@ -128,7 +129,6 @@
   <Project Path="Unity.PlasticSCM.Editor.Entities.csproj" />
   <Project Path="Blocks.Common.csproj" />
   <Project Path="Unity.Services.CloudCode.Editor.csproj" />
-  <Project Path="Tests.csproj" />
   <Project Path="Unity.Rendering.LightTransport.Editor.csproj" />
   <Project Path="Unity.Services.Core.Environments.csproj" />
   <Project Path="Unity.Collections.Editor.csproj" />
