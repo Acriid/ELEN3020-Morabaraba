@@ -34,16 +34,24 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {   
+        Initialize();
+    }
+    void OnDisable()
+    {
+        CleanUp();
+    }
+    public void Initialize()
+    {
         _millDetection.InitializeBoard(_boardSOs);
         InitializeInput();
 
         OnPhaseChange += ChangePhase;
     }
-    void OnDisable()
+    public void CleanUp()
     {
         CleanUpInputs();
 
-        OnPhaseChange -= ChangePhase;
+        OnPhaseChange -= ChangePhase;  
     }
     private void InitializeInput()
     {
@@ -99,7 +107,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void FlyPiece(GameObject hitObject)
+    public void FlyPiece(GameObject hitObject)
     {
         if (!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent) && 
         !hitObject.transform.parent.TryGetComponent<BoardObject>(out boardComponent)) return;
@@ -159,7 +167,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void MovePiece(GameObject hitObject)
+    public void MovePiece(GameObject hitObject)
     {
 
 
@@ -249,14 +257,14 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    private void PlacePiece(GameObject hitObject)
+    public Piece PlacePiece(GameObject hitObject)
     {
-        if(!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent)) return;
-        if(boardComponent.BoardSO.GetCurrentPiece() != null) return;
+        if(!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent)) return null;
+        if(boardComponent.BoardSO.GetCurrentPiece() != null) return null;
 
         Piece currentPiece = GetPieceForTeam(_currentTeam);
 
-        if(currentPiece == null) return;
+        if(currentPiece == null) return null;
 
 
         Transform currentPieceTransform = currentPiece.transform;
@@ -285,6 +293,8 @@ public class GameManager : MonoBehaviour
             }
             
         }
+
+        return currentPiece;
     }
 
     public int GetPiecesOnBoardForTeam(Team teamToGet)
@@ -409,12 +419,35 @@ public class GameManager : MonoBehaviour
     {
         _currentTeam = newTeam;
     }
-
+    public Team GetCurrentTeam()
+    {
+        return _currentTeam;
+    }
     private void ChangePhase(GamePhase newPhase)
     {
         _currentPhase = newPhase;
         Debug.Log($"Phase changed to {newPhase}");
     }
+
+
+    #region Private Initialization
+    public void SetTeam1Pieces(List<Piece> newList)
+    {
+        _piecesTeam1 = new(newList);
+    }
+    public void SetTeam2Pieces(List<Piece> newList)
+    {
+        _piecesTeam2 = new(newList);
+    }
+    public void SetBoardScriptableObjects(List<BoardSO> newList)
+    {
+        _boardSOs = new(newList);
+    }
+    public void SetMillDetection(MillDetection newMillDetection)
+    {
+        _millDetection = newMillDetection;
+    }
+    #endregion
     private enum GamePhase
     {
         Place,
