@@ -1627,6 +1627,7 @@ GameObject:
   - component: {fileID: 908124094}
   - component: {fileID: 908124095}
   - component: {fileID: 908124096}
+  - component: {fileID: 908124097}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -1775,6 +1776,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 704507a962d980c44ac4cf4dc287ec0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MillDetection
+--- !u!114 &908124097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908124091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49e7ec656a670e34980d721699e53daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UndoRedoManager
+  boardSpaces: []
 --- !u!114 &929923026 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5664953314464220291, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}

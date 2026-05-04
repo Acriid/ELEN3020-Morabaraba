@@ -3,9 +3,13 @@ using UnityEngine.UIElements;
 
 public class HudUI : MonoBehaviour
 {
+    [SerializeField] private UndoRedoManager undoRedoManager;
 
     private Button exitButton;
     private RelayManager relayManager;
+    private Button undoButton;
+    private Button redoButton;
+
 
     private void OnEnable()
     {
@@ -13,7 +17,14 @@ public class HudUI : MonoBehaviour
 
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        exitButton = root.Q<Button>("ExitButton");
+        exitButton = root.Q<Button>("ExitButton"); 
+        
+        undoButton = root.Q<Button>("undoButton");
+        redoButton = root.Q<Button>("redoButton");
+
+        undoButton.clicked += OnUndoClicked;
+        redoButton.clicked += OnRedoClicked;
+
         if (exitButton == null)
         {
             Debug.LogWarning("Exit button not found in UI.");
@@ -26,6 +37,18 @@ public class HudUI : MonoBehaviour
     {
         Debug.Log("Exiting lobby");
         relayManager.LeaveRelay();
+    }
+
+    private void OnUndoClicked()
+    {
+        Debug.Log("UNDO CLICKED");
+        undoRedoManager.Undo();
+    }
+
+    private void OnRedoClicked()
+    {
+        debug.log("REDO CLICKED");
+        undoRedoManager.Redo();
     }
 }
 
