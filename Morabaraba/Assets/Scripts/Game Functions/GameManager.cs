@@ -351,7 +351,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Waiting to remove a {team} piece");
     }
 
-    private void HandleRemovalClick(GameObject hitObject)
+    public void HandleRemovalClick(GameObject hitObject)
     {
         if (!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent) &&
             !hitObject.transform.parent.TryGetComponent<BoardObject>(out boardComponent)) return;
@@ -386,9 +386,7 @@ public class GameManager : MonoBehaviour
 
     private void OnMill(Team team)
     {
-        Debug.Log("Mill");
         WaitAndRemovePiece(team);
-        
     }
 
     private Piece GetPieceForTeam(Team team)
@@ -448,6 +446,12 @@ public class GameManager : MonoBehaviour
         _millDetection = newMillDetection;
     }
     #endregion
+
+    public bool GetMillDetected()
+    {
+        return _waitingForRemoval;
+    }
+
     private enum GamePhase
     {
         Place,
