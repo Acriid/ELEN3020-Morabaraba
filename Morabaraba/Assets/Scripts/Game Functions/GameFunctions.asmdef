@@ -1,10 +1,14 @@
 {
-    "name": "BoardsAndPieces",
+    "name": "GameFunctions",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:21c41e454322df14db6131833316515f",
+        "GUID:f8bff3b3917fdcb4cbf960942e896e67",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

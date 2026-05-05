@@ -11,10 +11,14 @@ public class BoardSpaceManager : MonoBehaviour
     [SerializeField] private int _gridSize;
 
     private int _currentIndex;
+
+    [SerializeField] private UndoRedoManager undoRedoManager;
     //Manages board size 
     void Awake()
     {
         InitializeBoard(_boardType);
+
+        undoRedoManager.SaveState();
     }
     private void InitializeGrid()
     {
