@@ -85,9 +85,6 @@ public class GameManager : MonoBehaviour
         if(_currentPhase == GamePhase.Place)
         {
             PlacePiece(hitObject);
-            //REMOVE AFTER TESTING
-            _currentTeam = GetOppositeTeam(_currentTeam);
-            //REMOVE AFTER TESTING
         }
         else if(_currentPhase == GamePhase.Move)
         {
@@ -159,9 +156,7 @@ public class GameManager : MonoBehaviour
             OnMill(GetOppositeTeam(_currentTeam));
         }       
 
-        //REMOVE AFTER TESTING
-        _currentTeam = GetOppositeTeam(_currentTeam);
-        //REMOVE AFTER TESTING
+
     }
 
     private void MovePiece(GameObject hitObject)
@@ -231,9 +226,7 @@ public class GameManager : MonoBehaviour
             OnMill(GetOppositeTeam(_currentTeam));
         }
 
-        //REMOVE AFTER TESTING
-        _currentTeam = GetOppositeTeam(_currentTeam);
-        //REMOVE AFTER TESTING
+
     }
 
     private Team GetOppositeTeam(Team currentTeam)
@@ -410,6 +403,11 @@ public class GameManager : MonoBehaviour
         }
 
         return currentPiece;
+    }
+
+    public void SetCurrentTeam(Team newTeam)
+    {
+        _currentTeam = newTeam;
     }
 
     private void ChangePhase(GamePhase newPhase)

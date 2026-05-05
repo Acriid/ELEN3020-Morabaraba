@@ -47,7 +47,7 @@ public class HudUI : MonoBehaviour
 
     private void OnRedoClicked()
     {
-        debug.log("REDO CLICKED");
+        Debug.Log("REDO CLICKED");
         undoRedoManager.Redo();
     }
 }
