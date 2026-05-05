@@ -44,4 +44,8 @@ public class BoardSO : ScriptableObject
         }
         return returnDictionary;
     }
+    public void SetAdjacentBoardSpaces(List<BoardSO> newList)
+    {
+        _adjacentBoardSpaces = new(newList);
+    }
 }
