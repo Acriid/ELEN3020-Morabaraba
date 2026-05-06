@@ -237,7 +237,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private Team GetOppositeTeam(Team currentTeam)
+    public Team GetOppositeTeam(Team currentTeam)
     {
         if(currentTeam == Team.Player1)
         {
@@ -452,6 +452,15 @@ public class GameManager : MonoBehaviour
         return _waitingForRemoval;
     }
 
+    public List<BoardSO> GetBoard()
+    {
+        return _boardSOs;
+    }
+
+    public Dictionary<Team,List<BoardSO>> GetPossibleMills()
+    {
+        return _millDetection.GetPossibleMills();
+    }
     private enum GamePhase
     {
         Place,
