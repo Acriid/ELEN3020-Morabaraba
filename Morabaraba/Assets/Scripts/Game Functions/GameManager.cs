@@ -482,9 +482,13 @@ public class GameManager : MonoBehaviour
     {
         return _millDetection.GetPotentialMills(teamToGet);
     }
-    public GameManager.GamePhase GetCurrentPhase()
+    public GamePhase GetCurrentPhase()
     {
         return _currentPhase;
+    }
+    public MillDetection GetMillDetection()
+    {
+        return _millDetection;
     }
     public enum GamePhase
     {
