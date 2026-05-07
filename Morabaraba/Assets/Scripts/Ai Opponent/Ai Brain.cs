@@ -40,43 +40,50 @@ public class AiBrain : MonoBehaviour
     void Start()
     {
         InitializeBoard(_boardObjects);
-        _gameManager.SetCurrentTeam(_aiTeam);
+        _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
+        _gameManager.onMoveDone += Move;
+        _gameManager.onMillGot += RemovePiece;
         _boardInterestList = new();
-        for(int i = 0 ; i < 12 ; i++)
-        {
-            BoardSO move = DecideNextMove();
-
-
-            if(move == null && _boardInterestList.Count == 0)
-            {
-                move = RandomBoardPlaceSpot();
-            }
-            else if(move == null && _boardInterestList.Count > 0)
-            {
-                move = AdjacentBoardPlaceSpot();
-                if(move == null)
-                {
-                    move = RandomBoardPlaceSpot();
-                }
-            }
-
-
-            _boardInterestList.Add(move);
-
-
-            _gameManager.PlacePiece(_boardLookup[move].gameObject);
-            Debug.Log($"{i}. Played {move.BoardID}");
-        }
+        // for(int i = 0 ; i < 12 ; i++)
+        // {
+        //     PlacePiece();
+        // }
     }
+    void OnDisable()
+    {
+        _gameManager.onMoveDone -= Move;
+        _gameManager.onMillGot -= RemovePiece;
+    }
+    private void Move()
+    {
+        if(_gameManager.GetCurrentPhase() == GameManager.GamePhase.Place)
+        {
+            if(_gameManager.GetCurrentTeam() == _aiTeam) return;
+            _gameManager.SetCurrentTeam(_aiTeam);
+            Place(); 
+        }
+        else if(_gameManager.GetCurrentPhase() == GameManager.GamePhase.Move)
+        {
+            Debug.Log($"Want to move {_boardLookup[GetMovePiece()].gameObject.name}");
+        }
 
+        _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
+    }
+    private void RemovePiece()
+    {
+        if(_gameManager.GetCurrentTeam() != _aiTeam) return;
+
+        _gameManager.HandleRemovalClick(_boardLookup[GetRemoveBoard()].gameObject);
+        _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
+    }
     //Look at board
     //See enemy positions
     //Get possible mills
     //Could do something like wave function collapse
     private BoardSO DecideNextMove()
     {
-        List<BoardSO> blockList = _gameManager.GetPossibleMills()[_gameManager.GetOppositeTeam(_aiTeam)];
-        List<BoardSO> millList = _gameManager.GetPossibleMills()[_aiTeam];
+        List<BoardSO> blockList = _gameManager.GetFinalMillBoard()[_gameManager.GetOppositeTeam(_aiTeam)];
+        List<BoardSO> millList = _gameManager.GetFinalMillBoard()[_aiTeam];
         List<BoardSO> millBlockList = GetMillAndBlockSpaces();
 
         BoardSO boardMove = null;
@@ -102,7 +109,30 @@ public class AiBrain : MonoBehaviour
 
         return boardMove;
     }
+    private BoardSO GetRemoveBoard()
+    {
+        List<BoardSO> boardsToRemove = _gameManager.GetPotentialMills(_gameManager.GetOppositeTeam(_aiTeam));
+        BoardSO boardToRemove = boardsToRemove[Random.Range(0,boardsToRemove.Count)];
+        return boardToRemove;
+    }
 
+    private BoardSO GetMovePiece()
+    {
+        List<BoardSO> potentialMills = _gameManager.GetPotentialMills(_aiTeam);
+        List<BoardSO> potentialMoves = new(_boardInterestList);
+
+        potentialMills.RemoveAll(item => potentialMills.Contains(item));
+        if(potentialMills.Count !> 0)
+        {
+            //Return a random piece to move
+            //Currently Returns null
+            Debug.Log("No piece to move.");
+            return null;
+        }
+        BoardSO movePiece = potentialMills[Random.Range(0,potentialMills.Count)];
+
+        return movePiece;
+    }
     private BoardSO RandomBoardPlaceSpot()
     {
         BoardSO moveSpot = null;
@@ -137,7 +167,7 @@ public class AiBrain : MonoBehaviour
 
     public List<BoardSO> GetMillAndBlockSpaces()
     {
-        Dictionary<Team, List<BoardSO>> possibleMills = _gameManager.GetPossibleMills();
+        Dictionary<Team, List<BoardSO>> possibleMills = _gameManager.GetFinalMillBoard();
 
         HashSet<BoardSO> team1Spaces = new(possibleMills[Team.Player1]);
         HashSet<BoardSO> team2Spaces = new(possibleMills[Team.Player2]);
@@ -147,6 +177,32 @@ public class AiBrain : MonoBehaviour
         return new List<BoardSO>(team1Spaces);
     }    
 
+    public void Place()
+    {
+
+        BoardSO move = DecideNextMove();
+
+
+        if(move == null && _boardInterestList.Count == 0)
+        {
+            move = RandomBoardPlaceSpot();
+        }
+        else if(move == null && _boardInterestList.Count > 0)
+        {
+            move = AdjacentBoardPlaceSpot();
+            if(move == null)
+            {
+                move = RandomBoardPlaceSpot();
+            }
+        }
+
+
+        _boardInterestList.Add(move);
+
+
+        _gameManager.PlacePiece(_boardLookup[move].gameObject);
+        Debug.Log($"Played {move.BoardID}");
+    }
     public enum AiDifficulty
     {
         Easy,

@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     private bool _waitingForRemoval = false;
     private Team _removalTeam;
 
+    public event Action onMoveDone;
+    public event Action onMillGot;
+
     void Awake()
     {   
         Initialize();
@@ -162,7 +165,11 @@ public class GameManager : MonoBehaviour
         if (_millDetection.DetectMill(boardComponent))
         {
             OnMill(GetOppositeTeam(_currentTeam));
-        }       
+        }  
+        else
+        {
+            onMoveDone?.Invoke();
+        }     
 
 
     }
@@ -233,6 +240,10 @@ public class GameManager : MonoBehaviour
         {
             OnMill(GetOppositeTeam(_currentTeam));
         }
+        else
+        {
+            onMoveDone?.Invoke();
+        }
 
 
     }
@@ -278,6 +289,10 @@ public class GameManager : MonoBehaviour
         if(_millDetection.DetectMill(boardComponent))
         {
             OnMill(GetOppositeTeam(_currentTeam));
+        }
+        else
+        {
+            onMoveDone?.Invoke();
         }
 
 
@@ -337,10 +352,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"{piece.data.Team} lost");
         }
+        onMoveDone?.Invoke();
     }
     public bool DidTeamLose(Team teamToCheck)
     {
-        if(GetPiecesOnBoardForTeam(teamToCheck) < 3)
+        if(GetPiecesOnBoardForTeam(teamToCheck) < 3 && (_currentPhase == GamePhase.Move || _currentPhase == GamePhase.Fly))
             return true;
         return false;
     }
@@ -387,6 +403,7 @@ public class GameManager : MonoBehaviour
     private void OnMill(Team team)
     {
         WaitAndRemovePiece(team);
+        onMillGot?.Invoke();
     }
 
     private Piece GetPieceForTeam(Team team)
@@ -457,11 +474,19 @@ public class GameManager : MonoBehaviour
         return _boardSOs;
     }
 
-    public Dictionary<Team,List<BoardSO>> GetPossibleMills()
+    public Dictionary<Team,List<BoardSO>> GetFinalMillBoard()
     {
-        return _millDetection.GetPossibleMills();
+        return _millDetection.GetFinalMillBoard();
     }
-    private enum GamePhase
+    public List<BoardSO> GetPotentialMills(Team teamToGet)
+    {
+        return _millDetection.GetPotentialMills(teamToGet);
+    }
+    public GameManager.GamePhase GetCurrentPhase()
+    {
+        return _currentPhase;
+    }
+    public enum GamePhase
     {
         Place,
         Move,

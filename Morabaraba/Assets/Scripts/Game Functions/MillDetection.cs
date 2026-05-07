@@ -112,7 +112,7 @@ public  class MillDetection : MonoBehaviour
     
 
 
-    public Dictionary<Team, List<BoardSO>> GetPossibleMills()
+    public Dictionary<Team, List<BoardSO>> GetFinalMillBoard()
     {
         Dictionary<Team, List<BoardSO>> possibleMills = new()
         {
@@ -153,15 +153,37 @@ public  class MillDetection : MonoBehaviour
             }
         }
 
-        foreach(BoardSO boardSO in possibleMills[Team.Player1])
-        {
-            //Debug.Log(boardSO);
-        }
-        foreach(BoardSO boardSO in possibleMills[Team.Player2])
-        {
-            //Debug.Log(boardSO);
-        }
         return possibleMills;
-        
+    }
+
+    public  List<BoardSO> GetPotentialMills(Team millTeam)
+    {
+        List<BoardSO> potentialMillPieces = new();
+
+        foreach (HashSet<string> mill in Mills)
+        {
+            BoardSO emptySpace = null;
+          
+            foreach (string id in mill)
+            {
+                if (!_boardLookup.TryGetValue(id, out BoardSO board)) break;
+
+                PieceSO piece = board.GetCurrentPiece();
+                
+
+                if (piece == null)
+                {
+                    if (emptySpace != null) { emptySpace = null; break; }
+                    emptySpace = board;
+                }
+                else
+                {
+                    if(piece.Team != millTeam) break;
+                    potentialMillPieces.Add(board);
+                }
+            }
+        }
+
+        return potentialMillPieces;
     }
 }
