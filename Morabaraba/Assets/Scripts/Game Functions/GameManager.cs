@@ -32,6 +32,12 @@ public class GameManager : MonoBehaviour
     private bool _waitingForRemoval = false;
     private Team _removalTeam;
 
+    [SerializeField] private UndoRedoManager _undoRedoManager;
+
+    public int GetTeam1Index() => _team1Index;
+    public int GetTeam2Index() => _team2Index;
+    public Team GetRemovalTeam() => _removalTeam;
+
     void Awake()
     {   
         Initialize();
@@ -162,8 +168,9 @@ public class GameManager : MonoBehaviour
         if (_millDetection.DetectMill(boardComponent))
         {
             OnMill(GetOppositeTeam(_currentTeam));
-        }       
+        }
 
+        _undoRedoManager.SaveState();
 
     }
 
@@ -234,7 +241,7 @@ public class GameManager : MonoBehaviour
             OnMill(GetOppositeTeam(_currentTeam));
         }
 
-
+        _undoRedoManager.SaveState();
     }
 
     private Team GetOppositeTeam(Team currentTeam)
@@ -294,6 +301,8 @@ public class GameManager : MonoBehaviour
             
         }
 
+        _undoRedoManager.SaveState();
+
         return currentPiece;
     }
 
@@ -337,6 +346,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"{piece.data.Team} lost");
         }
+
+        _undoRedoManager.SaveState();
     }
     public bool DidTeamLose(Team teamToCheck)
     {
@@ -457,6 +468,36 @@ public class GameManager : MonoBehaviour
         Place,
         Move,
         Fly
+    }
+
+    public void RestoreState(
+    Team currentTeam,
+    int team1Index,
+    int team2Index,
+    int piecesOnBoardTeam1,
+    int piecesOnBoardTeam2,
+    bool waitingForRemoval,
+    Team removalTeam)
+    {
+        _currentTeam = currentTeam;
+        _team1Index = team1Index;
+        _team2Index = team2Index;
+        _piecesOnBoardTeam1 = piecesOnBoardTeam1;
+        _piecesOnBoardTeam2 = piecesOnBoardTeam2;
+        _waitingForRemoval = waitingForRemoval;
+        _removalTeam = removalTeam;
+        if (_team1Index < _piecesTeam1.Count || _team2Index < _piecesTeam2.Count)
+        {
+            _currentPhase = GamePhase.Place;
+        }
+        else if (_piecesOnBoardTeam1 == 3 || _piecesOnBoardTeam2 == 3)
+        {
+            _currentPhase = GamePhase.Fly;
+        }
+        else
+        {
+            _currentPhase = GamePhase.Move;
+        }
     }
 }
 
