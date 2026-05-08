@@ -35,6 +35,12 @@ public class GameManager : MonoBehaviour
     public event Action onMoveDone;
     public event Action onMillGot;
 
+    [SerializeField] private UndoRedoManager _undoRedoManager;
+
+    public int GetTeam1Index() => _team1Index;
+    public int GetTeam2Index() => _team2Index;
+    public Team GetRemovalTeam() => _removalTeam;
+
     void Awake()
     {   
         Initialize();
@@ -182,7 +188,9 @@ public class GameManager : MonoBehaviour
         else
         {
             onMoveDone?.Invoke();
-        }     
+        }
+
+        _undoRedoManager.SaveState();
 
 
     }
@@ -258,6 +266,8 @@ public class GameManager : MonoBehaviour
             onMoveDone?.Invoke();
         }
 
+        _undoRedoManager.SaveState();
+
 
     }
 
@@ -322,6 +332,8 @@ public class GameManager : MonoBehaviour
             
         }
 
+        _undoRedoManager.SaveState();
+
         return currentPiece;
     }
 
@@ -368,6 +380,8 @@ public class GameManager : MonoBehaviour
             EndGame(winningTeam);
         }
         onMoveDone?.Invoke();
+
+        _undoRedoManager.SaveState();
     }
 
     private void EndGame(Team winningTeam)
@@ -538,6 +552,36 @@ public class GameManager : MonoBehaviour
         Place,
         Move,
         Fly
+    }
+
+    public void RestoreState(
+    Team currentTeam,
+    int team1Index,
+    int team2Index,
+    int piecesOnBoardTeam1,
+    int piecesOnBoardTeam2,
+    bool waitingForRemoval,
+    Team removalTeam)
+    {
+        _currentTeam = currentTeam;
+        _team1Index = team1Index;
+        _team2Index = team2Index;
+        _piecesOnBoardTeam1 = piecesOnBoardTeam1;
+        _piecesOnBoardTeam2 = piecesOnBoardTeam2;
+        _waitingForRemoval = waitingForRemoval;
+        _removalTeam = removalTeam;
+        if (_team1Index < _piecesTeam1.Count || _team2Index < _piecesTeam2.Count)
+        {
+            _currentPhase = GamePhase.Place;
+        }
+        else if (_piecesOnBoardTeam1 == 3 || _piecesOnBoardTeam2 == 3)
+        {
+            _currentPhase = GamePhase.Fly;
+        }
+        else
+        {
+            _currentPhase = GamePhase.Move;
+        }
     }
 }
 
