@@ -49,13 +49,26 @@ public class GameManager : MonoBehaviour
         InitializeInput();
 
         OnPhaseChange += ChangePhase;
+        onMoveDone += FinishedMove;
     }
     public void CleanUp()
     {
         CleanUpInputs();
 
         OnPhaseChange -= ChangePhase;  
+        onMoveDone -= FinishedMove;
     }
+
+    private void FinishedMove()
+    {
+        if(_currentPhase != GamePhase.Move) return;
+        if(!CurrentTeamHasValidMove())
+        {
+            Team winningTeam = GetOppositeTeam(_currentTeam);
+            EndGame(winningTeam);
+        }
+    }
+
     private void InitializeInput()
     {
         _inputActions = new();
@@ -350,10 +363,19 @@ public class GameManager : MonoBehaviour
 
         if(DidTeamLose(piece.data.Team))
         {
+            Team winningTeam = GetOppositeTeam(piece.data.Team);
             Debug.Log($"{piece.data.Team} lost");
+            EndGame(winningTeam);
         }
         onMoveDone?.Invoke();
     }
+
+    private void EndGame(Team winningTeam)
+    {
+        //Need to implement
+        Debug.Log($"{winningTeam} won");
+    }
+
     public bool DidTeamLose(Team teamToCheck)
     {
         if(GetPiecesOnBoardForTeam(teamToCheck) < 3 && (_currentPhase == GamePhase.Move || _currentPhase == GamePhase.Fly))
@@ -489,6 +511,27 @@ public class GameManager : MonoBehaviour
     public MillDetection GetMillDetection()
     {
         return _millDetection;
+    }
+
+    public bool CurrentTeamHasValidMove()
+    {
+        if (_currentPhase == GamePhase.Fly)
+        {
+            // In fly phase, a move is valid if there is any empty space on the board
+            return _boardSOs.Exists(b => b.GetCurrentPiece() == null);
+        }
+
+        // In move phase, at least one friendly piece must have an empty adjacent space
+        foreach (BoardSO board in _boardSOs)
+        {
+            PieceSO piece = board.GetCurrentPiece();
+            if (piece == null || piece.Team != _currentTeam) continue;
+
+            if (board.GetAdjacentBoardSpaces().Exists(b => b.GetCurrentPiece() == null))
+                return true;
+        }
+
+        return false;
     }
     public enum GamePhase
     {

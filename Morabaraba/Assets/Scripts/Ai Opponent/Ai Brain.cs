@@ -218,13 +218,17 @@ public class AiBrain : MonoBehaviour
     {
         List<BoardSO> aiSpaces = GetAiOccupiedSpaces();
         List<BoardSO> potentialMills = _gameManager.GetPotentialMills(_aiTeam);
+        List<BoardSO> blockMills = _gameManager.GetFinalMillBoard()[_gameManager.GetOppositeTeam(_aiTeam)];
+        List<BoardSO> finalMills = _gameManager.GetFinalMillBoard()[_aiTeam];
 
-        // Try to move a piece into a mill-completing space
-        foreach (BoardSO target in potentialMills)
+        // Try to move a piece into a mill-completing space,
+        // skipping any source that is part of a developing mill
+        foreach (BoardSO target in finalMills)
         {
             if (target.GetCurrentPiece() != null) continue;
             foreach (BoardSO source in aiSpaces)
             {
+                if (WouldBreakPotentialMill(source)) continue; // would break a developing mill
                 if (source.GetAdjacentBoardSpaces().Contains(target))
                 {
                     ExecuteMove(source, target);
@@ -233,8 +237,39 @@ public class AiBrain : MonoBehaviour
             }
         }
 
-        // Fall back to any valid move
+        // Try to block an opponent mill from forming.
+        if(blockMills.Count > 0)
+        {
+            foreach(BoardSO target in blockMills)
+            {
+                foreach (BoardSO source in aiSpaces)
+                {
+                    if (source.GetAdjacentBoardSpaces().Contains(target))
+                    {
+                        ExecuteMove(source, target);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Fall back to any valid move, still avoiding pieces in developing mills
         List<BoardSO> shuffled = aiSpaces.OrderBy(_ => Random.value).ToList();
+        foreach (BoardSO source in shuffled)
+        {
+            if (WouldBreakPotentialMill(source)) continue;
+
+            List<BoardSO> emptyAdjacent = source.GetAdjacentBoardSpaces()
+                .FindAll(b => b.GetCurrentPiece() == null);
+
+            if (emptyAdjacent.Count > 0)
+            {
+                ExecuteMove(source, emptyAdjacent[Random.Range(0, emptyAdjacent.Count)]);
+                return;
+            }
+        }
+
+        // Last resort: all movable pieces are in developing mills, just move anything valid
         foreach (BoardSO source in shuffled)
         {
             List<BoardSO> emptyAdjacent = source.GetAdjacentBoardSpaces()
@@ -296,6 +331,54 @@ public class AiBrain : MonoBehaviour
                 result.Add(bo.BoardSO);
         }
         return result;
+    }
+
+    private bool WouldBreakPotentialMill(BoardSO source)
+    {
+        List<HashSet<string>> mills = _gameManager.GetMillDetection().Mills;
+
+        foreach (HashSet<string> mill in mills)
+        {
+            // source is not part of this mill
+            if (!mill.Contains(source.BoardID))
+                continue;
+
+            int aiPieces = 0;
+            int emptySpaces = 0;
+
+            foreach (string id in mill)
+            {
+                BoardSO board = _gameManager.GetBoard()
+                    .Find(b => b.BoardID == id);
+
+                // simulate removing source
+                if (board == source)
+                {
+                    emptySpaces++;
+                    continue;
+                }
+
+                PieceSO piece = board.GetCurrentPiece();
+
+                if (piece == null)
+                {
+                    emptySpaces++;
+                }
+                else if (piece.Team == _aiTeam)
+                {
+                    aiPieces++;
+                }
+            }
+
+            // if this was a valid potential mill before moving,
+            // and removing the piece destroys it
+            if (aiPieces == 1 && emptySpaces == 2)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     public enum AiDifficulty
     {
