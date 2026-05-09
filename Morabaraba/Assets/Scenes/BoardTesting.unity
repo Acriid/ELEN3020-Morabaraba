@@ -1764,6 +1764,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e399d0d09daa28445a0edc44e7098e1b, type: 2}
   - {fileID: 11400000, guid: ebdb7a3bd894b4c4e8c5ead69a39f0c9, type: 2}
   _millDetection: {fileID: 908124096}
+  _undoRedoManager: {fileID: 908124097}
 --- !u!114 &908124096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1788,7 +1789,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e7ec656a670e34980d721699e53daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UndoRedoManager
-  boardSpaces: []
+  boardSpaces:
+  - {fileID: 11400000, guid: 5ece96a06ba3a024895e592bf5f2fba3, type: 2}
+  - {fileID: 11400000, guid: 10b7dee9928ea7849853038118873c8a, type: 2}
+  - {fileID: 11400000, guid: e03d9b95d43373145bef4b4573498428, type: 2}
+  - {fileID: 11400000, guid: 1c79e50a692f43847a85f55cbd3bdc5c, type: 2}
+  - {fileID: 11400000, guid: 71406fa259be3a54b8189a449ade55d7, type: 2}
+  - {fileID: 11400000, guid: 9356ecde291131d43975207f06e8455f, type: 2}
+  - {fileID: 11400000, guid: d44067f6248ab594397fd7f8fe90a5ee, type: 2}
+  - {fileID: 11400000, guid: b00d0cb578e04aa48bee95910873b024, type: 2}
+  - {fileID: 11400000, guid: c2dddd7ef67dece41a90d97f626edf12, type: 2}
+  - {fileID: 11400000, guid: 6854b8be84e9a5f4ab97374dfcb36a70, type: 2}
+  - {fileID: 11400000, guid: 89b0b8c94188e4a41847eeaba12b1636, type: 2}
+  - {fileID: 11400000, guid: 6e6210580aca11d41877492ead00b828, type: 2}
+  - {fileID: 11400000, guid: b7852ca42468f874ebde518206762663, type: 2}
+  - {fileID: 11400000, guid: fd6e5fc5931483a419cb383e485f0e99, type: 2}
+  - {fileID: 11400000, guid: 7c3df359eec07f744a0934b15020c069, type: 2}
+  - {fileID: 11400000, guid: e6451761470b6fc4ebf7b9371af48850, type: 2}
+  - {fileID: 11400000, guid: f1effa00dba52a74cb705aeb0427702a, type: 2}
+  - {fileID: 11400000, guid: ecf1f4c4b23cb424498ad097006019c0, type: 2}
+  - {fileID: 11400000, guid: 5aae32fd923217d4caa6090c7c92d7ef, type: 2}
+  - {fileID: 11400000, guid: d4efed96c140b904f9abd8ee08bee8ea, type: 2}
+  - {fileID: 11400000, guid: db24dcb52a8a8dc409afde7458f6bc10, type: 2}
+  - {fileID: 11400000, guid: b125e3af5bc30e841b11729224f27cf3, type: 2}
+  - {fileID: 11400000, guid: e399d0d09daa28445a0edc44e7098e1b, type: 2}
+  - {fileID: 11400000, guid: ebdb7a3bd894b4c4e8c5ead69a39f0c9, type: 2}
+  gameManager: {fileID: 908124095}
+  team1Pieces:
+  - {fileID: 533162969}
+  - {fileID: 1192656252}
+  - {fileID: 893770498}
+  - {fileID: 2020165470}
+  - {fileID: 1723320266}
+  - {fileID: 242194901}
+  - {fileID: 1781852837}
+  - {fileID: 1059335328}
+  - {fileID: 621393707}
+  - {fileID: 1198811497}
+  - {fileID: 1789393999}
+  - {fileID: 765889749}
+  team2Pieces:
+  - {fileID: 1666344173}
+  - {fileID: 428182950}
+  - {fileID: 370684253}
+  - {fileID: 395986503}
+  - {fileID: 2123405226}
+  - {fileID: 510802946}
+  - {fileID: 477347341}
+  - {fileID: 814427396}
+  - {fileID: 1121213150}
+  - {fileID: 458435097}
+  - {fileID: 1545476427}
+  - {fileID: 163537496}
 --- !u!114 &929923026 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5664953314464220291, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
@@ -2852,6 +2904,75 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1707782299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1707782302}
+  - component: {fileID: 1707782301}
+  - component: {fileID: 1707782300}
+  m_Layer: 5
+  m_Name: HUD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1707782300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707782299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3566915dc76600498da793c042a6abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HudUI
+  undoRedoManager: {fileID: 908124097}
+--- !u!114 &1707782301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707782299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 7a38f2dd4a52f3c43802f4f88af54bfe, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: d7738f21a19f512469d4be689ec970ef, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &1707782302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707782299}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1723320264
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3820,3 +3941,4 @@ SceneRoots:
   - {fileID: 1118411177}
   - {fileID: 908124093}
   - {fileID: 2069500955}
+  - {fileID: 1707782302}
