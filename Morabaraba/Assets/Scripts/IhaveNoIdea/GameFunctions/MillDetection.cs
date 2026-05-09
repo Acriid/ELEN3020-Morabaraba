@@ -3,7 +3,7 @@ using UnityEngine;
 
 public  class MillDetection : MonoBehaviour
 {
-    public  List<HashSet<string>> _mills = new()
+    public  List<HashSet<string>> Mills = new()
     {
         // Vertical
         new HashSet<string>{ "A7","A4","A1" },
@@ -55,7 +55,7 @@ public  class MillDetection : MonoBehaviour
 
         Team team = piece.Team;
 
-        foreach (HashSet<string> mill in _mills)
+        foreach (HashSet<string> mill in Mills)
         {
             if (!mill.Contains(boardID)) continue;
 
@@ -88,7 +88,7 @@ public  class MillDetection : MonoBehaviour
         PieceSO piece = space.GetCurrentPiece();
         if (piece == null) return false;
 
-        foreach (HashSet<string> mill in _mills)
+        foreach (HashSet<string> mill in Mills)
         {
             if (!mill.Contains(space.BoardID)) continue;
             if (IsMillComplete(mill, piece.Team)) return true;
@@ -108,5 +108,82 @@ public  class MillDetection : MonoBehaviour
         }
 
         return true;
+    }
+    
+
+
+    public Dictionary<Team, List<BoardSO>> GetFinalMillBoard()
+    {
+        Dictionary<Team, List<BoardSO>> possibleMills = new()
+        {
+            { Team.Player1, new List<BoardSO>() },
+            { Team.Player2, new List<BoardSO>() }
+        };
+
+        foreach (HashSet<string> mill in Mills)
+        {
+            BoardSO emptySpace = null;
+            Team? occupyingTeam = null;
+            int teamCount = 0;
+
+            foreach (string id in mill)
+            {
+                if (!_boardLookup.TryGetValue(id, out BoardSO board)) break;
+
+                PieceSO piece = board.GetCurrentPiece();
+
+                if (piece == null)
+                {
+                    // More than one empty space — can't complete this mill next turn
+                    if (emptySpace != null) { emptySpace = null; break; }
+                    emptySpace = board;
+                }
+                else
+                {
+                    // Mixed teams in this mill — neither can complete it
+                    if (occupyingTeam.HasValue && occupyingTeam != piece.Team) { emptySpace = null; break; }
+                    occupyingTeam = piece.Team;
+                    teamCount++;
+                }
+            }
+
+            if (emptySpace != null && occupyingTeam.HasValue && teamCount == 2)
+            {
+                possibleMills[occupyingTeam.Value].Add(emptySpace);
+            }
+        }
+
+        return possibleMills;
+    }
+
+    public  List<BoardSO> GetPotentialMills(Team millTeam)
+    {
+        List<BoardSO> potentialMillPieces = new();
+
+        foreach (HashSet<string> mill in Mills)
+        {
+            BoardSO emptySpace = null;
+          
+            foreach (string id in mill)
+            {
+                if (!_boardLookup.TryGetValue(id, out BoardSO board)) break;
+
+                PieceSO piece = board.GetCurrentPiece();
+                
+
+                if (piece == null)
+                {
+                    if (emptySpace != null) { emptySpace = null; break; }
+                    emptySpace = board;
+                }
+                else
+                {
+                    if(piece.Team != millTeam) break;
+                    potentialMillPieces.Add(board);
+                }
+            }
+        }
+
+        return potentialMillPieces;
     }
 }

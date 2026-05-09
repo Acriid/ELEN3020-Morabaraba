@@ -3478,6 +3478,77 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2069500953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2069500955}
+  - component: {fileID: 2069500954}
+  m_Layer: 0
+  m_Name: AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2069500954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069500953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9afb6e3ff489fda45b09349318bc3e3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AiBrain
+  _aiTeam: 1
+  _gameManager: {fileID: 908124095}
+  _boardObjects:
+  - {fileID: 305157663}
+  - {fileID: 777239215}
+  - {fileID: 1878761641}
+  - {fileID: 402304441}
+  - {fileID: 1450006098}
+  - {fileID: 752727713}
+  - {fileID: 286076559}
+  - {fileID: 825106187}
+  - {fileID: 123164490}
+  - {fileID: 518511779}
+  - {fileID: 1334126349}
+  - {fileID: 2007300821}
+  - {fileID: 1025802666}
+  - {fileID: 637442481}
+  - {fileID: 1808427628}
+  - {fileID: 96071279}
+  - {fileID: 316380198}
+  - {fileID: 1309933879}
+  - {fileID: 1840195189}
+  - {fileID: 476311898}
+  - {fileID: 929923026}
+  - {fileID: 1422850783}
+  - {fileID: 1836292580}
+  - {fileID: 1883991518}
+--- !u!4 &2069500955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069500953}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.64064, y: -0.23317, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2075480932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4264601704496405970, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
@@ -3519,7 +3590,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2077629066}
-  - component: {fileID: 2077629067}
   m_Layer: 0
   m_Name: MouseManager
   m_TagString: Untagged
@@ -3542,18 +3612,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2077629067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077629065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda45ef7b93c50e4c8cec39635285e8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MouseManager
 --- !u!1001 &2123405224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3761,3 +3819,4 @@ SceneRoots:
   - {fileID: 6161395447765342127}
   - {fileID: 1118411177}
   - {fileID: 908124093}
+  - {fileID: 2069500955}
