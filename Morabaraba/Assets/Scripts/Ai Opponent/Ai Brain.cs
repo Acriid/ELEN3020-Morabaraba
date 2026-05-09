@@ -21,7 +21,10 @@ public class AiBrain : MonoBehaviour
         }
     }
 
-
+    public void SetAIDifficulty()
+    {
+        
+    }
     public void SetGameManager(GameManager gameManager)
     {
         _gameManager = gameManager;
@@ -206,9 +209,13 @@ public class AiBrain : MonoBehaviour
         {
             AiMovePiece();
         }
-        else if (_gameManager.GetCurrentPhase() == GameManager.GamePhase.Fly)
+        else if (_gameManager.GetCurrentPhase() == GameManager.GamePhase.Fly && _gameManager.GetPiecesOnBoardForTeam(_aiTeam) == 3)
         {
             AiFlyPiece();
+        }
+        else
+        {
+            AiMovePiece();
         }
 
         _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
@@ -289,24 +296,51 @@ public class AiBrain : MonoBehaviour
     {
         List<BoardSO> aiSpaces = GetAiOccupiedSpaces();
         List<BoardSO> potentialMills = _gameManager.GetPotentialMills(_aiTeam);
+        List<BoardSO> blockMills = _gameManager.GetFinalMillBoard()[_gameManager.GetOppositeTeam(_aiTeam)];
+        List<BoardSO> finalMills = _gameManager.GetFinalMillBoard()[_aiTeam];
         List<BoardSO> emptySpaces = _gameManager.GetBoard()
             .FindAll(b => b.GetCurrentPiece() == null);
 
-        if (aiSpaces.Count == 0 || emptySpaces.Count == 0) return;
-
-        // Try to fly into a mill-completing space
-        foreach (BoardSO target in potentialMills)
+        // Try to move a piece into a mill-completing space,
+        // skipping any source that is part of a developing mill
+        foreach (BoardSO target in finalMills)
         {
             if (target.GetCurrentPiece() != null) continue;
-            ExecuteFly(aiSpaces[Random.Range(0, aiSpaces.Count)], target);
+            foreach (BoardSO source in aiSpaces)
+            {
+                if (WouldBreakPotentialMill(source)) continue; // would break a developing mill
+                ExecuteFly(source, target);
+                return;
+
+            }
+        }
+
+        // Try to block an opponent mill from forming.
+        if(blockMills.Count > 0)
+        {
+            foreach(BoardSO target in blockMills)
+            {
+                foreach (BoardSO source in aiSpaces)
+                {
+                    ExecuteFly(source, target);
+                    return;
+
+                }
+            }
+        }
+
+        // Fall back to any valid move, still avoiding pieces in developing mills
+        List<BoardSO> shuffled = aiSpaces.OrderBy(_ => Random.value).ToList();
+
+        // Last resort: all movable pieces are in developing mills, just move anything valid
+        foreach (BoardSO source in shuffled)
+        {
+
+            ExecuteMove(source, emptySpaces[Random.Range(0, emptySpaces.Count)]);
             return;
         }
 
-        // Fall back to a random empty space
-        ExecuteFly(
-            aiSpaces[Random.Range(0, aiSpaces.Count)],
-            emptySpaces[Random.Range(0, emptySpaces.Count)]
-        );
+        Debug.Log("AI has no valid moves.");
     }
 
     private void ExecuteMove(BoardSO from, BoardSO to)
