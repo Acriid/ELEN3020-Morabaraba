@@ -161,17 +161,26 @@ public class GameManager : NetworkBehaviour
             return;
         }
 
-        if (_currentPhase == GamePhase.Move)
-        {
-            HandleMoveSelectionLocally(boardID, boardComponent);
-            return;
-        }
-
-        if (_currentPhase == GamePhase.Fly)
+        if (IsCurrentPlayerFlying())
         {
             HandleFlySelectionLocally(boardID, boardComponent);
-            return;
         }
+        else
+        {
+            HandleMoveSelectionLocally(boardID, boardComponent);
+        }
+    }
+
+    private bool IsCurrentPlayerFlying()
+    {
+        if (_currentTeam == Team.Player1)
+        {
+            return _piecesOnBoardTeam1 == 3 &&
+                   _team1Index == _piecesTeam1.Count;
+        }
+
+        return _piecesOnBoardTeam2 == 3 &&
+               _team2Index == _piecesTeam2.Count;
     }
 
     // =========================================================================
