@@ -6,6 +6,7 @@ public class MainMenuUI : MonoBehaviour
 {
     private Button hostButton;
     private Button joinButton;
+    private Button exitButton;
     private Label feedback;
     [SerializeField] public TextField ipField;
     private Label joinCode;
@@ -17,12 +18,15 @@ public class MainMenuUI : MonoBehaviour
 
         hostButton = root.Q<Button>("hostButton");
         joinButton = root.Q<Button>("joinButton");
+        exitButton = root.Q<Button>("exitButton");
+
         ipField = root.Q<TextField>("ipField");
         joinCode = root.Q<Label>("joinCode");
         feedback = root.Q<Label>("Feedback");
 
         hostButton.clicked += OnHostClicked;
         joinButton.clicked += OnJoinClicked;
+        exitButton.clicked += () => Application.Quit();
 
 
     }
