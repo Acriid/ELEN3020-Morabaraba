@@ -11,6 +11,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] public TextField ipField;
     private Label joinCode;
     public RelayManager relayManager;
+    [SerializeField] private HudUI hudUI;
 
     private void OnEnable()
     {
@@ -21,7 +22,7 @@ public class MainMenuUI : MonoBehaviour
         exitButton = root.Q<Button>("exitButton");
 
         ipField = root.Q<TextField>("ipField");
-        joinCode = root.Q<Label>("joinCode");
+        joinCode = root.Q<Label>("Code");
         feedback = root.Q<Label>("Feedback");
 
         hostButton.clicked += OnHostClicked;
@@ -31,31 +32,60 @@ public class MainMenuUI : MonoBehaviour
 
     }
 
-    private void OnHostClicked()
+    private async void OnHostClicked()
     {
         feedback.text = "Creating Lobby...";
-        relayManager.CreateRelay();
-        // NetworkManager.StartHost();
-        // SceneManager.LoadScene("Lobby");
-    }
 
-    private void OnJoinClicked()
-    {
-        string ip = ipField.value;
-        //See if the player can join with the code
-        relayManager.JoinRelay();
+        hostButton.SetEnabled(false);
+        joinButton.SetEnabled(false);
 
-        if (relayManager.canJoin == false)
+        bool success = await relayManager.CreateRelay();
+
+        if (success)
         {
-            feedback.text = "Invalid Join Code";
+            feedback.text = "Lobby Created!";
+            // joinCode.text = $"Join Code: {relayManager.JoinCodeInput}";
+            hudUI.SetJoinCode(relayManager.JoinCodeInput);
         }
         else
         {
-            feedback.text = $"Joining Lobby : {ip}";
-            Invoke(nameof(relayManager.ChangeScene), 1f); // Delay the scene change to allow feedback to be seen
+            feedback.text = "Failed To Create Lobby";
+
+            hostButton.SetEnabled(true);
+            joinButton.SetEnabled(true);
+        }
+    }
+
+    private async void OnJoinClicked()
+    {
+        string joinCode = ipField.value.Trim();
+
+        if (string.IsNullOrEmpty(joinCode))
+        {
+            feedback.text = "Enter A Join Code";
+            return;
         }
 
-        // NetworkManager.Connect(ip);
-        // SceneManager.LoadScene("Lobby");
+        feedback.text = "Joining Lobby...";
+
+        hostButton.SetEnabled(false);
+        joinButton.SetEnabled(false);
+
+        bool success = await relayManager.JoinRelay(joinCode);
+
+        if (!success)
+        {
+            feedback.text = "Invalid Join Code";
+
+            hostButton.SetEnabled(true);
+            joinButton.SetEnabled(true);
+            return;
+        }
+
+        feedback.text = $"Joined Lobby: {joinCode}";
+        hudUI.SetJoinCode(joinCode);
+
+        Invoke(nameof(relayManager.ChangeScene), 1f); // Delay the scene change to allow feedback to be seen
+
     }
 }

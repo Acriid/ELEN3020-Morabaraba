@@ -7,6 +7,7 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class RelayManager : MonoBehaviour
 {
@@ -33,22 +34,45 @@ public class RelayManager : MonoBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnected;
     }
 
-    async void Start()
+    public async Task<bool> JoinRelay(string code)
     {
-        if (UnityServices.State == ServicesInitializationState.Initialized) return;
+        try
+        {
+            if (string.IsNullOrEmpty(code))
+                return false;
 
-        await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(code);
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
+                joinAllocation.RelayServer.IpV4,
+                (ushort)joinAllocation.RelayServer.Port,
+                joinAllocation.AllocationIdBytes,
+                joinAllocation.Key,
+                joinAllocation.ConnectionData,
+                joinAllocation.HostConnectionData
+            );
+
+            NetworkManager.Singleton.StartClient();
+
+            return true;
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.LogError($"Relay Join Error: {e}");
+            return false;
+        }
     }
 
-    public async void CreateRelay()
+    public async Task<bool> CreateRelay()
     {
+
         try
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             joinCodeInput = joinCode;
             mainMenuUI.ipField.value = joinCodeInput;
+
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
                 allocation.RelayServer.IpV4,
@@ -61,15 +85,25 @@ public class RelayManager : MonoBehaviour
             // Wait for the server to be ready before loading the scene
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.StartHost();
+            return true;
         }
         catch (RelayServiceException e)
         {
             Debug.LogError($"Relay Create Error: {e}");
-
+            return false;
         }
-
-        FindAnyObjectByType<HudUI>().SetJoinCode(joinCodeInput);
     }
+
+
+    async void Start()
+    {
+        if (UnityServices.State == ServicesInitializationState.Initialized) return;
+
+        await UnityServices.InitializeAsync();
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+
 
     private void OnServerStarted()
     {
@@ -79,33 +113,7 @@ public class RelayManager : MonoBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(nextScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
-    public async void JoinRelay()
-    {
-        try
-        {
-            string code = mainMenuUI.ipField.value;
-            if (string.IsNullOrEmpty(code)) return;
 
-            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(code);
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
-                joinAllocation.RelayServer.IpV4,
-                (ushort)joinAllocation.RelayServer.Port,
-                joinAllocation.AllocationIdBytes,
-                joinAllocation.Key,
-                joinAllocation.ConnectionData,
-                joinAllocation.HostConnectionData
-            );
-
-            NetworkManager.Singleton.StartClient();
-            canJoin = false;
-        }
-
-        catch (RelayServiceException e)
-        {
-            Debug.LogError($"Relay Join Error: {e}");
-            canJoin = false;
-        }
-    }
 
     public void ChangeScene()
     {
@@ -132,6 +140,9 @@ public class RelayManager : MonoBehaviour
             Destroy(NetworkManager.Singleton.gameObject);
         }
 
-        SceneManager.LoadScene("MainMenu");
+        // Use Netcode's scene manager so in-scene NetworkObjects get spawned properly
+        NetworkManager.Singleton.SceneManager.LoadScene("MainMenu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+
+
     }
 }

@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/IhaveNoIdea/UI%20Toolkit/gameplayUI.uss?fileID=7433441132597879392&amp;guid=cb804bd51c0910546875b43f9c78e530&amp;type=3#gameplayUI"/>
-    <ui:VisualElement style="flex-grow: 1;">
+    <ui:VisualElement enabled="true" focusable="false" picking-mode="Ignore" style="flex-grow: 1;">
         <ui:Label text="Player X turn" name="TurnLabel" style="font-size: 39px; -unity-text-align: upper-center; white-space: normal; text-overflow: clip; align-items: center; justify-content: space-between; align-self: center; height: 64px;"/>
         <ui:Label text="Ability" name="Ability" style="font-size: 30px; -unity-text-align: lower-center; height: 37px; width: 196px; justify-content: space-between; align-items: flex-start; align-self: center; align-content: center;"/>
         <ui:Label text="You are player X" name="PlayerLabel" double-click-selects-word="false" triple-click-selects-line="false" style="font-size: 43px; position: absolute; right: 0; bottom: 0;"/>

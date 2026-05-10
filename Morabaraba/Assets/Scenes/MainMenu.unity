@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3566915dc76600498da793c042a6abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HudUI
+  undoRedoManager: {fileID: 0}
 --- !u!114 &215632864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuUI
   relayManager: {fileID: 1736333565}
+  hudUI: {fileID: 215632863}
 --- !u!114 &779734990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,6 +484,7 @@ MonoBehaviour:
   joinCodeInput: 
   nextScene: BoardTesting
   mainMenuUI: {fileID: 779734989}
+  canJoin: 0
 --- !u!4 &1736333566
 Transform:
   m_ObjectHideFlags: 0
