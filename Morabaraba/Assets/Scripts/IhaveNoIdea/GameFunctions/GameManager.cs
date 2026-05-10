@@ -506,7 +506,7 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"Removed piece {piece.data.PieceID}");
 
         // Switch to opponent's turn now that removal is done
-        _currentTeam = GetOppositeTeam(piece.data.Team);
+        _currentTeam = _removalTeam;
 
         // Check whether this triggers the fly phase
         if (_piecesOnBoardTeam1 == 3 && _team1Index == _piecesTeam1.Count)
