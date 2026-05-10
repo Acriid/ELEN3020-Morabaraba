@@ -16,6 +16,7 @@ public class RelayManager : MonoBehaviour
     public string nextScene;
     public MainMenuUI mainMenuUI;
     public string JoinCodeInput { get => joinCodeInput; set => joinCodeInput = value; }
+    public bool canJoin = false;
 
     private void Awake()
     {
@@ -64,13 +65,18 @@ public class RelayManager : MonoBehaviour
         catch (RelayServiceException e)
         {
             Debug.LogError($"Relay Create Error: {e}");
+
         }
+
+        FindAnyObjectByType<HudUI>().SetJoinCode(joinCodeInput);
     }
 
     private void OnServerStarted()
     {
         NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
-        SceneManager.LoadScene(nextScene);
+
+        // Use Netcode's scene manager so in-scene NetworkObjects get spawned properly
+        NetworkManager.Singleton.SceneManager.LoadScene(nextScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     public async void JoinRelay()
@@ -91,14 +97,20 @@ public class RelayManager : MonoBehaviour
             );
 
             NetworkManager.Singleton.StartClient();
-            SceneManager.LoadScene(nextScene);
+            canJoin = false;
         }
+
         catch (RelayServiceException e)
         {
             Debug.LogError($"Relay Join Error: {e}");
+            canJoin = false;
         }
     }
 
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene(nextScene);
+    }
     private void OnDisconnected(ulong clientId)
     {
         if (!NetworkManager.Singleton.IsHost && clientId == NetworkManager.ServerClientId)

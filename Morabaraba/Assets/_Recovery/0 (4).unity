@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3566915dc76600498da793c042a6abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HudUI
+  undoRedoManager: {fileID: 0}
 --- !u!114 &215632864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1654808676
+  GlobalObjectIdHash: 3869637492
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -482,6 +483,7 @@ MonoBehaviour:
   joinCodeInput: 
   nextScene: BoardTesting
   mainMenuUI: {fileID: 779734989}
+  canJoin: 0
 --- !u!4 &1736333566
 Transform:
   m_ObjectHideFlags: 0
