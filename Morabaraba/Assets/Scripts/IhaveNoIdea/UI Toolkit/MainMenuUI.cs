@@ -23,6 +23,8 @@ public class MainMenuUI : MonoBehaviour
 
         hostButton.clicked += OnHostClicked;
         joinButton.clicked += OnJoinClicked;
+
+
     }
 
     private void OnHostClicked()
@@ -36,8 +38,19 @@ public class MainMenuUI : MonoBehaviour
     private void OnJoinClicked()
     {
         string ip = ipField.value;
-        feedback.text = $"Joining Lobby : {ip}";
+        //See if the player can join with the code
         relayManager.JoinRelay();
+
+        if (relayManager.canJoin == false)
+        {
+            feedback.text = "Invalid Join Code";
+        }
+        else
+        {
+            feedback.text = $"Joining Lobby : {ip}";
+            Invoke(nameof(relayManager.ChangeScene), 1f); // Delay the scene change to allow feedback to be seen
+        }
+
         // NetworkManager.Connect(ip);
         // SceneManager.LoadScene("Lobby");
     }

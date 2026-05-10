@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public  class MillDetection : MonoBehaviour
+public class MillDetection : MonoBehaviour
 {
-    public  List<HashSet<string>> Mills = new()
+    public List<HashSet<string>> Mills = new()
     {
         // Vertical
         new HashSet<string>{ "A7","A4","A1" },
@@ -33,25 +33,29 @@ public  class MillDetection : MonoBehaviour
     };
 
 
-    private  Dictionary<string, BoardSO> _boardLookup = new();
+    private Dictionary<string, BoardSO> _boardLookup = new();
 
 
-    public  void InitializeBoard(IEnumerable<BoardSO> allBoardSpaces)
+    public void InitializeBoard(IEnumerable<BoardSO> allBoardSpaces)
     {
         _boardLookup.Clear();
         foreach (BoardSO board in allBoardSpaces)
         {
             _boardLookup[board.BoardID] = board;
         }
+        Debug.Log($"InitializeBoard done - lookup has {_boardLookup.Count} entries");
     }
-
-
-    public  bool DetectMill(BoardObject boardToCheck)
+    public bool DetectMill(BoardObject boardToCheck)
     {
         string boardID = boardToCheck.BoardSO.BoardID;
 
+        // ADD THIS:
+        bool foundInAnyMill = false;
+        foreach (var mill in Mills) if (mill.Contains(boardID)) { foundInAnyMill = true; break; }
+        Debug.Log($"DetectMill: boardID='{boardID}', foundInAnyMill={foundInAnyMill}, lookupCount={_boardLookup.Count}");
+
         PieceSO piece = boardToCheck.BoardSO.GetCurrentPiece();
-        if (piece == null) return false;          
+        if (piece == null) return false;
 
         Team team = piece.Team;
 
@@ -67,19 +71,26 @@ public  class MillDetection : MonoBehaviour
     }
 
 
-    private  bool IsMillComplete(HashSet<string> mill, Team team)
+    private bool IsMillComplete(HashSet<string> mill, Team team)
     {
+
         foreach (string id in mill)
         {
-
             if (!_boardLookup.TryGetValue(id, out BoardSO board))
+            {
+                Debug.Log($"IsMillComplete: '{id}' not found in lookup");
                 return false;
-
+            }
+            Debug.Log($"Board instance hash: {board.GetHashCode()}");
+            PieceSO piece = board.GetCurrentPiece();
 
             if (!board.CheckIfSameTeam(team))
+            {
+                Debug.Log($"IsMillComplete: '{id}' failed team check against {team}");
                 return false;
-        }
+            }
 
+        }
         return true;
     }
 
@@ -109,7 +120,7 @@ public  class MillDetection : MonoBehaviour
 
         return true;
     }
-    
+
 
 
     public Dictionary<Team, List<BoardSO>> GetFinalMillBoard()
@@ -156,20 +167,20 @@ public  class MillDetection : MonoBehaviour
         return possibleMills;
     }
 
-    public  List<BoardSO> GetPotentialMills(Team millTeam)
+    public List<BoardSO> GetPotentialMills(Team millTeam)
     {
         List<BoardSO> potentialMillPieces = new();
 
         foreach (HashSet<string> mill in Mills)
         {
             BoardSO emptySpace = null;
-          
+
             foreach (string id in mill)
             {
                 if (!_boardLookup.TryGetValue(id, out BoardSO board)) break;
 
                 PieceSO piece = board.GetCurrentPiece();
-                
+
 
                 if (piece == null)
                 {
@@ -178,7 +189,7 @@ public  class MillDetection : MonoBehaviour
                 }
                 else
                 {
-                    if(piece.Team != millTeam) break;
+                    if (piece.Team != millTeam) break;
                     potentialMillPieces.Add(board);
                 }
             }
