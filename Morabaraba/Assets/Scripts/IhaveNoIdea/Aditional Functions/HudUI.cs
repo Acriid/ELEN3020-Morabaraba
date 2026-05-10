@@ -21,6 +21,7 @@ public class HudUI : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
 
         exitButton = root.Q<Button>("ExitButton");
+        joinCodeLabel = root.Q<Label>("Code");
 
         undoButton = root.Q<Button>("undoButton");
         redoButton = root.Q<Button>("redoButton");

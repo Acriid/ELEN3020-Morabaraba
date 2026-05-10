@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "BoardsAndPieces",
-        "GameFunctions"
+        "GameFunctions",
+        "Unity.Netcode.Runtime"
     ],
     "includePlatforms": [
         "Editor"

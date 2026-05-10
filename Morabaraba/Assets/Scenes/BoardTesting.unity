@@ -1625,6 +1625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 908124093}
   - component: {fileID: 908124094}
+  - component: {fileID: 908124098}
   - component: {fileID: 908124095}
   - component: {fileID: 908124096}
   - component: {fileID: 908124097}
@@ -1712,6 +1713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d33d201854cdf44787f09a483e8dbbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  ShowTopMostFoldoutHeaderGroup: 1
   _piecesTeam1:
   - {fileID: 533162969}
   - {fileID: 1192656252}
@@ -1764,6 +1766,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e399d0d09daa28445a0edc44e7098e1b, type: 2}
   - {fileID: 11400000, guid: ebdb7a3bd894b4c4e8c5ead69a39f0c9, type: 2}
   _millDetection: {fileID: 908124096}
+  _undoRedoManager: {fileID: 0}
 --- !u!114 &908124096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1789,6 +1792,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UndoRedoManager
   boardSpaces: []
+  gameManager: {fileID: 0}
+  team1Pieces: []
+  team2Pieces: []
+--- !u!114 &908124098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908124091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1626965897
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &929923026 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5664953314464220291, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
@@ -3494,7 +3525,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2069500954
 MonoBehaviour:
   m_ObjectHideFlags: 0

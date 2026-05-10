@@ -74,7 +74,9 @@ public class RelayManager : MonoBehaviour
     private void OnServerStarted()
     {
         NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
-        SceneManager.LoadScene(nextScene);
+
+        // Use Netcode's scene manager so in-scene NetworkObjects get spawned properly
+        NetworkManager.Singleton.SceneManager.LoadScene(nextScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     public async void JoinRelay()
