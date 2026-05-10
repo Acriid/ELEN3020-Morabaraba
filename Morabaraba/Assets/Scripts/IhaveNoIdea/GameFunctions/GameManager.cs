@@ -20,6 +20,7 @@ public class GameManager : NetworkBehaviour
     //Phases
     private GamePhase _currentPhase = GamePhase.Place;
     private event Action<GamePhase> OnPhaseChange;
+    public event Action<Team> OnCurrentTeamChanged;
 
     //Move phase
     private BoardObject _selectedBoard = null;
@@ -91,11 +92,20 @@ public class GameManager : NetworkBehaviour
 
     // Two helpers to know which team the local player controls
     // Convention: host = Player1, joining client = Player2
-    private Team GetLocalPlayerTeam()
+    public Team GetLocalPlayerTeam()
     {
         return NetworkManager.Singleton.IsHost ? Team.Player1 : Team.Player2;
     }
 
+    // helper to get the current player
+    private void SetCurrentTeamInternal(Team newTeam)
+    {
+        _currentTeam = newTeam;
+
+        Debug.Log($"Current turn: {_currentTeam}");
+
+        OnCurrentTeamChanged?.Invoke(_currentTeam);
+    }
     private bool IsMyTurn()
     {
         return _currentTeam == GetLocalPlayerTeam();
@@ -245,7 +255,7 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            _currentTeam = GetOppositeTeam(team);
+            SetCurrentTeamInternal(GetOppositeTeam(team));
             onMoveDone?.Invoke();
         }
 
@@ -553,7 +563,7 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"Removed piece {piece.data.PieceID}");
 
         // Switch to opponent's turn now that removal is done
-        _currentTeam = _removalTeam;
+        SetCurrentTeamInternal(_removalTeam);
 
         // Check whether this triggers the fly phase
         if (_piecesOnBoardTeam1 == 3 && _team1Index == _piecesTeam1.Count)
