@@ -6,9 +6,9 @@ namespace Morabaraba
     [System.Serializable]
     public class GameState
     {
-        public Dictionary<BoardSO, PieceSO> boardState = new Dictionary<BoardSO, PieceSO>();
-        public Dictionary<PieceSO, BoardSO> piecePositions = new Dictionary<PieceSO, BoardSO>();
-        public Dictionary<PieceSO, bool> pieceActiveState = new Dictionary<PieceSO, bool>();
+        public Dictionary<BoardSO, PieceSO> boardState = new();
+        public Dictionary<PieceSO, BoardSO> piecePositions = new();
+        public Dictionary<PieceSO, bool> pieceActiveState = new();
 
         public Team currentTeam;
         public int team1Index;
@@ -30,17 +30,18 @@ namespace Morabaraba
             bool waitingForRemoval,
             Team removalTeam)
         {
-            foreach (var space in boardSpaces)
+            foreach (BoardSO board in boardSpaces)
             {
-                boardState[space] = space.GetCurrentPiece();
+                boardState[board] = board.GetCurrentPiece();
             }
 
-            foreach (var piece in team1Pieces)
+            foreach (Piece piece in team1Pieces)
             {
                 piecePositions[piece.data] = piece.data.GetCurrentBoardSpace();
                 pieceActiveState[piece.data] = piece.gameObject.activeSelf;
             }
-            foreach (var piece in team2Pieces)
+
+            foreach (Piece piece in team2Pieces)
             {
                 piecePositions[piece.data] = piece.data.GetCurrentBoardSpace();
                 pieceActiveState[piece.data] = piece.gameObject.activeSelf;
