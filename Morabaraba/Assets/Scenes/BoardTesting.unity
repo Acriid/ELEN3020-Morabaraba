@@ -1764,6 +1764,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e399d0d09daa28445a0edc44e7098e1b, type: 2}
   - {fileID: 11400000, guid: ebdb7a3bd894b4c4e8c5ead69a39f0c9, type: 2}
   _millDetection: {fileID: 908124096}
+  _undoRedoManager: {fileID: 908124097}
 --- !u!114 &908124096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1789,6 +1790,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UndoRedoManager
   boardSpaces: []
+  gameManager: {fileID: 908124095}
+  team1Pieces: []
+  team2Pieces: []
 --- !u!114 &929923026 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5664953314464220291, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
