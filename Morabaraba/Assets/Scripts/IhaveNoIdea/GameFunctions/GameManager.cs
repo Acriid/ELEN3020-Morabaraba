@@ -20,6 +20,7 @@ public class GameManager : NetworkBehaviour
     //Phases
     private GamePhase _currentPhase = GamePhase.Place;
     private event Action<GamePhase> OnPhaseChange;
+    public event Action<Team> OnCurrentTeamChanged;
 
     //Move phase
     private BoardObject _selectedBoard = null;
@@ -91,11 +92,20 @@ public class GameManager : NetworkBehaviour
 
     // Two helpers to know which team the local player controls
     // Convention: host = Player1, joining client = Player2
-    private Team GetLocalPlayerTeam()
+    public Team GetLocalPlayerTeam()
     {
         return NetworkManager.Singleton.IsHost ? Team.Player1 : Team.Player2;
     }
 
+    // helper to get the current player
+    private void SetCurrentTeamInternal(Team newTeam)
+    {
+        _currentTeam = newTeam;
+
+        Debug.Log($"Current turn: {_currentTeam}");
+
+        OnCurrentTeamChanged?.Invoke(_currentTeam);
+    }
     private bool IsMyTurn()
     {
         return _currentTeam == GetLocalPlayerTeam();
@@ -245,7 +255,7 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            _currentTeam = GetOppositeTeam(team);
+            SetCurrentTeamInternal(GetOppositeTeam(team));
             onMoveDone?.Invoke();
         }
 
@@ -266,6 +276,19 @@ public class GameManager : NetworkBehaviour
     // =========================================================================
     // MOVE - selection is local (just UI state), the actual move is an RPC pair
     // =========================================================================
+    //Scale the held piece up slightly for visual feedback
+    private void SetPieceScale(BoardObject boardObject, float scale)
+    {
+        if (boardObject == null) return;
+
+        PieceSO pieceData = boardObject.BoardSO.GetCurrentPiece();
+        if (pieceData == null) return;
+
+        Piece pieceObject = FindPieceObject(pieceData);
+        if (pieceObject == null) return;
+
+        pieceObject.transform.localScale = Vector3.one * scale;
+    }
 
     // Handles the two-click flow locally (select then submit)
     // _selectedBoard is only used on the active player's client, which is fine
@@ -274,7 +297,10 @@ public class GameManager : NetworkBehaviour
         if (_selectedBoard == null)
         {
             if (!boardComponent.BoardSO.CheckIfSameTeam(_currentTeam)) return;
+
             _selectedBoard = boardComponent;
+            SetPieceScale(_selectedBoard, 1.2f);
+
             Debug.Log($"Selected piece at {boardID}");
             return;
         }
@@ -282,6 +308,7 @@ public class GameManager : NetworkBehaviour
         // Deselect
         if (boardComponent == _selectedBoard)
         {
+            SetPieceScale(_selectedBoard, 1f);
             _selectedBoard = null;
             Debug.Log("Deselected piece");
             return;
@@ -290,7 +317,12 @@ public class GameManager : NetworkBehaviour
         // Reselect a different friendly piece
         if (boardComponent.BoardSO.CheckIfSameTeam(_currentTeam))
         {
+            SetPieceScale(_selectedBoard, 1f);
+
             _selectedBoard = boardComponent;
+
+            SetPieceScale(_selectedBoard, 1.2f);
+
             Debug.Log($"Reselected piece at {boardID}");
             return;
         }
@@ -307,6 +339,8 @@ public class GameManager : NetworkBehaviour
 
         // Move confirmed - send to server
         SubmitMovePieceServerRpc(_selectedBoard.BoardSO.BoardID, boardID);
+
+        SetPieceScale(_selectedBoard, 1f);
         _selectedBoard = null;
     }
 
@@ -354,7 +388,11 @@ public class GameManager : NetworkBehaviour
         if (pieceObject != null)
         {
             pieceObject.transform.SetParent(toObj.transform);
+
             pieceObject.transform.localPosition = Vector3.zero;
+
+            // Reset selection scale after move
+            pieceObject.transform.localScale = Vector3.one;
         }
 
         Debug.Log($"Moved piece from {fromBoardID} to {toBoardID}");
@@ -381,6 +419,7 @@ public class GameManager : NetworkBehaviour
         {
             if (!boardComponent.BoardSO.CheckIfSameTeam(_currentTeam)) return;
             _selectedBoard = boardComponent;
+            SetPieceScale(_selectedBoard, 1.2f);
             Debug.Log($"Selected piece at {boardID}");
             return;
         }
@@ -388,13 +427,18 @@ public class GameManager : NetworkBehaviour
         if (boardComponent == _selectedBoard)
         {
             _selectedBoard = null;
+            SetPieceScale(_selectedBoard, 1f);
             Debug.Log("Deselected piece");
             return;
         }
 
         if (boardComponent.BoardSO.CheckIfSameTeam(_currentTeam))
         {
+            SetPieceScale(_selectedBoard, 1f);
+
             _selectedBoard = boardComponent;
+
+            SetPieceScale(_selectedBoard, 1.2f);
             Debug.Log($"Reselected piece at {boardID}");
             return;
         }
@@ -448,7 +492,11 @@ public class GameManager : NetworkBehaviour
         if (pieceObject != null)
         {
             pieceObject.transform.SetParent(toObj.transform);
+
             pieceObject.transform.localPosition = Vector3.zero;
+
+            // Reset selection scale after move
+            pieceObject.transform.localScale = Vector3.one;
         }
 
         Debug.Log($"Flew piece from {fromBoardID} to {toBoardID}");
@@ -515,7 +563,7 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"Removed piece {piece.data.PieceID}");
 
         // Switch to opponent's turn now that removal is done
-        _currentTeam = _removalTeam;
+        SetCurrentTeamInternal(_removalTeam);
 
         // Check whether this triggers the fly phase
         if (_piecesOnBoardTeam1 == 3 && _team1Index == _piecesTeam1.Count)
