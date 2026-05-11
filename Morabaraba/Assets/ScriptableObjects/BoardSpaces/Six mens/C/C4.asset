@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bca1ef3225268041bec5ef148ecf616, type: 3}
+  m_Name: C4
+  m_EditorClassIdentifier: BoardsAndPieces::BoardSO
+  BoardID: C4
+  _adjacentBoardSpaces:
+  - {fileID: 11400000, guid: 3fb89f62b7ace514780753f87f0a1ebe, type: 2}
+  - {fileID: 11400000, guid: 033f9de45206aaf47b162abdf6e74a8b, type: 2}
+  - {fileID: 11400000, guid: 50570a808e8a0544e96eb86c27a56828, type: 2}
+  _currentHeldPiece: {fileID: 0}
