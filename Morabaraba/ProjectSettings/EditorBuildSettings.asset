@@ -20,6 +20,27 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 6874d4222c58ea041b3c2787e36b4b91
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Ai/Morabaraba AI.unity
+    guid: a3dd04f09a7fb80439994463f932b7f7
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Ai/Nine-Mens AI.unity
+    guid: e8a58437e32b80a4e9a7f27c75dd3ce8
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Ai/Six-Mens AI.unity
+    guid: 2a9bc9b1aa3fcc44b97cb2ed4e4a24bb
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/PVP/Morabaraba PVP.unity
+    guid: 2661b58f2bd07bd43a96b3794da30a43
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/PVP/Nine-Mens PVP.unity
+    guid: 1b253abe387bd954cab8429bb1050f6b
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/PVP/Six-Mens PVP.unity
+    guid: 0fbafd613a573b34eb3cf7871c528c39
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 3379ba0340c6fc144ba97611144aac35
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,4 +1,6 @@
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class MenuUI : MonoBehaviour
@@ -16,9 +18,11 @@ public class MenuUI : MonoBehaviour
 
     private Label feedbackLabel;
 
-    private string selectedGameMode;
-    private string selectedBoardType;
-    private string selectedDifficulty;
+    public string selectedGameMode;
+    public string selectedBoardType;
+    public string selectedDifficulty;
+
+    private string nextScene;
 
     private void OnEnable()
     {
@@ -98,6 +102,8 @@ public class MenuUI : MonoBehaviour
         Debug.Log("Mode: " + selectedGameMode);
         Debug.Log("Board: " + selectedBoardType);
 
+        RelayManager.Instance.SetBoardType(selectedBoardType);
+
         if (selectedGameMode == "Player vs AI")
         {
             Debug.Log("Difficulty: " + selectedDifficulty);
@@ -105,11 +111,28 @@ public class MenuUI : MonoBehaviour
 
         feedbackLabel.text = "Starting game...";
 
-        // TODO:
-        // Load scene
-        // Set game settings
-        // Start AI
-        // Start multiplayer
+        if(selectedGameMode == "Player vs Player")
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+        else if(selectedGameMode == "Player vs AI")
+        {
+            if (selectedBoardType == "Morabaraba")
+            {
+                nextScene = "Morabaraba AI";
+                SceneManager.LoadScene(nextScene);
+            }
+            else if (selectedBoardType == "Nine Men's Morris")
+            {
+                nextScene = "Nine-Mens AI";
+                SceneManager.LoadScene(nextScene);
+            }
+            else
+            {
+                nextScene = "Six-Mens AI";
+                SceneManager.LoadScene(nextScene);
+            }
+        }
     }
 
     private void OnBackClicked()
