@@ -107,7 +107,7 @@ public class RelayManager : MonoBehaviour
             // Wait for the server to be ready before loading the scene
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.StartHost();
-            
+
             return true;
         }
         catch (RelayServiceException e)
@@ -189,7 +189,7 @@ public class RelayManager : MonoBehaviour
         }
 
         // Use Netcode's scene manager so in-scene NetworkObjects get spawned properly
-        NetworkManager.Singleton.SceneManager.LoadScene("MainMenu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Setup", UnityEngine.SceneManagement.LoadSceneMode.Single);
 
 
     }
