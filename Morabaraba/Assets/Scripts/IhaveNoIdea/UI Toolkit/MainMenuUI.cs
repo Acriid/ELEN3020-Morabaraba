@@ -32,7 +32,7 @@ public class MainMenuUI : MonoBehaviour
 
         hostButton.clicked += OnHostClicked;
         joinButton.clicked += OnJoinClicked;
-        exitButton.clicked += () => Application.Quit();
+        exitButton.clicked += () => SceneManager.LoadScene("Setup");
 
 
     }

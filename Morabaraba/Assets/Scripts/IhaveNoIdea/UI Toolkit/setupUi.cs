@@ -24,6 +24,12 @@ public class setupUI : MonoBehaviour
 
     private string nextScene;
 
+    private AiBrain aibrain;
+
+    public void Start()
+    {
+        aibrain = FindFirstObjectByType<AiBrain>();
+    }
     private void OnEnable()
     {
         uiDocument = GetComponent<UIDocument>();
@@ -107,7 +113,18 @@ public class setupUI : MonoBehaviour
 
         if (selectedGameMode == "Player vs AI")
         {
-            Debug.Log("Difficulty: " + selectedDifficulty);
+            if (selectedDifficulty == "Easy")
+            {
+                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Easy);
+            }
+            else if (selectedDifficulty == "Medium")
+            {
+                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Normal);
+            }
+            else if (selectedDifficulty == "Hard")
+            {
+                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Hard);
+            }
         }
 
         feedbackLabel.text = "Starting game...";

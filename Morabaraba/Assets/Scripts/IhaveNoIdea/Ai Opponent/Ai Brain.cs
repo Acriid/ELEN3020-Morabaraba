@@ -26,6 +26,7 @@ public class AiBrain : MonoBehaviour
     {
         this.aiDifficulty = aiDifficulty;
     }
+
     public void SetGameManager(GameManagerAI gameManager)
     {
         _gameManager = gameManager;
