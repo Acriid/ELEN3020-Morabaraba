@@ -15,7 +15,7 @@ public class RelayManager : MonoBehaviour
 
 
     [SerializeField] private string joinCodeInput;
-    private string nextScene;
+    private string nextScene = "Morabaraba PVP";
     private MainMenuUI mainMenuUI;
 
     [SerializeField] private string selectedBoardType;
@@ -150,12 +150,13 @@ public class RelayManager : MonoBehaviour
         }
 
         Debug.Log("Selected Scene: " + nextScene);
+
     }
 
     private void OnServerStarted()
     {
         NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
-
+        Debug.Log(nextScene + " is loading...");
         // Use Netcode's scene manager so in-scene NetworkObjects get spawned properly
         NetworkManager.Singleton.SceneManager.LoadScene(nextScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }

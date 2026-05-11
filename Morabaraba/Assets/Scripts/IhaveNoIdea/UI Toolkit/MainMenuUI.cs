@@ -10,9 +10,14 @@ public class MainMenuUI : MonoBehaviour
     private Label feedback;
     [SerializeField] public TextField ipField;
     private Label joinCode;
-    public RelayManager relayManager;
+    private RelayManager relayManager;
     [SerializeField] private HudUI hudUI;
 
+
+    private void Start()
+    {
+        relayManager = FindFirstObjectByType<RelayManager>();
+    }
     private void OnEnable()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
