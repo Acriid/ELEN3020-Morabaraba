@@ -32,10 +32,26 @@ public class MillDetection : MonoBehaviour
         new HashSet<string>{ "G1","F2","E3" },
     };
 
+    public List<HashSet<string>> SixMensMills = new()
+    {
+        // Vertical
+        new HashSet<string>{ "B6","B4","B2" },
+        new HashSet<string>{ "C5","C4","C3" },
+        new HashSet<string>{ "E5","E4","E3" },
+        new HashSet<string>{ "F6","F4","F2" },
 
+        // Horizontal
+        new HashSet<string>{ "B6","D6","F6" },
+        new HashSet<string>{ "C5","D5","E5" },
+        new HashSet<string>{ "B2","D2","F2" },
+        new HashSet<string>{ "C3","D3","E3" },
+    };
+
+
+    public List<HashSet<string>> ActiveMills => isSixMens ? SixMensMills : Mills;
     private Dictionary<string, BoardSO> _boardLookup = new();
 
-
+    private bool isSixMens = false;
     public void InitializeBoard(IEnumerable<BoardSO> allBoardSpaces)
     {
         _boardLookup.Clear();
@@ -43,15 +59,23 @@ public class MillDetection : MonoBehaviour
         {
             _boardLookup[board.BoardID] = board;
         }
+        if(_boardLookup.Count == 16)
+        {
+            isSixMens = true;
+        }
+            
         // Debug.Log($"InitializeBoard done - lookup has {_boardLookup.Count} entries");
     }
+
+    
+
     public bool DetectMill(BoardObject boardToCheck)
     {
         string boardID = boardToCheck.BoardSO.BoardID;
 
         // ADD THIS:
         bool foundInAnyMill = false;
-        foreach (var mill in Mills) if (mill.Contains(boardID)) { foundInAnyMill = true; break; }
+        foreach (var mill in ActiveMills) if (mill.Contains(boardID)) { foundInAnyMill = true; break; }
         Debug.Log($"DetectMill: boardID='{boardID}', foundInAnyMill={foundInAnyMill}, lookupCount={_boardLookup.Count}");
 
         PieceSO piece = boardToCheck.BoardSO.GetCurrentPiece();
@@ -59,7 +83,7 @@ public class MillDetection : MonoBehaviour
 
         Team team = piece.Team;
 
-        foreach (HashSet<string> mill in Mills)
+        foreach (HashSet<string> mill in ActiveMills)
         {
             if (!mill.Contains(boardID)) continue;
 
@@ -99,7 +123,7 @@ public class MillDetection : MonoBehaviour
         PieceSO piece = space.GetCurrentPiece();
         if (piece == null) return false;
 
-        foreach (HashSet<string> mill in Mills)
+        foreach (HashSet<string> mill in ActiveMills)
         {
             if (!mill.Contains(space.BoardID)) continue;
             if (IsMillComplete(mill, piece.Team)) return true;
@@ -131,7 +155,7 @@ public class MillDetection : MonoBehaviour
             { Team.Player2, new List<BoardSO>() }
         };
 
-        foreach (HashSet<string> mill in Mills)
+        foreach (HashSet<string> mill in ActiveMills)
         {
             BoardSO emptySpace = null;
             Team? occupyingTeam = null;
@@ -171,7 +195,7 @@ public class MillDetection : MonoBehaviour
     {
         List<BoardSO> potentialMillPieces = new();
 
-        foreach (HashSet<string> mill in Mills)
+        foreach (HashSet<string> mill in ActiveMills)
         {
             BoardSO emptySpace = null;
 

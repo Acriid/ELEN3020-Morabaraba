@@ -379,7 +379,7 @@ public class AiBrain : MonoBehaviour
 
     private bool WouldBreakPotentialMill(BoardSO source)
     {
-        List<HashSet<string>> mills = _gameManager.GetMillDetection().Mills;
+        List<HashSet<string>> mills = _gameManager.GetMillDetection().ActiveMills;
 
         foreach (HashSet<string> mill in mills)
         {

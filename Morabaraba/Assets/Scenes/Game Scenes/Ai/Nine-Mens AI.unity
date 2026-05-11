@@ -340,6 +340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameFunctions::GameplayUI
   _document: {fileID: 327901832}
   _gameManager: {fileID: 0}
+  _gameManagerAI: {fileID: 0}
 --- !u!1001 &370684251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1838,7 +1839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afb6e3ff489fda45b09349318bc3e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AiBrain
-  _aiTeam: 0
+  _aiTeam: 1
   _gameManager: {fileID: 908124099}
   _boardObjects:
   - {fileID: 305157663}

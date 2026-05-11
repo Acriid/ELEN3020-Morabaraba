@@ -527,6 +527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameFunctions::GameplayUI
   _document: {fileID: 327901832}
   _gameManager: {fileID: 0}
+  _gameManagerAI: {fileID: 0}
 --- !u!1001 &370684251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1714,7 +1715,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 001e01f9f1f191943813bd0ff64c2a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResetBoard
-  _boardSpaces: []
+  _boardSpaces:
+  - {fileID: 2089292524}
+  - {fileID: 274525847}
+  - {fileID: 1537200144}
+  - {fileID: 1789782199}
+  - {fileID: 571070004}
+  - {fileID: 1528960343}
+  - {fileID: 515241690}
+  - {fileID: 710694418}
+  - {fileID: 1271288475}
+  - {fileID: 1845848827}
+  - {fileID: 1700409581}
+  - {fileID: 453987977}
+  - {fileID: 1874418661}
+  - {fileID: 16861869}
+  - {fileID: 920198733}
+  - {fileID: 1423184587}
   _pieces:
   - {fileID: 533162969}
   - {fileID: 1192656252}
