@@ -1839,7 +1839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AiBrain
   _aiTeam: 0
-  _gameManager: {fileID: 0}
+  _gameManager: {fileID: 908124099}
   _boardObjects:
   - {fileID: 305157663}
   - {fileID: 777239215}
