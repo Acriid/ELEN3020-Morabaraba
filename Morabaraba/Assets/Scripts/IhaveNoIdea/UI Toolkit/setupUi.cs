@@ -141,8 +141,6 @@ public class setupUI : MonoBehaviour
         Debug.Log("BACK");
 
         feedbackLabel.text = "Returning...";
-
-        // TODO:
-        // Return to previous menu
+        Application.Quit();
     }
 }
