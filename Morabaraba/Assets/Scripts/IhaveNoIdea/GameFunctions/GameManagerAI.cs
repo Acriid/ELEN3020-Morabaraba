@@ -1,0 +1,581 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using System;
+
+public class GameManagerAI : MonoBehaviour
+{
+    //Board components
+    //Teams
+    [SerializeField] private List<Piece> _piecesTeam1;
+    private int _piecesOnBoardTeam1 = 0;
+    private int _team1Index = 0;
+    [SerializeField] private List<Piece> _piecesTeam2;
+    private int _team2Index = 0;
+    private int _piecesOnBoardTeam2 = 0;
+    [SerializeField] private List<BoardSO> _boardSOs;
+    [SerializeField] private MillDetection _millDetection;
+    private Team _currentTeam = Team.Player1;
+    //Phases
+    private GamePhase _currentPhase = GamePhase.Place;
+    private event Action<GamePhase> OnPhaseChange;
+
+    //Move phase
+    private BoardObject _selectedBoard = null;
+
+    //Inputs
+    private InputSystem_Actions _inputActions;
+    private InputAction _mouseAction;
+
+
+    //Remove
+    private bool _waitingForRemoval = false;
+    private Team _removalTeam;
+
+    public event Action onMoveDone;
+    public event Action onMillGot;
+
+
+    public int GetTeam1Index() => _team1Index;
+    public int GetTeam2Index() => _team2Index;
+    public Team GetRemovalTeam() => _removalTeam;
+
+    void Awake()
+    {
+        Initialize();
+    }
+    void OnDisable()
+    {
+        CleanUp();
+    }
+    public void Initialize()
+    {
+        _millDetection.InitializeBoard(_boardSOs);
+        InitializeInput();
+
+        OnPhaseChange += ChangePhase;
+        onMoveDone += FinishedMove;
+    }
+    public void CleanUp()
+    {
+        CleanUpInputs();
+
+        OnPhaseChange -= ChangePhase;
+        onMoveDone -= FinishedMove;
+    }
+
+    private void FinishedMove()
+    {
+        if (_currentPhase != GamePhase.Move) return;
+        if (!CurrentTeamHasValidMove())
+        {
+            Team winningTeam = GetOppositeTeam(_currentTeam);
+            EndGame(winningTeam);
+        }
+    }
+
+    private void InitializeInput()
+    {
+        _inputActions = new();
+        _mouseAction = _inputActions.Player.Click;
+
+
+        _mouseAction.performed += OnClick;
+
+        _mouseAction.Enable();
+    }
+
+    private void CleanUpInputs()
+    {
+        _mouseAction.performed -= OnClick;
+
+        _mouseAction.Disable();
+    }
+
+    private void OnClick(InputAction.CallbackContext ctx)
+    {
+        Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.zero);
+
+        if (hit == false) return;
+
+        GameObject hitObject = hit.collider.gameObject;
+
+        if (hitObject == null) return;
+
+        if (_waitingForRemoval)
+        {
+            HandleRemovalClick(hitObject);
+            return;
+        }
+
+
+        if (_currentPhase == GamePhase.Place)
+        {
+            PlacePiece(hitObject);
+        }
+        else if (_currentPhase == GamePhase.Move)
+        {
+            MovePiece(hitObject);
+
+        }
+        else if (_currentPhase == GamePhase.Fly)
+        {
+            FlyPiece(hitObject);
+        }
+
+
+    }
+
+    public void FlyPiece(GameObject hitObject)
+    {
+        if (!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent) &&
+        !hitObject.transform.parent.TryGetComponent<BoardObject>(out boardComponent)) return;
+
+        if (_selectedBoard == null)
+        {
+            if (!boardComponent.BoardSO.CheckIfSameTeam(_currentTeam)) return;
+
+            _selectedBoard = boardComponent;
+            Debug.Log($"Selected piece at {_selectedBoard.BoardSO.BoardID}");
+            return;
+        }
+
+        //deselect
+        if (boardComponent == _selectedBoard)
+        {
+            _selectedBoard = null;
+            Debug.Log("Deselected piece");
+            return;
+        }
+
+        // reselect
+        if (boardComponent.BoardSO.CheckIfSameTeam(_currentTeam))
+        {
+            _selectedBoard = boardComponent;
+            Debug.Log($"Reselected piece at {_selectedBoard.BoardSO.BoardID}");
+            return;
+        }
+
+        // must be empty adjacent space
+        if (boardComponent.BoardSO.GetCurrentPiece() != null) return;
+
+        //move
+        PieceSO movingPiece = _selectedBoard.BoardSO.GetCurrentPiece();
+
+        _selectedBoard.BoardSO.ChangeCurrentPiece(null);
+        movingPiece.SetCurrentBoardSpace(boardComponent.BoardSO);
+        boardComponent.BoardSO.ChangeCurrentPiece(movingPiece);
+
+
+        Piece pieceObject = FindPieceObject(movingPiece);
+        if (pieceObject != null)
+        {
+            pieceObject.transform.SetParent(hitObject.transform);
+            pieceObject.transform.localPosition = Vector3Int.zero;
+        }
+
+        Debug.Log($"Moved piece from {_selectedBoard.BoardSO.BoardID} to {boardComponent.BoardSO.BoardID}");
+
+        _selectedBoard = null;
+
+        if (_millDetection.DetectMill(boardComponent))
+        {
+            OnMill(GetOppositeTeam(_currentTeam));
+        }
+        else
+        {
+            onMoveDone?.Invoke();
+        }
+
+
+    }
+
+    public void MovePiece(GameObject hitObject)
+    {
+
+
+
+        if (!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent) &&
+        !hitObject.transform.parent.TryGetComponent<BoardObject>(out boardComponent)) return;
+
+        if (_selectedBoard == null)
+        {
+            if (!boardComponent.BoardSO.CheckIfSameTeam(_currentTeam)) return;
+
+            _selectedBoard = boardComponent;
+            Debug.Log($"Selected piece at {_selectedBoard.BoardSO.BoardID}");
+            return;
+        }
+
+        //deselect
+        if (boardComponent == _selectedBoard)
+        {
+            _selectedBoard = null;
+            Debug.Log("Deselected piece");
+            return;
+        }
+
+        // reselect
+        if (boardComponent.BoardSO.CheckIfSameTeam(_currentTeam))
+        {
+            _selectedBoard = boardComponent;
+            Debug.Log($"Reselected piece at {_selectedBoard.BoardSO.BoardID}");
+            return;
+        }
+
+        // must be empty adjacent space
+        if (boardComponent.BoardSO.GetCurrentPiece() != null) return;
+
+        List<BoardSO> adjacent = _selectedBoard.BoardSO.GetAdjacentBoardSpaces();
+        if (!adjacent.Contains(boardComponent.BoardSO))
+        {
+            Debug.Log("Not an adjacent space");
+            return;
+        }
+
+        //move
+        PieceSO movingPiece = _selectedBoard.BoardSO.GetCurrentPiece();
+
+        _selectedBoard.BoardSO.ChangeCurrentPiece(null);
+        movingPiece.SetCurrentBoardSpace(boardComponent.BoardSO);
+        boardComponent.BoardSO.ChangeCurrentPiece(movingPiece);
+
+
+        Piece pieceObject = FindPieceObject(movingPiece);
+        if (pieceObject != null)
+        {
+            pieceObject.transform.SetParent(hitObject.transform);
+            pieceObject.transform.localPosition = Vector3Int.zero;
+        }
+
+        Debug.Log($"Moved piece from {_selectedBoard.BoardSO.BoardID} to {boardComponent.BoardSO.BoardID}");
+
+        _selectedBoard = null;
+
+        if (_millDetection.DetectMill(boardComponent))
+        {
+            OnMill(GetOppositeTeam(_currentTeam));
+        }
+        else
+        {
+            onMoveDone?.Invoke();
+        }
+
+
+
+    }
+
+    public Team GetOppositeTeam(Team currentTeam)
+    {
+        if (currentTeam == Team.Player1)
+        {
+            return Team.Player2;
+        }
+        else
+        {
+            return Team.Player1;
+        }
+    }
+    private Piece FindPieceObject(PieceSO pieceData)
+    {
+        foreach (Piece p in _piecesTeam1)
+            if (p.data == pieceData) return p;
+        foreach (Piece p in _piecesTeam2)
+            if (p.data == pieceData) return p;
+        return null;
+    }
+
+    public Piece PlacePiece(GameObject hitObject)
+    {
+        if (!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent)) return null;
+        if (boardComponent.BoardSO.GetCurrentPiece() != null) return null;
+
+        Piece currentPiece = GetPieceForTeam(_currentTeam);
+
+        if (currentPiece == null) return null;
+
+
+        Transform currentPieceTransform = currentPiece.transform;
+
+        boardComponent.BoardSO.ChangeCurrentPiece(currentPiece.data);
+        currentPiece.data.SetCurrentBoardSpace(boardComponent.BoardSO);
+
+        currentPieceTransform.SetParent(hitObject.transform);
+        currentPieceTransform.localPosition = Vector3Int.zero;
+
+        if (_millDetection.DetectMill(boardComponent))
+        {
+            OnMill(GetOppositeTeam(_currentTeam));
+        }
+        else
+        {
+            onMoveDone?.Invoke();
+        }
+
+
+        if (_team1Index == _piecesTeam1.Count && _team2Index == _piecesTeam2.Count)
+        {
+            if (GetPiecesOnBoardForTeam(_currentTeam) != 3)
+            {
+                OnPhaseChange?.Invoke(GamePhase.Move);
+            }
+            else if (GetPiecesOnBoardForTeam(_currentTeam) == 3)
+            {
+                OnPhaseChange?.Invoke(GamePhase.Fly);
+            }
+
+        }
+
+
+        return currentPiece;
+    }
+
+    public int GetPiecesOnBoardForTeam(Team teamToGet)
+    {
+        int result = teamToGet == Team.Player1 ? _piecesOnBoardTeam1 : _piecesOnBoardTeam2;
+        return result;
+    }
+    public void RemovePiece(Piece piece)
+    {
+        BoardSO currentSpace = piece.data.GetCurrentBoardSpace();
+
+        if (currentSpace != null)
+        {
+            currentSpace.ChangeCurrentPiece(null);
+            piece.data.SetCurrentBoardSpace(null);
+        }
+
+        if (piece.data.Team == Team.Player1)
+        {
+            _piecesOnBoardTeam1--;
+        }
+        else if (piece.data.Team == Team.Player2)
+        {
+            _piecesOnBoardTeam2--;
+        }
+
+        piece.gameObject.SetActive(false);
+        Debug.Log($"Removed piece {piece.data.PieceID}");
+
+        if (_piecesOnBoardTeam1 == 3 && _team1Index == _piecesTeam1.Count)
+        {
+            OnPhaseChange?.Invoke(GamePhase.Fly);
+        }
+        else if (_piecesOnBoardTeam2 == 3 && _team2Index == _piecesTeam2.Count)
+        {
+            OnPhaseChange?.Invoke(GamePhase.Fly);
+        }
+
+        if (DidTeamLose(piece.data.Team))
+        {
+            Team winningTeam = GetOppositeTeam(piece.data.Team);
+            Debug.Log($"{piece.data.Team} lost");
+            EndGame(winningTeam);
+        }
+        onMoveDone?.Invoke();
+
+    }
+
+    private void EndGame(Team winningTeam)
+    {
+        //Need to implement
+        Debug.Log($"{winningTeam} won");
+    }
+
+    public bool DidTeamLose(Team teamToCheck)
+    {
+        if (GetPiecesOnBoardForTeam(teamToCheck) < 3 && (_currentPhase == GamePhase.Move || _currentPhase == GamePhase.Fly))
+            return true;
+        return false;
+    }
+    public void WaitAndRemovePiece(Team team)
+    {
+        _waitingForRemoval = true;
+        _removalTeam = team;
+        Debug.Log($"Waiting to remove a {team} piece");
+    }
+
+    public void HandleRemovalClick(GameObject hitObject)
+    {
+        if (!hitObject.TryGetComponent<BoardObject>(out BoardObject boardComponent) &&
+            !hitObject.transform.parent.TryGetComponent<BoardObject>(out boardComponent)) return;
+
+        PieceSO pieceData = boardComponent.BoardSO.GetCurrentPiece();
+        if (pieceData == null || pieceData.Team != _removalTeam) return;
+
+        Piece piece = FindPieceObject(pieceData);
+        if (piece == null) return;
+
+        bool pieceIsInMill = _millDetection.IsPieceInAMill(boardComponent.BoardSO);
+        bool allInMills = _millDetection.AllTeamPiecesInMills(_removalTeam, _boardSOs);
+
+        if (pieceIsInMill && !allInMills)
+        {
+            Debug.Log("Cannot remove a piece that is part of a mill");
+            return;
+        }
+
+        RemovePiece(piece);
+        _waitingForRemoval = false;
+    }
+
+
+
+
+
+
+
+
+
+
+    private void OnMill(Team team)
+    {
+        WaitAndRemovePiece(team);
+        onMillGot?.Invoke();
+    }
+
+    private Piece GetPieceForTeam(Team team)
+    {
+        Piece currentPiece = null;
+
+        if (team == Team.Player1)
+        {
+            if (_team1Index >= _piecesTeam1.Count) return null;
+
+            currentPiece = _piecesTeam1[_team1Index++];
+            _piecesOnBoardTeam1++;
+            currentPiece.data.Team = Team.Player1;
+        }
+        else
+        {
+            if (_team2Index >= _piecesTeam2.Count) return null;
+
+            currentPiece = _piecesTeam2[_team2Index++];
+            _piecesOnBoardTeam2++;
+            currentPiece.data.Team = Team.Player2;
+        }
+
+        return currentPiece;
+    }
+
+    public void SetCurrentTeam(Team newTeam)
+    {
+        _currentTeam = newTeam;
+    }
+    public Team GetCurrentTeam()
+    {
+        return _currentTeam;
+    }
+    private void ChangePhase(GamePhase newPhase)
+    {
+        _currentPhase = newPhase;
+        Debug.Log($"Phase changed to {newPhase}");
+    }
+
+
+    #region Private Initialization
+    public void SetTeam1Pieces(List<Piece> newList)
+    {
+        _piecesTeam1 = new(newList);
+    }
+    public void SetTeam2Pieces(List<Piece> newList)
+    {
+        _piecesTeam2 = new(newList);
+    }
+    public void SetBoardScriptableObjects(List<BoardSO> newList)
+    {
+        _boardSOs = new(newList);
+    }
+    public void SetMillDetection(MillDetection newMillDetection)
+    {
+        _millDetection = newMillDetection;
+    }
+    #endregion
+
+    public bool GetMillDetected()
+    {
+        return _waitingForRemoval;
+    }
+
+    public List<BoardSO> GetBoard()
+    {
+        return _boardSOs;
+    }
+
+    public Dictionary<Team, List<BoardSO>> GetFinalMillBoard()
+    {
+        return _millDetection.GetFinalMillBoard();
+    }
+    public List<BoardSO> GetPotentialMills(Team teamToGet)
+    {
+        return _millDetection.GetPotentialMills(teamToGet);
+    }
+    public GamePhase GetCurrentPhase()
+    {
+        return _currentPhase;
+    }
+    public MillDetection GetMillDetection()
+    {
+        return _millDetection;
+    }
+
+    public bool CurrentTeamHasValidMove()
+    {
+        if (_currentPhase == GamePhase.Fly)
+        {
+            // In fly phase, a move is valid if there is any empty space on the board
+            return _boardSOs.Exists(b => b.GetCurrentPiece() == null);
+        }
+
+        // In move phase, at least one friendly piece must have an empty adjacent space
+        foreach (BoardSO board in _boardSOs)
+        {
+            PieceSO piece = board.GetCurrentPiece();
+            if (piece == null || piece.Team != _currentTeam) continue;
+
+            if (board.GetAdjacentBoardSpaces().Exists(b => b.GetCurrentPiece() == null))
+                return true;
+        }
+
+        return false;
+    }
+    public enum GamePhase
+    {
+        Place,
+        Move,
+        Fly
+    }
+
+    public void RestoreState(
+    Team currentTeam,
+    int team1Index,
+    int team2Index,
+    int piecesOnBoardTeam1,
+    int piecesOnBoardTeam2,
+    bool waitingForRemoval,
+    Team removalTeam)
+    {
+        _currentTeam = currentTeam;
+        _team1Index = team1Index;
+        _team2Index = team2Index;
+        _piecesOnBoardTeam1 = piecesOnBoardTeam1;
+        _piecesOnBoardTeam2 = piecesOnBoardTeam2;
+        _waitingForRemoval = waitingForRemoval;
+        _removalTeam = removalTeam;
+        if (_team1Index < _piecesTeam1.Count || _team2Index < _piecesTeam2.Count)
+        {
+            _currentPhase = GamePhase.Place;
+        }
+        else if (_piecesOnBoardTeam1 == 3 || _piecesOnBoardTeam2 == 3)
+        {
+            _currentPhase = GamePhase.Fly;
+        }
+        else
+        {
+            _currentPhase = GamePhase.Move;
+        }
+    }
+}
+
