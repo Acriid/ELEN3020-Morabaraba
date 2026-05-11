@@ -212,7 +212,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: de92a85c7a1ea55439dddfb5fc104523, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -338,7 +339,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GameFunctions::GameplayUI
   _document: {fileID: 327901832}
-  _gameManager: {fileID: 908124095}
+  _gameManager: {fileID: 0}
+  _gameManagerAI: {fileID: 0}
 --- !u!1001 &370684251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -395,7 +397,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -475,7 +478,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -598,7 +602,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -689,7 +694,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -769,7 +775,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -865,7 +872,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: b83f64cc21c53874d85770035d73b7c2, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -950,7 +958,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: ba9e0d8a5825f814685587a1a3c0ae54, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1108,7 +1117,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1352,9 +1362,8 @@ GameObject:
   - component: {fileID: 908124093}
   - component: {fileID: 908124094}
   - component: {fileID: 908124098}
-  - component: {fileID: 908124095}
   - component: {fileID: 908124096}
-  - component: {fileID: 908124097}
+  - component: {fileID: 908124099}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -1433,7 +1442,7 @@ MonoBehaviour:
   - {fileID: 477347341}
   - {fileID: 814427396}
   - {fileID: 1121213150}
---- !u!114 &908124095
+--- !u!114 &908124096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1442,10 +1451,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 908124091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d33d201854cdf44787f09a483e8dbbe, type: 3}
+  m_Script: {fileID: 11500000, guid: 704507a962d980c44ac4cf4dc287ec0e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  ShowTopMostFoldoutHeaderGroup: 1
+  m_EditorClassIdentifier: Assembly-CSharp::MillDetection
+--- !u!114 &908124098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908124091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2197983384
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &908124099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908124091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e491e3ab79469641870531ef010aa79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameFunctions::GameManagerAI
   _piecesTeam1:
   - {fileID: 533162969}
   - {fileID: 1192656252}
@@ -1492,60 +1537,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e399d0d09daa28445a0edc44e7098e1b, type: 2}
   - {fileID: 11400000, guid: ebdb7a3bd894b4c4e8c5ead69a39f0c9, type: 2}
   _millDetection: {fileID: 908124096}
-  _undoRedoManager: {fileID: 908124097}
---- !u!114 &908124096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908124091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 704507a962d980c44ac4cf4dc287ec0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MillDetection
---- !u!114 &908124097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908124091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e7ec656a670e34980d721699e53daf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UndoRedoManager
-  boardSpaces: []
-  gameManager: {fileID: 908124095}
-  team1Pieces: []
-  team2Pieces: []
---- !u!114 &908124098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908124091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2197983384
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &929923026 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5664953314464220291, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
@@ -1761,7 +1752,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 8273292310839b745b0ff92ede46dbad, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1847,8 +1839,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afb6e3ff489fda45b09349318bc3e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AiBrain
-  _aiTeam: 0
-  _gameManager: {fileID: 908124095}
+  _aiTeam: 1
+  _gameManager: {fileID: 908124099}
   _boardObjects:
   - {fileID: 305157663}
   - {fileID: 777239215}
@@ -1945,7 +1937,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2277,7 +2270,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2448,7 +2442,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 220f414be651ee945aeba55c771635a4, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2555,7 +2550,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 09ba4d1371c572f40b42f9a84403992c, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2773,7 +2769,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 26b953884931cb8429614dc7324e5e36, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2991,7 +2988,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

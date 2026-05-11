@@ -2,14 +2,14 @@
     <Style src="project://database/Assets/Scripts/IhaveNoIdea/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=6698bb73e43d7de439d2393b2090d26b&amp;type=3#MainMenuStyle"/>
     <ui:VisualElement class="container">
         <ui:VisualElement class="menu-panel" style="background-color: rgb(65, 65, 109);">
-            <ui:Label text="Game Setup" class="title" style="font-size: 42px; -unity-font-style: bold;"/>
-            <ui:Label text="Select Mode" class="section-title" style="font-size: 24px; -unity-font-style: bold;"/>
-            <ui:DropdownField name="gameModeDropdown" label="Mode" choices="Player vs Player,Player vs AI" index="0" style="width: 320px; height: 45px; font-size: 18px; -unity-font-style: bold;"/>
-            <ui:Label text="Select Board" class="section-title" style="font-size: 24px; margin-top: 15px; -unity-font-style: bold;"/>
-            <ui:DropdownField name="boardTypeDropdown" label="Board Type" choices="Morabaraba,Nine Men&apos;s Morris,Six Men&apos;s Morris" index="0" style="width: 320px; height: 45px; font-size: 18px; -unity-font-style: bold;"/>
+            <ui:Label text="Game Setup" class="title" style="font-size: 42px;"/>
+            <ui:Label text="Select Mode" class="section-title" style="font-size: 24px;"/>
+            <ui:DropdownField name="gameModeDropdown" label="Mode" choices="Player vs Player,Player vs AI" index="0" style="width: 320px; height: 45px; font-size: 18px;"/>
+            <ui:Label text="Select Board" class="section-title" style="font-size: 24px; margin-top: 15px;"/>
+            <ui:DropdownField name="boardTypeDropdown" label="Board Type" choices="Morabaraba,Nine Men&apos;s Morris,Six Men&apos;s Morris" index="0" style="width: 320px; height: 45px; font-size: 18px;"/>
             <ui:VisualElement name="aiDifficultyContainer" style="width: 100%; align-items: center; margin-top: 15px;">
-                <ui:Label text="AI Difficulty" class="section-title" style="font-size: 24px; -unity-font-style: bold;"/>
-                <ui:DropdownField name="aiDifficultyDropdown" label="Difficulty" choices="Easy,Medium,Hard" index="0" style="width: 320px; height: 45px; font-size: 18px; -unity-font-style: bold;"/>
+                <ui:Label text="AI Difficulty" class="section-title" style="font-size: 24px;"/>
+                <ui:DropdownField name="aiDifficultyDropdown" label="Difficulty" choices="Easy,Medium,Hard" index="0" style="width: 320px; height: 45px; font-size: 18px;"/>
             </ui:VisualElement>
             <ui:Button name="startButton" text="Start Game" class="host-button" style="font-size: 22px; margin-top: 25px;"/>
             <ui:Button name="backButton" text="Leave" class="join-button" style="font-size: 18px;"/>

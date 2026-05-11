@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5bca1ef3225268041bec5ef148ecf616, type: 3}
-  m_Name: G2
+  m_Name: F4
   m_EditorClassIdentifier: BoardsAndPieces::BoardSO
-  BoardID: G2
+  BoardID: F4
   _adjacentBoardSpaces:
-  - {fileID: 11400000, guid: be2141c36de0fef41a3082c21c8f4c1e, type: 2}
-  - {fileID: 11400000, guid: 87ecc06fab80ff4409ff23e31dc56944, type: 2}
-  _currentHeldPiece: {fileID: 0}
+  - {fileID: 11400000, guid: e27912c625d0c344481973abde8f773c, type: 2}
+  - {fileID: 11400000, guid: f52d6504b8248df499620b8df7c3abe8, type: 2}
+  - {fileID: 11400000, guid: 53777932422d34a438e5f4713da42fcd, type: 2}
+  _currentHeldPiece: {fileID: 11400000, guid: de92a85c7a1ea55439dddfb5fc104523, type: 2}

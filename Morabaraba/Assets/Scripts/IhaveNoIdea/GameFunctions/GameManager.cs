@@ -239,7 +239,7 @@ public class GameManager : NetworkBehaviour
         boardObj.BoardSO.ChangeCurrentPiece(null);
         piece.data.SetCurrentBoardSpace(null);
 
-        Debug.Log($"ServerRpc passed - pieceIndex: {pieceIndex}, phase: {_currentPhase}, mill: {millDetected}");
+        // Debug.Log($"ServerRpc passed - pieceIndex: {pieceIndex}, phase: {_currentPhase}, mill: {millDetected}");
         ExecutePlacePieceClientRpc(boardID, pieceIndex, _currentTeam, millDetected);
     }
 
@@ -427,7 +427,7 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            _currentTeam = GetOppositeTeam(_currentTeam); // fix - update internally
+            SetCurrentTeamInternal(GetOppositeTeam(_currentTeam));// fix - update internally
             onMoveDone?.Invoke();
         }
     }
@@ -536,7 +536,7 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            _currentTeam = GetOppositeTeam(_currentTeam); // fix - update internally
+            SetCurrentTeamInternal(GetOppositeTeam(_currentTeam));  // fix - update internally
             onMoveDone?.Invoke();
         }
     }
@@ -1086,6 +1086,37 @@ public class GameManager : NetworkBehaviour
     {
         return _currentPhase;
     }
+
+    //For AI
+    public void RequestPlacePiece(BoardSO targetBoard)
+    {
+        if (targetBoard == null) return;
+
+        SubmitPlacePieceServerRpc(targetBoard.BoardID);
+    }
+
+    public void RequestMovePiece(BoardSO fromBoard, BoardSO toBoard)
+    {
+        if (fromBoard == null || toBoard == null) return;
+
+        SubmitMovePieceServerRpc(fromBoard.BoardID, toBoard.BoardID);
+    }
+
+    public void RequestFlyPiece(BoardSO fromBoard, BoardSO toBoard)
+    {
+        if (fromBoard == null || toBoard == null) return;
+
+        SubmitFlyPieceServerRpc(fromBoard.BoardID, toBoard.BoardID);
+    }
+
+    public void RequestRemovePiece(BoardSO targetBoard)
+    {
+        if (targetBoard == null) return;
+
+        SubmitRemovePieceServerRpc(targetBoard.BoardID);
+    }
+
+
     public MillDetection GetMillDetection()
     {
         return _millDetection;

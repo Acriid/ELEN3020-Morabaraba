@@ -15,7 +15,7 @@ public class RelayManager : MonoBehaviour
 
 
     [SerializeField] private string joinCodeInput;
-    private string nextScene;
+    private string nextScene = "Morabaraba PVP";
     private MainMenuUI mainMenuUI;
 
     [SerializeField] private string selectedBoardType;
@@ -57,6 +57,7 @@ public class RelayManager : MonoBehaviour
             );
 
             NetworkManager.Singleton.StartClient();
+            Invoke(nameof(ChangeScene), 1f); // Delay the scene change to allow feedback to be seen
 
             return true;
         }
@@ -106,6 +107,7 @@ public class RelayManager : MonoBehaviour
             // Wait for the server to be ready before loading the scene
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.StartHost();
+
             return true;
         }
         catch (RelayServiceException e)
@@ -134,9 +136,9 @@ public class RelayManager : MonoBehaviour
     {
         selectedBoardType = boardType;
 
-        if (selectedBoardType == "Morabaraba")
+        if (selectedBoardType == "Six Men's Morris")
         {
-            nextScene = "Morabaraba PVP";
+            nextScene = "Six-Mens PVP";
         }
         else if (selectedBoardType == "Nine Men's Morris")
         {
@@ -144,16 +146,17 @@ public class RelayManager : MonoBehaviour
         }
         else
         {
-            nextScene = "Six-Mens PVP";
+            nextScene = "Morabaraba PVP";
         }
 
         Debug.Log("Selected Scene: " + nextScene);
+
     }
 
     private void OnServerStarted()
     {
         NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
-
+        Debug.Log(nextScene + " is loading...");
         // Use Netcode's scene manager so in-scene NetworkObjects get spawned properly
         NetworkManager.Singleton.SceneManager.LoadScene(nextScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
@@ -186,7 +189,7 @@ public class RelayManager : MonoBehaviour
         }
 
         // Use Netcode's scene manager so in-scene NetworkObjects get spawned properly
-        NetworkManager.Singleton.SceneManager.LoadScene("MainMenu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Setup", UnityEngine.SceneManagement.LoadSceneMode.Single);
 
 
     }

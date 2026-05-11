@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class MenuUI : MonoBehaviour
+public class setupUI : MonoBehaviour
 {
     private UIDocument uiDocument;
 
@@ -104,6 +104,7 @@ public class MenuUI : MonoBehaviour
 
         RelayManager.Instance.SetBoardType(selectedBoardType);
 
+
         if (selectedGameMode == "Player vs AI")
         {
             Debug.Log("Difficulty: " + selectedDifficulty);
@@ -111,11 +112,11 @@ public class MenuUI : MonoBehaviour
 
         feedbackLabel.text = "Starting game...";
 
-        if(selectedGameMode == "Player vs Player")
+        if (selectedGameMode == "Player vs Player")
         {
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("Menu");
         }
-        else if(selectedGameMode == "Player vs AI")
+        else if (selectedGameMode == "Player vs AI")
         {
             if (selectedBoardType == "Morabaraba")
             {
@@ -140,8 +141,6 @@ public class MenuUI : MonoBehaviour
         Debug.Log("BACK");
 
         feedbackLabel.text = "Returning...";
-
-        // TODO:
-        // Return to previous menu
+        Application.Quit();
     }
 }

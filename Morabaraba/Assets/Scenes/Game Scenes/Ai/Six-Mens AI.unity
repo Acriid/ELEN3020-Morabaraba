@@ -311,7 +311,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: de92a85c7a1ea55439dddfb5fc104523, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -525,7 +526,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GameFunctions::GameplayUI
   _document: {fileID: 327901832}
-  _gameManager: {fileID: 908124095}
+  _gameManager: {fileID: 0}
+  _gameManagerAI: {fileID: 0}
 --- !u!1001 &370684251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -582,7 +584,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -662,7 +665,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -774,7 +778,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -975,7 +980,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1181,7 +1187,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: b83f64cc21c53874d85770035d73b7c2, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1609,7 +1616,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 7c14b3c4adb84d44a82bf9c08aa1a807, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1671,9 +1679,8 @@ GameObject:
   - component: {fileID: 908124093}
   - component: {fileID: 908124094}
   - component: {fileID: 908124098}
-  - component: {fileID: 908124095}
   - component: {fileID: 908124096}
-  - component: {fileID: 908124097}
+  - component: {fileID: 908124099}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -1708,7 +1715,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 001e01f9f1f191943813bd0ff64c2a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResetBoard
-  _boardSpaces: []
+  _boardSpaces:
+  - {fileID: 2089292524}
+  - {fileID: 274525847}
+  - {fileID: 1537200144}
+  - {fileID: 1789782199}
+  - {fileID: 571070004}
+  - {fileID: 1528960343}
+  - {fileID: 515241690}
+  - {fileID: 710694418}
+  - {fileID: 1271288475}
+  - {fileID: 1845848827}
+  - {fileID: 1700409581}
+  - {fileID: 453987977}
+  - {fileID: 1874418661}
+  - {fileID: 16861869}
+  - {fileID: 920198733}
+  - {fileID: 1423184587}
   _pieces:
   - {fileID: 533162969}
   - {fileID: 1192656252}
@@ -1722,7 +1745,7 @@ MonoBehaviour:
   - {fileID: 395986503}
   - {fileID: 2123405226}
   - {fileID: 510802946}
---- !u!114 &908124095
+--- !u!114 &908124096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1731,16 +1754,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 908124091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d33d201854cdf44787f09a483e8dbbe, type: 3}
+  m_Script: {fileID: 11500000, guid: 704507a962d980c44ac4cf4dc287ec0e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  ShowTopMostFoldoutHeaderGroup: 1
+  m_EditorClassIdentifier: Assembly-CSharp::MillDetection
+--- !u!114 &908124098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908124091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 993464582
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &908124099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908124091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e491e3ab79469641870531ef010aa79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameFunctions::GameManagerAI
   _piecesTeam1:
   - {fileID: 533162969}
   - {fileID: 1192656252}
   - {fileID: 893770498}
-  - {fileID: 2020165470}
   - {fileID: 1723320266}
+  - {fileID: 2020165470}
   - {fileID: 242194901}
   _piecesTeam2:
   - {fileID: 1666344173}
@@ -1767,60 +1826,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 87ecc06fab80ff4409ff23e31dc56944, type: 2}
   - {fileID: 11400000, guid: f52d6504b8248df499620b8df7c3abe8, type: 2}
   _millDetection: {fileID: 908124096}
-  _undoRedoManager: {fileID: 908124097}
---- !u!114 &908124096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908124091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 704507a962d980c44ac4cf4dc287ec0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MillDetection
---- !u!114 &908124097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908124091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e7ec656a670e34980d721699e53daf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UndoRedoManager
-  boardSpaces: []
-  gameManager: {fileID: 908124095}
-  team1Pieces: []
-  team2Pieces: []
---- !u!114 &908124098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908124091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 993464582
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!1001 &920198731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2109,7 +2114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AiBrain
   _aiTeam: 1
-  _gameManager: {fileID: 908124095}
+  _gameManager: {fileID: 908124099}
   _boardObjects:
   - {fileID: 2089292524}
   - {fileID: 274525847}
@@ -2231,7 +2236,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 6ddcbdd8eb54c6e459334cbe0c677659, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2958,7 +2964,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -3218,7 +3225,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 220f414be651ee945aeba55c771635a4, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -3757,7 +3765,8 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: 26b953884931cb8429614dc7324e5e36, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3945437196644605249, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -4164,7 +4173,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8854846485735067300, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
