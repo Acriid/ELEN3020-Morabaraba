@@ -85,7 +85,6 @@ public class MainMenuUI : MonoBehaviour
         feedback.text = $"Joined Lobby: {joinCode}";
         hudUI.SetJoinCode(joinCode);
 
-        Invoke(nameof(relayManager.ChangeScene), 1f); // Delay the scene change to allow feedback to be seen
-
+       
     }
 }

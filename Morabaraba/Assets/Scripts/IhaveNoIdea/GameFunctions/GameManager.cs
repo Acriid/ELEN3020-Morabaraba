@@ -239,7 +239,7 @@ public class GameManager : NetworkBehaviour
         boardObj.BoardSO.ChangeCurrentPiece(null);
         piece.data.SetCurrentBoardSpace(null);
 
-        Debug.Log($"ServerRpc passed - pieceIndex: {pieceIndex}, phase: {_currentPhase}, mill: {millDetected}");
+        // Debug.Log($"ServerRpc passed - pieceIndex: {pieceIndex}, phase: {_currentPhase}, mill: {millDetected}");
         ExecutePlacePieceClientRpc(boardID, pieceIndex, _currentTeam, millDetected);
     }
 

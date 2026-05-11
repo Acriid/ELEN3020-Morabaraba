@@ -57,6 +57,7 @@ public class RelayManager : MonoBehaviour
             );
 
             NetworkManager.Singleton.StartClient();
+            Invoke(nameof(ChangeScene), 1f); // Delay the scene change to allow feedback to be seen
 
             return true;
         }
@@ -106,6 +107,7 @@ public class RelayManager : MonoBehaviour
             // Wait for the server to be ready before loading the scene
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.StartHost();
+            
             return true;
         }
         catch (RelayServiceException e)
@@ -134,9 +136,9 @@ public class RelayManager : MonoBehaviour
     {
         selectedBoardType = boardType;
 
-        if (selectedBoardType == "Morabaraba")
+        if (selectedBoardType == "Six Men's Morris")
         {
-            nextScene = "Morabaraba PVP";
+            nextScene = "Six-Mens PVP";
         }
         else if (selectedBoardType == "Nine Men's Morris")
         {
@@ -144,7 +146,7 @@ public class RelayManager : MonoBehaviour
         }
         else
         {
-            nextScene = "Six-Mens PVP";
+            nextScene = "Morabaraba PVP";
         }
 
         Debug.Log("Selected Scene: " + nextScene);
