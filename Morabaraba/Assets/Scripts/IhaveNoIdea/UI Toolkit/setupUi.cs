@@ -104,13 +104,34 @@ public class setupUI : MonoBehaviour
         selectedDifficulty = aiDifficultyDropdown.value;
 
         Debug.Log("START GAME");
-
         Debug.Log("Mode: " + selectedGameMode);
         Debug.Log("Board: " + selectedBoardType);
 
         RelayManager.Instance.SetBoardType(selectedBoardType);
 
+        if (selectedGameMode == "Player vs AI")
+        {
+            if (aibrain == null)
+            {
+                aibrain = FindFirstObjectByType<AiBrain>();
+            }
 
+            if (aibrain != null)
+            {
+                switch (selectedDifficulty)
+                {
+                    case "Easy":
+                        aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Easy);
+                        break;
+                    case "Medium":
+                        aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Normal);
+                        break;
+                    case "Hard":
+                        aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Hard);
+                        break;
+                }
+            }
+        }
 
         feedbackLabel.text = "Starting game...";
 
@@ -123,32 +144,16 @@ public class setupUI : MonoBehaviour
             if (selectedBoardType == "Morabaraba")
             {
                 nextScene = "Morabaraba AI";
-                SceneManager.LoadScene(nextScene);
             }
             else if (selectedBoardType == "Nine Men's Morris")
             {
                 nextScene = "Nine-Mens AI";
-                SceneManager.LoadScene(nextScene);
             }
             else
             {
                 nextScene = "Six-Mens AI";
-                SceneManager.LoadScene(nextScene);
             }
-
-
-            if (selectedDifficulty == "Easy")
-            {
-                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Easy);
-            }
-            else if (selectedDifficulty == "Medium")
-            {
-                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Normal);
-            }
-            else if (selectedDifficulty == "Hard")
-            {
-                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Hard);
-            }
+            SceneManager.LoadScene(nextScene);
         }
     }
 
