@@ -13,12 +13,16 @@ public class RelayManager : MonoBehaviour
 {
     public static RelayManager Instance { get; private set; }
 
+
     [SerializeField] private string joinCodeInput;
-    public string nextScene;
-    public MainMenuUI mainMenuUI;
+    private string nextScene;
+    private MainMenuUI mainMenuUI;
+
+    [SerializeField] private string selectedBoardType;
     public string JoinCodeInput { get => joinCodeInput; set => joinCodeInput = value; }
     public bool canJoin = false;
 
+    private bool servicesInitialized = false;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -65,12 +69,29 @@ public class RelayManager : MonoBehaviour
 
     public async Task<bool> CreateRelay()
     {
+        if (mainMenuUI == null)
+        {
+            mainMenuUI = FindFirstObjectByType<MainMenuUI>();
+        }
 
         try
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             joinCodeInput = joinCode;
+
+            if (mainMenuUI == null)
+            {
+                Debug.LogError("MainMenuUI not found!");
+                return false;
+            }
+
+            if (mainMenuUI.ipField == null)
+            {
+                Debug.LogError("ipField is null!");
+                return false;
+            }
+
             mainMenuUI.ipField.value = joinCodeInput;
 
 
@@ -97,13 +118,37 @@ public class RelayManager : MonoBehaviour
 
     async void Start()
     {
+        mainMenuUI = FindFirstObjectByType<MainMenuUI>();
+
         if (UnityServices.State == ServicesInitializationState.Initialized) return;
 
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+        servicesInitialized = true;
+        Debug.Log("Unity Services Initialized");
     }
 
 
+    public void SetBoardType(string boardType)
+    {
+        selectedBoardType = boardType;
+
+        if (selectedBoardType == "Morabaraba")
+        {
+            nextScene = "Morabaraba PVP";
+        }
+        else if (selectedBoardType == "Nine Men's Morris")
+        {
+            nextScene = "Nine-Mens PVP";
+        }
+        else
+        {
+            nextScene = "Six-Mens PVP";
+        }
+
+        Debug.Log("Selected Scene: " + nextScene);
+    }
 
     private void OnServerStarted()
     {
@@ -113,10 +158,10 @@ public class RelayManager : MonoBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(nextScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
-
-
     public void ChangeScene()
     {
+        Debug.Log("Loading Scene: " + nextScene);
+
         SceneManager.LoadScene(nextScene);
     }
     private void OnDisconnected(ulong clientId)

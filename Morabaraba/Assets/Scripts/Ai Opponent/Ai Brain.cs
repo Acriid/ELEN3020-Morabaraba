@@ -10,9 +10,10 @@ public class AiBrain : MonoBehaviour
     private List<BoardSO> _boardInterestList;
     [SerializeField] private List<BoardObject> _boardObjects;
 
-    private Dictionary<BoardSO, BoardObject> _boardLookup = new();
+    private  Dictionary<BoardSO, BoardObject> _boardLookup = new();
+    private AiDifficulty? aiDifficulty = AiDifficulty.Hard;
 
-    public void InitializeBoard(IEnumerable<BoardObject> allBoardSpaces)
+    public  void InitializeBoard(IEnumerable<BoardObject> allBoardSpaces)
     {
         _boardLookup.Clear();
         foreach (BoardObject board in allBoardSpaces)
@@ -21,9 +22,9 @@ public class AiBrain : MonoBehaviour
         }
     }
 
-    public void SetAIDifficulty()
+    public void SetAIDifficulty(AiDifficulty aiDifficulty)
     {
-
+        this.aiDifficulty = aiDifficulty;
     }
     public void SetGameManager(GameManager gameManager)
     {
@@ -41,7 +42,7 @@ public class AiBrain : MonoBehaviour
     void Start()
     {
         InitializeBoard(_boardObjects);
-        // _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
+        _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
         _gameManager.onMoveDone += Move;
         _gameManager.onMillGot += RemovePiece;
         _boardInterestList = new();
@@ -55,10 +56,10 @@ public class AiBrain : MonoBehaviour
 
     private void RemovePiece()
     {
-        if (_gameManager.GetCurrentTeam() != _aiTeam) return;
+        if(_gameManager.GetCurrentTeam() != _aiTeam) return;
 
-        _gameManager.RequestRemovePiece(GetRemoveBoard());
-        // _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
+        _gameManager.HandleRemovalClick(_boardLookup[GetRemoveBoard()].gameObject);
+        _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
     }
 
     private BoardSO DecideNextPlace()
@@ -68,24 +69,34 @@ public class AiBrain : MonoBehaviour
         List<BoardSO> millBlockList = GetMillAndBlockSpaces();
 
         BoardSO boardMove = null;
-        if (millBlockList.Count > 0)
+
+        if(aiDifficulty == AiDifficulty.Hard)
         {
-            boardMove = millBlockList[Random.Range(0, millBlockList.Count)];
+            if(millList.Count > 0)
+            {
+                boardMove = millList[Random.Range(0,millList.Count)];
+                Debug.Log($"Mill Found At {boardMove.BoardID}");
+                return boardMove;
+            }
+        }
+
+        if(aiDifficulty == AiDifficulty.Normal || aiDifficulty == AiDifficulty.Hard)
+        {
+            if(blockList.Count > 0)
+            {
+                boardMove = blockList[Random.Range(0,blockList.Count)];
+                return boardMove;
+            }
+        }
+
+
+        if(millBlockList.Count > 0)
+        {
+            boardMove = millBlockList[Random.Range(0,millBlockList.Count)];
             return boardMove;
         }
 
-        if (millList.Count > 0)
-        {
-            boardMove = millList[Random.Range(0, millList.Count)];
-            Debug.Log($"Mill Found At {boardMove.BoardID}");
-            return boardMove;
-        }
 
-        if (blockList.Count > 0)
-        {
-            boardMove = blockList[Random.Range(0, blockList.Count)];
-            return boardMove;
-        }
 
 
         return boardMove;
@@ -96,18 +107,21 @@ public class AiBrain : MonoBehaviour
         List<BoardSO> potentialMills = new(_gameManager.GetPotentialMills(opponent));
 
         // Prefer a potential-mill piece that isn't protected by a completed mill
-        List<BoardSO> validTargets = potentialMills.FindAll(b =>
+        List<BoardSO> validTargets = potentialMills.FindAll(b => 
             !_gameManager.GetMillDetection().IsPieceInAMill(b));
 
-        if (validTargets.Count > 0)
-            return validTargets[Random.Range(0, validTargets.Count)];
+        if(aiDifficulty == AiDifficulty.Normal || aiDifficulty == AiDifficulty.Hard)
+        {
+            if (validTargets.Count > 0)
+                return validTargets[Random.Range(0, validTargets.Count)];
+        }
 
         // Fall back: any opponent piece not in a completed mill
         List<BoardSO> anyUnprotected = _gameManager.GetBoard().FindAll(b =>
         {
             PieceSO piece = b.GetCurrentPiece();
-            return piece != null
-                && piece.Team == opponent
+            return piece != null 
+                && piece.Team == opponent 
                 && !_gameManager.GetMillDetection().IsPieceInAMill(b);
         });
 
@@ -126,33 +140,33 @@ public class AiBrain : MonoBehaviour
     private BoardSO RandomBoardPlaceSpot()
     {
         BoardSO moveSpot = null;
-        while (moveSpot == null || moveSpot.GetCurrentPiece() != null)
+        while(moveSpot == null || moveSpot.GetCurrentPiece() != null)
         {
-            moveSpot = _boardObjects[Random.Range(0, _boardObjects.Count)].BoardSO;
+            moveSpot = _boardObjects[Random.Range(0,_boardObjects.Count)].BoardSO;
         }
 
         return moveSpot;
     }
     private BoardSO AdjacentBoardPlaceSpot()
     {
-        if (_boardInterestList.Count == 0) return null;
+        if(_boardInterestList.Count == 0) return null;
 
         List<BoardSO> possibleSpots = new();
         List<BoardSO> finaleSpots = new();
-        foreach (BoardSO board in _boardInterestList)
+        foreach(BoardSO board in _boardInterestList)
         {
             possibleSpots.AddRange(board.GetAdjacentBoardSpaces());
         }
         finaleSpots.AddRange(possibleSpots);
-        foreach (BoardSO board in possibleSpots)
+        foreach(BoardSO board in possibleSpots)
         {
-            if (board.GetCurrentPiece() != null)
+            if(board.GetCurrentPiece() != null)
             {
                 finaleSpots.Remove(board);
             }
         }
 
-        return finaleSpots[Random.Range(0, finaleSpots.Count)];
+        return finaleSpots[Random.Range(0,finaleSpots.Count)];
     }
 
     public List<BoardSO> GetMillAndBlockSpaces()
@@ -165,7 +179,7 @@ public class AiBrain : MonoBehaviour
         team1Spaces.IntersectWith(team2Spaces);
 
         return new List<BoardSO>(team1Spaces);
-    }
+    }    
 
     public void Place()
     {
@@ -173,14 +187,14 @@ public class AiBrain : MonoBehaviour
         BoardSO move = DecideNextPlace();
 
 
-        if (move == null && _boardInterestList.Count == 0)
+        if(move == null && _boardInterestList.Count == 0)
         {
             move = RandomBoardPlaceSpot();
         }
-        else if (move == null && _boardInterestList.Count > 0)
+        else if(move == null && _boardInterestList.Count > 0)
         {
             move = AdjacentBoardPlaceSpot();
-            if (move == null)
+            if(move == null)
             {
                 move = RandomBoardPlaceSpot();
             }
@@ -190,7 +204,7 @@ public class AiBrain : MonoBehaviour
         _boardInterestList.Add(move);
 
 
-        _gameManager.RequestPlacePiece(move);
+        _gameManager.PlacePiece(_boardLookup[move].gameObject);
         Debug.Log($"Played {move.BoardID}");
     }
 
@@ -199,7 +213,7 @@ public class AiBrain : MonoBehaviour
     {
         if (_gameManager.GetCurrentTeam() == _aiTeam) return;
 
-        // _gameManager.SetCurrentTeam(_aiTeam);
+        _gameManager.SetCurrentTeam(_aiTeam);
 
         if (_gameManager.GetCurrentPhase() == GameManager.GamePhase.Place)
         {
@@ -218,7 +232,7 @@ public class AiBrain : MonoBehaviour
             AiMovePiece();
         }
 
-        // _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
+        _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
     }
 
     private void AiMovePiece()
@@ -227,28 +241,31 @@ public class AiBrain : MonoBehaviour
         List<BoardSO> potentialMills = _gameManager.GetPotentialMills(_aiTeam);
         List<BoardSO> blockMills = _gameManager.GetFinalMillBoard()[_gameManager.GetOppositeTeam(_aiTeam)];
         List<BoardSO> finalMills = _gameManager.GetFinalMillBoard()[_aiTeam];
-
-        // Try to move a piece into a mill-completing space,
-        // skipping any source that is part of a developing mill
-        foreach (BoardSO target in finalMills)
+        if(aiDifficulty == AiDifficulty.Hard)
         {
-            if (target.GetCurrentPiece() != null) continue;
-            foreach (BoardSO source in aiSpaces)
+            foreach (BoardSO target in finalMills)
             {
-                if (WouldBreakPotentialMill(source)) continue; // would break a developing mill
-                if (source.GetAdjacentBoardSpaces().Contains(target))
+                if (target.GetCurrentPiece() != null) continue;
+                foreach (BoardSO source in aiSpaces)
                 {
-                    ExecuteMove(source, target);
-                    return;
+                    if (WouldBreakPotentialMill(source)) continue;
+                    if (source.GetAdjacentBoardSpaces().Contains(target))
+                    {
+                        ExecuteMove(source, target);
+                        return;
+                    }
                 }
-            }
+            } 
         }
 
-        // Try to block an opponent mill from forming.
-        if (blockMills.Count > 0)
+        List<BoardSO> shuffled = aiSpaces.OrderBy(_ => Random.value).ToList();
+        if(aiDifficulty == AiDifficulty.Normal || aiDifficulty == AiDifficulty.Hard)
         {
+            // Only block if the opponent has a piece adjacent to the target
             foreach (BoardSO target in blockMills)
             {
+                if (!OpponentCanReachMove(target)) continue;
+
                 foreach (BoardSO source in aiSpaces)
                 {
                     if (source.GetAdjacentBoardSpaces().Contains(target))
@@ -258,25 +275,24 @@ public class AiBrain : MonoBehaviour
                     }
                 }
             }
-        }
 
-        // Fall back to any valid move, still avoiding pieces in developing mills
-        List<BoardSO> shuffled = aiSpaces.OrderBy(_ => Random.value).ToList();
-        foreach (BoardSO source in shuffled)
-        {
-            if (WouldBreakPotentialMill(source)) continue;
-
-            List<BoardSO> emptyAdjacent = source.GetAdjacentBoardSpaces()
-                .FindAll(b => b.GetCurrentPiece() == null);
-
-            if (emptyAdjacent.Count > 0)
+            
+            foreach (BoardSO source in shuffled)
             {
-                ExecuteMove(source, emptyAdjacent[Random.Range(0, emptyAdjacent.Count)]);
-                return;
+                if (WouldBreakPotentialMill(source)) continue;
+
+                List<BoardSO> emptyAdjacent = source.GetAdjacentBoardSpaces()
+                    .FindAll(b => b.GetCurrentPiece() == null);
+
+                if (emptyAdjacent.Count > 0)
+                {
+                    ExecuteMove(source, emptyAdjacent[Random.Range(0, emptyAdjacent.Count)]);
+                    return;
+                }
             }
+            
         }
 
-        // Last resort: all movable pieces are in developing mills, just move anything valid
         foreach (BoardSO source in shuffled)
         {
             List<BoardSO> emptyAdjacent = source.GetAdjacentBoardSpaces()
@@ -295,48 +311,42 @@ public class AiBrain : MonoBehaviour
     private void AiFlyPiece()
     {
         List<BoardSO> aiSpaces = GetAiOccupiedSpaces();
-        List<BoardSO> potentialMills = _gameManager.GetPotentialMills(_aiTeam);
         List<BoardSO> blockMills = _gameManager.GetFinalMillBoard()[_gameManager.GetOppositeTeam(_aiTeam)];
         List<BoardSO> finalMills = _gameManager.GetFinalMillBoard()[_aiTeam];
         List<BoardSO> emptySpaces = _gameManager.GetBoard()
             .FindAll(b => b.GetCurrentPiece() == null);
-
-        // Try to move a piece into a mill-completing space,
-        // skipping any source that is part of a developing mill
-        foreach (BoardSO target in finalMills)
+        
+        if(aiDifficulty == AiDifficulty.Hard)
         {
-            if (target.GetCurrentPiece() != null) continue;
-            foreach (BoardSO source in aiSpaces)
+            foreach (BoardSO target in finalMills)
             {
-                if (WouldBreakPotentialMill(source)) continue; // would break a developing mill
-                ExecuteFly(source, target);
-                return;
-
-            }
+                if (target.GetCurrentPiece() != null) continue;
+                foreach (BoardSO source in aiSpaces)
+                {
+                    if (WouldBreakPotentialMill(source)) continue;
+                    ExecuteFly(source, target);
+                    return;
+                }
+            }    
         }
 
-        // Try to block an opponent mill from forming.
-        if (blockMills.Count > 0)
+        if(aiDifficulty == AiDifficulty.Normal || aiDifficulty == AiDifficulty.Hard)
         {
+            // In fly phase the opponent can always reach any empty space — always an immediate threat
             foreach (BoardSO target in blockMills)
             {
                 foreach (BoardSO source in aiSpaces)
                 {
                     ExecuteFly(source, target);
                     return;
-
                 }
             }
         }
 
-        // Fall back to any valid move, still avoiding pieces in developing mills
         List<BoardSO> shuffled = aiSpaces.OrderBy(_ => Random.value).ToList();
-
-        // Last resort: all movable pieces are in developing mills, just move anything valid
         foreach (BoardSO source in shuffled)
         {
-
-            ExecuteMove(source, emptySpaces[Random.Range(0, emptySpaces.Count)]);
+            ExecuteFly(source, emptySpaces[Random.Range(0, emptySpaces.Count)]);
             return;
         }
 
@@ -345,12 +355,14 @@ public class AiBrain : MonoBehaviour
 
     private void ExecuteMove(BoardSO from, BoardSO to)
     {
-        _gameManager.RequestMovePiece(from, to);
+        _gameManager.MovePiece(_boardLookup[from].gameObject);
+        _gameManager.MovePiece(_boardLookup[to].gameObject);
     }
 
     private void ExecuteFly(BoardSO from, BoardSO to)
     {
-        _gameManager.RequestFlyPiece(from, to);
+        _gameManager.FlyPiece(_boardLookup[from].gameObject);
+        _gameManager.FlyPiece(_boardLookup[to].gameObject);
     }
 
     private List<BoardSO> GetAiOccupiedSpaces()
@@ -411,6 +423,12 @@ public class AiBrain : MonoBehaviour
         }
 
         return false;
+    }
+    private bool OpponentCanReachMove(BoardSO target)
+    {
+        Team opponent = _gameManager.GetOppositeTeam(_aiTeam);
+        return target.GetAdjacentBoardSpaces()
+            .Exists(b => b.GetCurrentPiece() != null && b.GetCurrentPiece().Team == opponent);
     }
     public enum AiDifficulty
     {
