@@ -1,8 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/HUD.uss?fileID=7433441132597879392&amp;guid=855ae9edf14dec44eb12e3659d9a5620&amp;type=3#HUD"/>
-    <ui:VisualElement style="flex-grow: 1;">
-        <ui:Button text="EXIT GAME" name="ExitButton" parse-escape-sequences="false" selectable="true" style="position: absolute; top: 0; left: auto; right: 0; bottom: auto;"/>
-        <ui:Label text="Join Code :" name="Code" selectable="true" focusable="true" style="height: 53px; width: 374px; aspect-ratio: auto; font-size: 27px;"/>
+    <Style src="project://database/Assets/Scripts/IhaveNoIdea/UI%20Toolkit/HUD.uss?fileID=7433441132597879392&amp;guid=855ae9edf14dec44eb12e3659d9a5620&amp;type=3#HUD"/>
+    <ui:VisualElement focusable="false" class="code-container" style="flex-grow: 1;">
+        <ui:Button text="EXIT GAME" name="ExitButton" parse-escape-sequences="false" selectable="true" style="position: absolute; top: 0; left: auto; right: 0; bottom: auto; background-color: rgb(155, 25, 32);"/>
+        <ui:Label text="Join Code :" name="Code" selectable="true" focusable="true" style="height: 36px; width: 159px; aspect-ratio: auto; font-size: 27px; position: absolute; top: 0; left: 0; right: 474px; bottom: 0;"/>
     </ui:VisualElement>
     <ui:VisualElement class="undo-container" style="top: auto;">
         <ui:Button name="undoButton" text="Undo"/>

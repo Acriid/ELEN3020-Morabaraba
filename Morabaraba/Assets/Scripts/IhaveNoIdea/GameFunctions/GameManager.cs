@@ -20,6 +20,7 @@ public class GameManager : NetworkBehaviour
     //Phases
     private GamePhase _currentPhase = GamePhase.Place;
     private event Action<GamePhase> OnPhaseChange;
+    public event Action<Team> OnCurrentTeamChanged;
 
     //Move phase
     private BoardObject _selectedBoard = null;
@@ -66,7 +67,7 @@ public class GameManager : NetworkBehaviour
     }
     public void Initialize()
     {
-        Debug.Log($"Initialize called - _boardSOs count: {(_boardSOs == null ? "NULL" : _boardSOs.Count.ToString())}");
+        // Debug.Log($"Initialize called - _boardSOs count: {(_boardSOs == null ? "NULL" : _boardSOs.Count.ToString())}");
 
         _millDetection.InitializeBoard(_boardSOs);
 
@@ -74,7 +75,11 @@ public class GameManager : NetworkBehaviour
         // Both clients have the same scene so both get the same dictionary
         _boardObjectLookup.Clear();
         foreach (BoardObject bo in FindObjectsByType<BoardObject>(FindObjectsSortMode.None))
+        {
+            if (_boardObjectLookup == null)
+                _boardObjectLookup = new Dictionary<string, BoardObject>();
             _boardObjectLookup[bo.BoardSO.BoardID] = bo;
+        }
 
 
         OnPhaseChange += ChangePhase;
@@ -91,11 +96,28 @@ public class GameManager : NetworkBehaviour
 
     // Two helpers to know which team the local player controls
     // Convention: host = Player1, joining client = Player2
-    private Team GetLocalPlayerTeam()
+    public Team GetLocalPlayerTeam()
     {
-        return NetworkManager.Singleton.IsHost ? Team.Player1 : Team.Player2;
+        if (NetworkManager.Singleton == null)
+        {
+            Debug.LogWarning("NetworkManager.Singleton was null");
+            return Team.Player1;
+        }
+
+        return NetworkManager.Singleton.IsHost
+            ? Team.Player1
+            : Team.Player2;
     }
 
+    // helper to get the current player
+    private void SetCurrentTeamInternal(Team newTeam)
+    {
+        _currentTeam = newTeam;
+
+        Debug.Log($"Current turn: {_currentTeam}");
+
+        OnCurrentTeamChanged?.Invoke(_currentTeam);
+    }
     private bool IsMyTurn()
     {
         return _currentTeam == GetLocalPlayerTeam();
@@ -104,10 +126,13 @@ public class GameManager : NetworkBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
-        Debug.Log($"Click detected - IsHost: {NetworkManager.Singleton.IsHost}, CurrentTeam: {_currentTeam}, IsMyTurn: {IsMyTurn()}");
+        if (NetworkManager.Singleton == null) return;
+        // Debug.Log($"Click detected - IsHost: {NetworkManager.Singleton.IsHost}, CurrentTeam: {_currentTeam}, IsMyTurn: {IsMyTurn()}");
 
         // Raycast
         Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        if (Camera.main == null || Mouse.current == null) return;
+
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.zero);
 
         if (!hit) return;
@@ -161,17 +186,26 @@ public class GameManager : NetworkBehaviour
             return;
         }
 
-        if (_currentPhase == GamePhase.Move)
-        {
-            HandleMoveSelectionLocally(boardID, boardComponent);
-            return;
-        }
-
-        if (_currentPhase == GamePhase.Fly)
+        if (IsCurrentPlayerFlying())
         {
             HandleFlySelectionLocally(boardID, boardComponent);
-            return;
         }
+        else
+        {
+            HandleMoveSelectionLocally(boardID, boardComponent);
+        }
+    }
+
+    private bool IsCurrentPlayerFlying()
+    {
+        if (_currentTeam == Team.Player1)
+        {
+            return _piecesOnBoardTeam1 == 3 &&
+                   _team1Index == _piecesTeam1.Count;
+        }
+
+        return _piecesOnBoardTeam2 == 3 &&
+               _team2Index == _piecesTeam2.Count;
     }
 
     // =========================================================================
@@ -183,7 +217,7 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     private void SubmitPlacePieceServerRpc(string boardID)
     {
-        Debug.Log($"ServerRpc received - boardID: {boardID}, lookup count: {_boardObjectLookup.Count}");
+        // Debug.Log($"ServerRpc received - boardID: {boardID}, lookup count: {_boardObjectLookup.Count}");
 
         BoardObject boardObj = GetBoardObject(boardID);
         if (boardObj == null) { Debug.Log("FAILED: boardID not found in lookup"); return; }
@@ -212,7 +246,8 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void ExecutePlacePieceClientRpc(string boardID, int pieceIndex, Team team, bool millDetected)
     {
-        Debug.Log($"ClientRpc reached on {(NetworkManager.Singleton.IsHost ? "Host" : "Client")}");
+        if (NetworkManager.Singleton == null) return;
+        // Debug.Log($"ClientRpc reached on {(NetworkManager.Singleton.IsHost ? "Host" : "Client")}");
 
         BoardObject boardObj = GetBoardObject(boardID);
         if (boardObj == null) { Debug.Log("ClientRpc FAILED: board not found"); return; }
@@ -236,7 +271,7 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            _currentTeam = GetOppositeTeam(team);
+            SetCurrentTeamInternal(GetOppositeTeam(team));
             onMoveDone?.Invoke();
         }
 
@@ -257,6 +292,19 @@ public class GameManager : NetworkBehaviour
     // =========================================================================
     // MOVE - selection is local (just UI state), the actual move is an RPC pair
     // =========================================================================
+    //Scale the held piece up slightly for visual feedback
+    private void SetPieceScale(BoardObject boardObject, float scale)
+    {
+        if (boardObject == null) return;
+
+        PieceSO pieceData = boardObject.BoardSO.GetCurrentPiece();
+        if (pieceData == null) return;
+
+        Piece pieceObject = FindPieceObject(pieceData);
+        if (pieceObject == null) return;
+
+        pieceObject.transform.localScale = Vector3.one * scale;
+    }
 
     // Handles the two-click flow locally (select then submit)
     // _selectedBoard is only used on the active player's client, which is fine
@@ -265,7 +313,10 @@ public class GameManager : NetworkBehaviour
         if (_selectedBoard == null)
         {
             if (!boardComponent.BoardSO.CheckIfSameTeam(_currentTeam)) return;
+
             _selectedBoard = boardComponent;
+            SetPieceScale(_selectedBoard, 1.2f);
+
             Debug.Log($"Selected piece at {boardID}");
             return;
         }
@@ -273,6 +324,7 @@ public class GameManager : NetworkBehaviour
         // Deselect
         if (boardComponent == _selectedBoard)
         {
+            SetPieceScale(_selectedBoard, 1f);
             _selectedBoard = null;
             Debug.Log("Deselected piece");
             return;
@@ -281,7 +333,12 @@ public class GameManager : NetworkBehaviour
         // Reselect a different friendly piece
         if (boardComponent.BoardSO.CheckIfSameTeam(_currentTeam))
         {
+            SetPieceScale(_selectedBoard, 1f);
+
             _selectedBoard = boardComponent;
+
+            SetPieceScale(_selectedBoard, 1.2f);
+
             Debug.Log($"Reselected piece at {boardID}");
             return;
         }
@@ -298,6 +355,8 @@ public class GameManager : NetworkBehaviour
 
         // Move confirmed - send to server
         SubmitMovePieceServerRpc(_selectedBoard.BoardSO.BoardID, boardID);
+
+        SetPieceScale(_selectedBoard, 1f);
         _selectedBoard = null;
     }
 
@@ -308,7 +367,11 @@ public class GameManager : NetworkBehaviour
         if (!_boardObjectLookup.TryGetValue(fromBoardID, out BoardObject fromObj)) return;
         if (!_boardObjectLookup.TryGetValue(toBoardID, out BoardObject toObj)) return;
 
+        if (fromObj == null || fromObj.BoardSO == null) return;
+
         PieceSO movingPiece = fromObj.BoardSO.GetCurrentPiece();
+
+
         if (movingPiece == null || movingPiece.Team != _currentTeam) return;
         if (toObj.BoardSO.GetCurrentPiece() != null) return;
 
@@ -335,7 +398,10 @@ public class GameManager : NetworkBehaviour
         if (!_boardObjectLookup.TryGetValue(fromBoardID, out BoardObject fromObj)) return;
         if (!_boardObjectLookup.TryGetValue(toBoardID, out BoardObject toObj)) return;
 
+        if (fromObj == null || fromObj.BoardSO == null) return;
+
         PieceSO movingPiece = fromObj.BoardSO.GetCurrentPiece();
+        if (movingPiece == null) return;
 
         fromObj.BoardSO.ChangeCurrentPiece(null);
         movingPiece.SetCurrentBoardSpace(toObj.BoardSO);
@@ -345,7 +411,11 @@ public class GameManager : NetworkBehaviour
         if (pieceObject != null)
         {
             pieceObject.transform.SetParent(toObj.transform);
+
             pieceObject.transform.localPosition = Vector3.zero;
+
+            // Reset selection scale after move
+            pieceObject.transform.localScale = Vector3.one;
         }
 
         Debug.Log($"Moved piece from {fromBoardID} to {toBoardID}");
@@ -372,6 +442,7 @@ public class GameManager : NetworkBehaviour
         {
             if (!boardComponent.BoardSO.CheckIfSameTeam(_currentTeam)) return;
             _selectedBoard = boardComponent;
+            SetPieceScale(_selectedBoard, 1.2f);
             Debug.Log($"Selected piece at {boardID}");
             return;
         }
@@ -379,13 +450,18 @@ public class GameManager : NetworkBehaviour
         if (boardComponent == _selectedBoard)
         {
             _selectedBoard = null;
+            SetPieceScale(_selectedBoard, 1f);
             Debug.Log("Deselected piece");
             return;
         }
 
         if (boardComponent.BoardSO.CheckIfSameTeam(_currentTeam))
         {
+            SetPieceScale(_selectedBoard, 1f);
+
             _selectedBoard = boardComponent;
+
+            SetPieceScale(_selectedBoard, 1.2f);
             Debug.Log($"Reselected piece at {boardID}");
             return;
         }
@@ -404,7 +480,10 @@ public class GameManager : NetworkBehaviour
         if (!_boardObjectLookup.TryGetValue(fromBoardID, out BoardObject fromObj)) return;
         if (!_boardObjectLookup.TryGetValue(toBoardID, out BoardObject toObj)) return;
 
+        if (fromObj == null || fromObj.BoardSO == null) return;
+
         PieceSO movingPiece = fromObj.BoardSO.GetCurrentPiece();
+
         if (movingPiece == null || movingPiece.Team != _currentTeam) return;
         if (toObj.BoardSO.GetCurrentPiece() != null) return;
 
@@ -429,7 +508,10 @@ public class GameManager : NetworkBehaviour
         if (!_boardObjectLookup.TryGetValue(fromBoardID, out BoardObject fromObj)) return;
         if (!_boardObjectLookup.TryGetValue(toBoardID, out BoardObject toObj)) return;
 
+        if (fromObj == null || fromObj.BoardSO == null) return;
+
         PieceSO movingPiece = fromObj.BoardSO.GetCurrentPiece();
+        if (movingPiece == null) return;
 
         fromObj.BoardSO.ChangeCurrentPiece(null);
         movingPiece.SetCurrentBoardSpace(toObj.BoardSO);
@@ -439,7 +521,11 @@ public class GameManager : NetworkBehaviour
         if (pieceObject != null)
         {
             pieceObject.transform.SetParent(toObj.transform);
+
             pieceObject.transform.localPosition = Vector3.zero;
+
+            // Reset selection scale after move
+            pieceObject.transform.localScale = Vector3.one;
         }
 
         Debug.Log($"Flew piece from {fromBoardID} to {toBoardID}");
@@ -506,7 +592,7 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"Removed piece {piece.data.PieceID}");
 
         // Switch to opponent's turn now that removal is done
-        _currentTeam = GetOppositeTeam(piece.data.Team);
+        SetCurrentTeamInternal(_removalTeam);
 
         // Check whether this triggers the fly phase
         if (_piecesOnBoardTeam1 == 3 && _team1Index == _piecesTeam1.Count)
@@ -543,7 +629,8 @@ public class GameManager : NetworkBehaviour
         _mouseAction = _inputActions.Player.Click;
 
 
-        _mouseAction.performed += OnClick;
+        if (_mouseAction != null)
+            _mouseAction.performed += OnClick;
 
         _mouseAction.Enable();
     }
@@ -934,18 +1021,23 @@ public class GameManager : NetworkBehaviour
     //   replaces it without re - initialising the lookup.
     public void SetBoardScriptableObjects(List<BoardSO> newList)
     {
-        Debug.Log($"SetBoardScriptableObjects called - count: {_boardSOs.Count}");
+        // Debug.Log($"SetBoardScriptableObjects called - count: {_boardSOs.Count}");
 
         _boardSOs = new(newList);
         _millDetection.InitializeBoard(_boardSOs); // re-build lookup with correct list
 
     }
+
     public void SetMillDetection(MillDetection newMillDetection)
     {
         _millDetection = newMillDetection;
-        _millDetection.InitializeBoard(_boardSOs); // initialise the new instance too
 
+        if (_millDetection != null && _boardSOs != null)
+        {
+            _millDetection.InitializeBoard(_boardSOs);
+        }
     }
+
     #endregion
 
     public bool GetMillDetected()
@@ -964,14 +1056,18 @@ public class GameManager : NetworkBehaviour
         if (_boardObjectLookup.Count == 0)
         {
             foreach (BoardObject bo in FindObjectsByType<BoardObject>(FindObjectsSortMode.None))
+            {
+                if (_boardObjectLookup == null)
+                    _boardObjectLookup = new Dictionary<string, BoardObject>();
                 _boardObjectLookup[bo.BoardSO.BoardID] = bo;
+            }
         }
 
         // Temporary - log all keys so we can see what's actually stored
         if (!_boardObjectLookup.ContainsKey(boardID))
         {
             string allKeys = string.Join(", ", _boardObjectLookup.Keys);
-            Debug.Log($"'{boardID}' not found. All keys: {allKeys}");
+            // Debug.Log($"'{boardID}' not found. All keys: {allKeys}");
         }
 
         _boardObjectLookup.TryGetValue(boardID, out BoardObject result);

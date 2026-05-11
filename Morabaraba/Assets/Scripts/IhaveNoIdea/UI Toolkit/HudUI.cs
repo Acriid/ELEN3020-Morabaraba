@@ -18,13 +18,26 @@ public class HudUI : MonoBehaviour
         DontDestroyOnLoad(gameObject.transform.parent);
         relayManager = FindAnyObjectByType<RelayManager>();
 
+
         var root = GetComponent<UIDocument>().rootVisualElement;
+        root.Focus();
+
+        var doContainer = root.Q<VisualElement>(className: "undo-container");
+
+
+        var codeContainer = root.Q<VisualElement>(className: "code-container");
+
+        if (codeContainer == null)
+        {
+            Debug.LogError("code-container not found");
+        }
 
         exitButton = root.Q<Button>("ExitButton");
-        joinCodeLabel = root.Q<Label>("Code");
+        // exitButton = codeContainer.Q<Button>("ExitButton");
+        joinCodeLabel = codeContainer.Q<Label>("Code");
 
-        undoButton = root.Q<Button>("undoButton");
-        redoButton = root.Q<Button>("redoButton");
+        undoButton = doContainer.Q<Button>("undoButton");
+        redoButton = doContainer.Q<Button>("redoButton");
 
         undoButton.clicked += OnUndoClicked;
         redoButton.clicked += OnRedoClicked;

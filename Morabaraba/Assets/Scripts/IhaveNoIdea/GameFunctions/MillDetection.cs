@@ -43,7 +43,7 @@ public class MillDetection : MonoBehaviour
         {
             _boardLookup[board.BoardID] = board;
         }
-        Debug.Log($"InitializeBoard done - lookup has {_boardLookup.Count} entries");
+        // Debug.Log($"InitializeBoard done - lookup has {_boardLookup.Count} entries");
     }
     public bool DetectMill(BoardObject boardToCheck)
     {
