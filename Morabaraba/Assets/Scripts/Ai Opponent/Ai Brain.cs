@@ -6,7 +6,7 @@ using UnityEngine;
 public class AiBrain : MonoBehaviour
 {
     [SerializeField] private Team _aiTeam;
-    [SerializeField] private GameManager _gameManager;
+    [SerializeField] private GameManagerAI _gameManager;
     private List<BoardSO> _boardInterestList;
     [SerializeField] private List<BoardObject> _boardObjects;
 
@@ -26,7 +26,7 @@ public class AiBrain : MonoBehaviour
     {
         this.aiDifficulty = aiDifficulty;
     }
-    public void SetGameManager(GameManager gameManager)
+    public void SetGameManager(GameManagerAI gameManager)
     {
         _gameManager = gameManager;
     }
@@ -215,15 +215,15 @@ public class AiBrain : MonoBehaviour
 
         _gameManager.SetCurrentTeam(_aiTeam);
 
-        if (_gameManager.GetCurrentPhase() == GameManager.GamePhase.Place)
+        if (_gameManager.GetCurrentPhase() == GameManagerAI.GamePhase.Place)
         {
             Place();
         }
-        else if (_gameManager.GetCurrentPhase() == GameManager.GamePhase.Move)
+        else if (_gameManager.GetCurrentPhase() == GameManagerAI.GamePhase.Move)
         {
             AiMovePiece();
         }
-        else if (_gameManager.GetCurrentPhase() == GameManager.GamePhase.Fly && _gameManager.GetPiecesOnBoardForTeam(_aiTeam) == 3)
+        else if (_gameManager.GetCurrentPhase() == GameManagerAI.GamePhase.Fly && _gameManager.GetPiecesOnBoardForTeam(_aiTeam) == 3)
         {
             AiFlyPiece();
         }
