@@ -111,21 +111,6 @@ public class setupUI : MonoBehaviour
         RelayManager.Instance.SetBoardType(selectedBoardType);
 
 
-        if (selectedGameMode == "Player vs AI")
-        {
-            if (selectedDifficulty == "Easy")
-            {
-                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Easy);
-            }
-            else if (selectedDifficulty == "Medium")
-            {
-                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Normal);
-            }
-            else if (selectedDifficulty == "Hard")
-            {
-                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Hard);
-            }
-        }
 
         feedbackLabel.text = "Starting game...";
 
@@ -149,6 +134,20 @@ public class setupUI : MonoBehaviour
             {
                 nextScene = "Six-Mens AI";
                 SceneManager.LoadScene(nextScene);
+            }
+
+
+            if (selectedDifficulty == "Easy")
+            {
+                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Easy);
+            }
+            else if (selectedDifficulty == "Medium")
+            {
+                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Normal);
+            }
+            else if (selectedDifficulty == "Hard")
+            {
+                aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Hard);
             }
         }
     }
