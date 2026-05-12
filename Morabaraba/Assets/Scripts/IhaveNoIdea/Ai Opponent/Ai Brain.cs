@@ -11,7 +11,7 @@ public class AiBrain : MonoBehaviour
     [SerializeField] private List<BoardObject> _boardObjects;
 
     private  Dictionary<BoardSO, BoardObject> _boardLookup = new();
-    [SerializeField] private AiDifficulty? aiDifficulty = null;
+    [SerializeField] private AiDifficulty? aiDifficulty = AiDifficulty.Hard;
 
     public  void InitializeBoard(IEnumerable<BoardObject> allBoardSpaces)
     {

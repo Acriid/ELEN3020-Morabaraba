@@ -616,9 +616,9 @@ public class GameManager : NetworkBehaviour
     private void FinishedMove()
     {
         if (_currentPhase != GamePhase.Move) return;
-        if (!CurrentTeamHasValidMove())
+        if (!CurrentTeamHasValidMove(GetOppositeTeam(_currentTeam)))
         {
-            Team winningTeam = GetOppositeTeam(_currentTeam);
+            Team winningTeam = _currentTeam;
             EndGame(winningTeam);
         }
     }
@@ -916,7 +916,8 @@ public class GameManager : NetworkBehaviour
 
     public bool DidTeamLose(Team teamToCheck)
     {
-        if (GetPiecesOnBoardForTeam(teamToCheck) < 3 && (_currentPhase == GamePhase.Move || _currentPhase == GamePhase.Fly))
+        if (GetPiecesOnBoardForTeam(teamToCheck) < 3 && (_currentPhase == GamePhase.Move || _currentPhase == GamePhase.Fly) ||
+        !CurrentTeamHasValidMove(teamToCheck))
             return true;
         return false;
     }
@@ -1122,7 +1123,7 @@ public class GameManager : NetworkBehaviour
         return _millDetection;
     }
 
-    public bool CurrentTeamHasValidMove()
+    public bool CurrentTeamHasValidMove(Team teamToCheck)
     {
         if (_currentPhase == GamePhase.Fly)
         {
@@ -1134,7 +1135,7 @@ public class GameManager : NetworkBehaviour
         foreach (BoardSO board in _boardSOs)
         {
             PieceSO piece = board.GetCurrentPiece();
-            if (piece == null || piece.Team != _currentTeam) continue;
+            if (piece == null || piece.Team != teamToCheck) continue;
 
             if (board.GetAdjacentBoardSpaces().Exists(b => b.GetCurrentPiece() == null))
                 return true;
