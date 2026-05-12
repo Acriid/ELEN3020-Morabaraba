@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(30, 30, 47);">
+        <ui:Button text="Back to Menu" name="ExitButton" style="right: 754px; left: 754px; bottom: 382px; top: 619px; max-width: 373px; max-height: 490px; position: absolute; font-size: 38px; background-color: rgb(170, 34, 34); color: rgb(255, 255, 255);"/>
+        <ui:Label text="You &#10;Win/Loose" name="ResultLabel" style="right: 707px; left: 671px; bottom: auto; top: 236px; position: absolute; width: 537px; height: 284px; font-size: 107px; overflow: visible; -unity-text-align: upper-center; color: rgb(213, 213, 213); -unity-font-style: bold;"/>
+    </ui:VisualElement>
+</ui:UXML>
