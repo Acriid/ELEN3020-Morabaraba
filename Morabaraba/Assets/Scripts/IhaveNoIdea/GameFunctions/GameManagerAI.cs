@@ -1,7 +1,9 @@
+using System;
+using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
-using System;
+using UnityEngine.SceneManagement;
 
 public class GameManagerAI : MonoBehaviour
 {
@@ -380,8 +382,11 @@ public class GameManagerAI : MonoBehaviour
 
     private void EndGame(Team winningTeam)
     {
-        //Need to implement
         Debug.Log($"{winningTeam} won");
+
+        SceneManager.LoadScene("WinLoseScreen");
+
+        StartCoroutine(SetWinAfterLoad(winningTeam));
     }
 
     public bool DidTeamLose(Team teamToCheck)
@@ -421,10 +426,6 @@ public class GameManagerAI : MonoBehaviour
         RemovePiece(piece);
         _waitingForRemoval = false;
     }
-
-
-
-
 
 
 
@@ -577,6 +578,13 @@ public class GameManagerAI : MonoBehaviour
         {
             _currentPhase = GamePhase.Move;
         }
+    }
+
+    private System.Collections.IEnumerator SetWinAfterLoad(Team winningTeam)
+    {
+        yield return null;
+
+        WinLooseUI.Instance.setResult(winningTeam);
     }
 }
 

@@ -911,7 +911,7 @@ public class GameManager : NetworkBehaviour
     private void EndGame(Team winningTeam)
     {
         //Need to implement
-        WinLooseUI.instance.SetResult(winningTeam);
+        WinLooseUI.Instance.setResult(winningTeam);
         Debug.Log($"{winningTeam} won");
         NetworkManager.Singleton.SceneManager.LoadScene("WinLoseScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
 
