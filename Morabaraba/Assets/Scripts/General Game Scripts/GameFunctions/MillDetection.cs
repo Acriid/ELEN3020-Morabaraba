@@ -63,6 +63,10 @@ public class MillDetection : MonoBehaviour
         {
             isSixMens = true;
         }
+        else
+        {
+            isSixMens = false;
+        }
             
         // Debug.Log($"InitializeBoard done - lookup has {_boardLookup.Count} entries");
     }
