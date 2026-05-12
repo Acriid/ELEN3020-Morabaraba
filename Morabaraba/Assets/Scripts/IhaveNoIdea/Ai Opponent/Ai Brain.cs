@@ -167,7 +167,10 @@ public class AiBrain : MonoBehaviour
             }
         }
 
+        if(finaleSpots.Count > 0)
         return finaleSpots[Random.Range(0,finaleSpots.Count)];
+        else
+        return null;
     }
 
     public List<BoardSO> GetMillAndBlockSpaces()
