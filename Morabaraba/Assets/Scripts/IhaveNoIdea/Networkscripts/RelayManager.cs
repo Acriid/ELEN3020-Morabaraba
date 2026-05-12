@@ -14,15 +14,16 @@ public class RelayManager : MonoBehaviour
     public static RelayManager Instance { get; private set; }
 
 
-    [SerializeField] private string joinCodeInput;
     private string nextScene = "Morabaraba PVP";
     private MainMenuUI mainMenuUI;
 
     [SerializeField] private string selectedBoardType;
+    private string joinCodeInput;
     public string JoinCodeInput { get => joinCodeInput; set => joinCodeInput = value; }
     public bool canJoin = false;
 
     private bool servicesInitialized = false;
+    public JoinCodeSO joinCodeSO;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -79,7 +80,7 @@ public class RelayManager : MonoBehaviour
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            joinCodeInput = joinCode;
+            joinCodeSO.JoinCode = joinCode;
 
             if (mainMenuUI == null)
             {
@@ -93,7 +94,8 @@ public class RelayManager : MonoBehaviour
                 return false;
             }
 
-            mainMenuUI.ipField.value = joinCodeInput;
+            // mainMenuUI.ipField.value = joinCodeInput;
+
 
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(

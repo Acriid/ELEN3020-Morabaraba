@@ -10,6 +10,7 @@ public class MainMenuUI : MonoBehaviour
     private Label feedback;
     [SerializeField] public TextField ipField;
     private Label joinCode;
+    public JoinCodeSO JoinCode;
     private RelayManager relayManager;
     [SerializeField] private HudUI hudUI;
 
@@ -50,7 +51,7 @@ public class MainMenuUI : MonoBehaviour
         {
             feedback.text = "Lobby Created!";
             // joinCode.text = $"Join Code: {relayManager.JoinCodeInput}";
-            hudUI.SetJoinCode(relayManager.JoinCodeInput);
+            // hudUI.SetJoinCode(relayManager.JoinCodeInput);
         }
         else
         {
@@ -88,8 +89,8 @@ public class MainMenuUI : MonoBehaviour
         }
 
         feedback.text = $"Joined Lobby: {joinCode}";
-        hudUI.SetJoinCode(joinCode);
+        // hudUI.SetJoinCode(joinCode);
 
-       
+
     }
 }

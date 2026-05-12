@@ -8,6 +8,7 @@ public class HudUI : MonoBehaviour
     private Button exitButton;
     private Label joinCodeLabel;
     private RelayManager relayManager;
+    public JoinCodeSO JoinCode;
 
 
     private void OnEnable()
@@ -34,6 +35,12 @@ public class HudUI : MonoBehaviour
         joinCodeLabel = codeContainer.Q<Label>("Code");
 
 
+
+        if (joinCodeLabel != null)
+        {
+            joinCodeLabel.text = "Join Code : " + JoinCode.JoinCode;
+        }
+
         if (exitButton == null)
         {
             Debug.LogWarning("Exit button not found in UI.");
@@ -47,16 +54,13 @@ public class HudUI : MonoBehaviour
         Debug.Log("Exiting lobby");
         relayManager.LeaveRelay();
         joinCodeLabel.text = "";
-   
+
 
     }
 
     public void SetJoinCode(string code)
     {
-        if (joinCodeLabel != null)
-        {
-            joinCodeLabel.text = "Join Code : " + code;
-        }
+
     }
 
 }
