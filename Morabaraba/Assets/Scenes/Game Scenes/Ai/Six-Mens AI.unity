@@ -1995,6 +1995,7 @@ MonoBehaviour:
   - {fileID: 16861869}
   - {fileID: 920198733}
   - {fileID: 1423184587}
+  AiDifficultySO: {fileID: 11400000, guid: 9fca50fa3414c2b40a53f138ed9d0805, type: 2}
 --- !u!4 &1102547833
 Transform:
   m_ObjectHideFlags: 0

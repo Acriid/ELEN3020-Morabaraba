@@ -24,11 +24,11 @@ public class setupUI : MonoBehaviour
 
     private string nextScene;
 
-    private AiBrain aibrain;
+    public AiDifficultySO aiDifficultySO;
 
     public void Start()
     {
-        aibrain = FindFirstObjectByType<AiBrain>();
+
     }
     private void OnEnable()
     {
@@ -111,26 +111,20 @@ public class setupUI : MonoBehaviour
 
         if (selectedGameMode == "Player vs AI")
         {
-            if (aibrain == null)
+
+            switch (selectedDifficulty)
             {
-                aibrain = FindFirstObjectByType<AiBrain>();
+                case "Easy":
+                    aiDifficultySO.AiDifficulty = AiBrain.AiDifficulty.Easy;
+                    break;
+                case "Medium":
+                    aiDifficultySO.AiDifficulty = AiBrain.AiDifficulty.Normal;
+                    break;
+                case "Hard":
+                    aiDifficultySO.AiDifficulty = AiBrain.AiDifficulty.Hard;
+                    break;
             }
 
-            if (aibrain != null)
-            {
-                switch (selectedDifficulty)
-                {
-                    case "Easy":
-                        aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Easy);
-                        break;
-                    case "Medium":
-                        aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Normal);
-                        break;
-                    case "Hard":
-                        aibrain.SetAIDifficulty(AiBrain.AiDifficulty.Hard);
-                        break;
-                }
-            }
         }
 
         feedbackLabel.text = "Starting game...";

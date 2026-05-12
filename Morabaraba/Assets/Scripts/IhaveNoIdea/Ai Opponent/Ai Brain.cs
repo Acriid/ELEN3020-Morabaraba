@@ -12,6 +12,7 @@ public class AiBrain : MonoBehaviour
 
     private  Dictionary<BoardSO, BoardObject> _boardLookup = new();
     [SerializeField] private AiDifficulty? aiDifficulty = AiDifficulty.Hard;
+    public AiDifficultySO AiDifficultySO;
 
     public  void InitializeBoard(IEnumerable<BoardObject> allBoardSpaces)
     {
@@ -44,6 +45,7 @@ public class AiBrain : MonoBehaviour
     void Start()
     {
         InitializeBoard(_boardObjects);
+        SetAIDifficulty(AiDifficultySO.AiDifficulty);
         _gameManager.SetCurrentTeam(_gameManager.GetOppositeTeam(_aiTeam));
         _gameManager.onMoveDone += Move;
         _gameManager.onMillGot += RemovePiece;
