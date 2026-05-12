@@ -22,14 +22,7 @@ public class WinLooseUI : MonoBehaviour
 
     public setResult(Team winningTeam)
     {
-        if (winningTeam == Team.None)
-        {
-            resultLabel.text = "It's a draw!";
-        }
-        else
-        {
-            resultLabel.text = $"{winningTeam} wins!";
-        }
+        resultLabel.text = $"{winningTeam} wins!";
     }
     private void OnExitClicked()
     {

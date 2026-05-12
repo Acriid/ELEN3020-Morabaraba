@@ -1729,7 +1729,6 @@ MonoBehaviour:
   - {fileID: 1422850783}
   - {fileID: 1836292580}
   - {fileID: 1883991518}
-  AiDifficultySO: {fileID: 11400000, guid: 9fca50fa3414c2b40a53f138ed9d0805, type: 2}
 --- !u!4 &1119966315
 Transform:
   m_ObjectHideFlags: 0
@@ -3001,9 +3000,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 309175360685996317, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 598533901303670945, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
       propertyPath: m_Name
       value: Board_Outer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190675344356140131, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2668020152268272465, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3044,6 +3051,38 @@ PrefabInstance:
     - target: {fileID: 2668020152268272465, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945913841904454807, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3991397069801225829, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4784913596568645412, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278271704886480381, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374589210118991993, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7407144667637884907, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7528502264517432731, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897619048609119958, guid: b581a0df3ca696f4cb22337032b8b03f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

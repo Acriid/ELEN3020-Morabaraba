@@ -216,6 +216,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: C4
       objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
       value: 0.8
@@ -894,6 +898,10 @@ PrefabInstance:
     - target: {fileID: 2876010607624382870, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Name
       value: E4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
@@ -1918,6 +1926,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: D3
       objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
       value: 0.8
@@ -1995,7 +2007,6 @@ MonoBehaviour:
   - {fileID: 16861869}
   - {fileID: 920198733}
   - {fileID: 1423184587}
-  AiDifficultySO: {fileID: 11400000, guid: 9fca50fa3414c2b40a53f138ed9d0805, type: 2}
 --- !u!4 &1102547833
 Transform:
   m_ObjectHideFlags: 0
@@ -2244,6 +2255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E5
       objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
       value: 0.8
@@ -2401,6 +2416,10 @@ PrefabInstance:
     - target: {fileID: 2876010607624382870, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Name
       value: C3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
@@ -2760,7 +2779,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 6657739203594880187, guid: 7badc9be3b7c1a5419e71269eaf6cfca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3060,6 +3079,10 @@ PrefabInstance:
     - target: {fileID: 2876010607624382870, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Name
       value: C5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
@@ -3443,6 +3466,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: D5
       objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
       value: 0.8
@@ -3563,6 +3590,10 @@ PrefabInstance:
     - target: {fileID: 2876010607624382870, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Name
       value: E3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313071734450078016, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4912131803310187797, guid: 98f1256cb3be1004a9d956d8393556ff, type: 3}
       propertyPath: m_Radius
