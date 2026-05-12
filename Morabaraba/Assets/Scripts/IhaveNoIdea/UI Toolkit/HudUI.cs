@@ -1,21 +1,18 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class HudUI : MonoBehaviour
 {
-    [SerializeField] private UndoRedoManager undoRedoManager;
-
     private Button exitButton;
     private Label joinCodeLabel;
     private RelayManager relayManager;
-    private Button undoButton;
-    private Button redoButton;
 
 
     private void OnEnable()
     {
-        DontDestroyOnLoad(gameObject.transform.parent);
+        //DontDestroyOnLoad(gameObject.transform.parent);
         relayManager = FindAnyObjectByType<RelayManager>();
 
 
@@ -36,11 +33,6 @@ public class HudUI : MonoBehaviour
         // exitButton = codeContainer.Q<Button>("ExitButton");
         joinCodeLabel = codeContainer.Q<Label>("Code");
 
-        undoButton = doContainer.Q<Button>("undoButton");
-        redoButton = doContainer.Q<Button>("redoButton");
-
-        undoButton.clicked += OnUndoClicked;
-        redoButton.clicked += OnRedoClicked;
 
         if (exitButton == null)
         {
@@ -55,6 +47,7 @@ public class HudUI : MonoBehaviour
         Debug.Log("Exiting lobby");
         relayManager.LeaveRelay();
         joinCodeLabel.text = "";
+   
 
     }
 
@@ -66,16 +59,4 @@ public class HudUI : MonoBehaviour
         }
     }
 
-    private void OnUndoClicked()
-    {
-        Debug.Log("UNDO CLICKED");
-        undoRedoManager.Undo();
-    }
-
-    private void OnRedoClicked()
-    {
-        Debug.Log("REDO CLICKED");
-        undoRedoManager.Redo();
-    }
 }
-

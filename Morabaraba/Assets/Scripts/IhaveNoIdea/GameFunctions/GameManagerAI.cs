@@ -382,11 +382,9 @@ public class GameManagerAI : MonoBehaviour
 
     private void EndGame(Team winningTeam)
     {
-        Debug.Log($"{winningTeam} won");
+        WinLooseUI.LastWinner = winningTeam;
 
         SceneManager.LoadScene("WinLoseScreen");
-
-        StartCoroutine(SetWinAfterLoad(winningTeam));
     }
 
     public bool DidTeamLose(Team teamToCheck)

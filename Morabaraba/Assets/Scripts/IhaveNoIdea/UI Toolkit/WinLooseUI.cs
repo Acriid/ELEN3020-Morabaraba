@@ -9,6 +9,8 @@ public class WinLooseUI : MonoBehaviour
     private Button exitButton;
     private Label resultLabel;
 
+    public static Team LastWinner;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -18,6 +20,11 @@ public class WinLooseUI : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    public void Start()
+    {
+        setResult(LastWinner);
     }
 
     private void OnEnable()
@@ -40,13 +47,11 @@ public class WinLooseUI : MonoBehaviour
 
     public void setResult(Team winningTeam)
     {
-        if (resultLabel == null)
-        {
-            Debug.LogWarning("ResultLabel is null.");
-            return;
-        }
+        if (resultLabel == null) return;
 
-        resultLabel.text = $"{winningTeam} wins!";
+        string winnerText = winningTeam == Team.Player1 ? "Player 1" : "Player 2";
+
+        resultLabel.text = $"{winnerText} wins!";
     }
 
     private void OnExitClicked()
