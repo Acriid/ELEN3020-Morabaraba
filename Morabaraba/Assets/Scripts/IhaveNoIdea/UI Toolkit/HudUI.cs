@@ -12,7 +12,7 @@ public class HudUI : MonoBehaviour
 
     private void OnEnable()
     {
-        //DontDestroyOnLoad(gameObject.transform.parent);
+        DontDestroyOnLoad(gameObject.transform.parent);
         relayManager = FindAnyObjectByType<RelayManager>();
 
 

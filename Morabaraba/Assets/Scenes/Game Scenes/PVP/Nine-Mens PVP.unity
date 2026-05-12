@@ -208,6 +208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoardPiece1Sprire (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
       value: 
@@ -396,6 +400,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -475,6 +483,10 @@ PrefabInstance:
     - target: {fileID: 5886947557504969680, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -599,6 +611,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -690,6 +706,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -769,6 +789,10 @@ PrefabInstance:
     - target: {fileID: 5886947557504969680, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -862,6 +886,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoardPiece1Sprire (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
       value: 
@@ -946,6 +974,10 @@ PrefabInstance:
     - target: {fileID: 4264601704496405970, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: m_Name
       value: BoardPiece1Sprire (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
@@ -1108,6 +1140,10 @@ PrefabInstance:
     - target: {fileID: 5886947557504969680, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1286,6 +1322,10 @@ PrefabInstance:
     - target: {fileID: 4264601704496405970, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: m_Name
       value: BoardPiece1Sprire (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
@@ -1678,6 +1718,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoardPiece1Sprire (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
       value: 
@@ -1795,6 +1839,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1870,6 +1918,10 @@ PrefabInstance:
     - target: {fileID: 4264601704496405970, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: m_Name
       value: BoardPiece1Sprire (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
@@ -2127,6 +2179,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2294,6 +2350,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoardPiece1Sprire (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
       value: 
@@ -2400,6 +2460,10 @@ PrefabInstance:
     - target: {fileID: 4264601704496405970, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: m_Name
       value: BoardPiece1Sprire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
@@ -2618,6 +2682,10 @@ PrefabInstance:
     - target: {fileID: 4264601704496405970, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: m_Name
       value: BoardPiece1Sprire (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731554981553324548, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9088856448159113734, guid: ed6329ca0d0ed7a4bb923f4e99cf7d68, type: 3}
       propertyPath: data
@@ -2840,6 +2908,10 @@ PrefabInstance:
     - target: {fileID: 5886947557504969680, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341139014274596586, guid: 37cb3087089e0934f99cea8a3ae1be8c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
